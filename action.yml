@@ -55,10 +55,10 @@ runs:
         echo "Version found: $version"
         echo "version=$version" >> "$GITHUB_OUTPUT"
 
-        echo postfix="$VER+$SHA" >> "$GITHUB_OUTPUT"
+        echo postfix="$version+$sha" >> "$GITHUB_OUTPUT"
         echo "Postfix found: $postfix"
 
-        echo name=$TEMPLATE_NAME@$POSTFIX >> "$GITHUB_OUTPUT"
+        echo name=$TEMPLATE_NAME@$postfix >> "$GITHUB_OUTPUT"
         echo "Name found: $name"
 
         # Update version in Makefile
