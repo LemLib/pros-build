@@ -2,17 +2,31 @@ name: Pros Build
 description: Automatically build pros projects
 
 inputs:
-  project: 
-    description: 'Project to build'
-    required: false
   repository:
-    description: 'Target repository'
+    description: Target repository
     required: false
     default: ${{ github.repository }}
+  upload-built-template:
+    required: false
+    default: true
+
+outputs:
+version:
+  description: The version of the template
+  value: ${{ steps.outputs.version }}
 
 runs:
   using: composite
   steps:
+    - name: Check if template
+      id: template
+      run: |
+        template=$(awk -F'=' '/^IS_LIBRARY:=/{print $2}' Makefile)
+        echo "template=$template" >> $GITHUB_OUTPUT
+        echo template
+      env:
+        TEMPLATE: ${{ steps.template.outputs.template }}
+
     - name: Install ARM Toolchain
       uses: fiam/arm-none-eabi-gcc@v1
       with:
@@ -36,10 +50,10 @@ runs:
       uses: actions/checkout@v4
       with:
         repository: ${{ inputs.repository }}
-        path: ./project
+        path: ./pros-project
 
     - name: Build PROS Project
       run: |
-        cd project
+        cd pros-project
         make clean quick -j
       shell: bash

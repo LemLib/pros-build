@@ -16,17 +16,12 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-
       - name: Checkout
         uses: actions/checkout@v4
         with:
           path: ./action/
 
-      - run: ls **
-
       - name: test
         uses: ./action/
-        with: 
+        with:
           repository: "LemLib/LemLib"
-
-      - run: ls **
