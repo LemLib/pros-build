@@ -12,7 +12,6 @@ inputs:
 
 runs:
   using: composite
-  shell: bash
   steps:
     - name: Install ARM Toolchain
       uses: fiam/arm-none-eabi-gcc@v1
@@ -31,6 +30,7 @@ runs:
 
     - name: Testing PROS Install
       run: pros --version
+      shell: bash
 
     - name: Checkout
       uses: actions/checkout@v4
@@ -39,3 +39,4 @@ runs:
 
     - name: Build PROS Project
       run: make clean quick -j
+      shell: bash
