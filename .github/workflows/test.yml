@@ -25,4 +25,4 @@ jobs:
         uses: ./action/
         with:
           repository: LemLib/LemLib
-          library-name: lemlib
+          library-name: LemLib

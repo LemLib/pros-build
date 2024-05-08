@@ -56,7 +56,11 @@ runs:
         echo "postfix=$postfix" >> "$GITHUB_OUTPUT"
         echo "Postfix found: $postfix"
 
-        name="${{inputs.library-name}}@$postfix"
+        library_name=$(awk -F'=' '/^LIBNAME:=/{print $2}' Makefile)
+        echo "library_name=$library_name" >> "$GITHUB_OUTPUT"
+        echo "Library name found: $library_name"
+
+        name="$library_name@$postfix"
         echo "name=$name" >> "$GITHUB_OUTPUT"
         echo "Name found: $name"
 
@@ -111,7 +115,7 @@ runs:
         cp {LICENSE,README.md} template/include/"${{inputs.library-name}}"/
         echo "\n## [Github link](${{github.server_url}}/${{github.repository}})" >> template/include/"${{inputs.library-name}}"/README.md
         perl -i -pe 's@(?<=[^/])(docs/assets/.*?)(?=[")])@${{github.server_url}}/${{github.repository}}/blob/master/$1?raw=true@g' template/include/"${{inputs.library-name}}"/README.md
-        echo $POSTFIX >> template/include/lemlib/VERSION
+        echo ${{steps.project-info.outputs.postfix}} >> template/include/${{inputs.library-name}}/VERSION
 
     - name: Unzip Template
       if: ${{ steps.template.outputs.template == 1 && inputs.library-name != null }}
