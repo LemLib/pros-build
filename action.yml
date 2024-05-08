@@ -31,13 +31,14 @@ runs:
     - name: test
       shell: bash
       run: |
-        if [ $TEMPLATE = 1]; then
+        if [ $TEMPLATE = 0]; then
           exit
         fi
 
     - name: Get short SHA
       if: ${{ env.TEMPLATE == 1 && inputs.upload-built-template}}
       id: short-sha
+      shell: bash
       run: |
         if [ ${{ github.event.action }} = opened ]; then
             # we have to get the head sha directly from the pr api, because github silly ig
