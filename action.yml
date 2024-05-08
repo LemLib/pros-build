@@ -52,6 +52,7 @@ runs:
         SHA: ${{ steps.short-sha.outputs.sha }}
 
     - name: Get version number
+      if: ${{ steps.template.outputs.template == 1 && inputs.upload-built-template}}
       id: version
       shell: bash
       run: |
@@ -61,6 +62,7 @@ runs:
         VER: ${{ steps.version.outputs.version }}
 
     - name: Get Template Postfix
+      if: ${{ steps.template.outputs.template == 1 && inputs.upload-built-template}}
       id: template-postfix
       shell: bash
       run: |
@@ -69,6 +71,7 @@ runs:
         POSTFIX: ${{ steps.template-postfix.outputs.postfix }}
 
     - name: Get Template Name
+      if: ${{ steps.template.outputs.template == 1 && inputs.upload-built-template}}
       id: template-name
       shell: bash
       run: |
@@ -78,6 +81,7 @@ runs:
         TEMPLATE_NAME: ${{ github.event.repository.name }}
 
     - name: Update version in Makefile
+      if: ${{ steps.template.outputs.template == 1 && inputs.upload-built-template}}
       shell: bash
       run: sed -i "s/^VERSION:=.*\$/VERSION:=$POSTFIX/" Makefile
       env:
