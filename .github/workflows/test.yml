@@ -24,4 +24,4 @@ jobs:
       - name: test
         uses: ./action/
         with:
-          repository: "LemLib/LemLib"
+          repository: LemLib/LemLib
