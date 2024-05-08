@@ -19,11 +19,13 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          path: ./action/
 
       - run: ls **
 
       - name: test
-        uses: ./
+        uses: ./action/
         with: 
           repository: "LemLib/LemLib"
 
