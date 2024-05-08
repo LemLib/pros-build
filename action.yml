@@ -103,11 +103,11 @@ runs:
       shell: bash
       run: |
         # Update version in Makefile
-        sed -i "s/^VERSION:=.*\$/VERSION:=$POSTFIX/" Makefile
+        #sed -i "s/^VERSION:=.*\$/VERSION:=$POSTFIX/" Makefile
 
         pros make template
 
-        mkdir -p template/include/lemlib/
+        mkdir -p template/include/"${{inputs.library-name}}"/
         cp {LICENSE,README.md} template/include/"${{inputs.library-name}}"/
         echo "\n## [Github link](${{github.server_url}}/${{github.repository}})" >> template/include/"${{inputs.library-name}}"/README.md
         perl -i -pe 's@(?<=[^/])(docs/assets/.*?)(?=[")])@${{github.server_url}}/${{github.repository}}/blob/master/$1?raw=true@g' template/include/"${{inputs.library-name}}"/README.md
