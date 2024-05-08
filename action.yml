@@ -18,7 +18,7 @@ runs:
       with:
         repository: ${{ inputs.repository }}
         path: ./pros-project
-    - run: cp -r ./pros-project/* ./
+    - run: cp -r ./pros-project/* ./ # its incredibly silly that I have to do this but otherwise it interferes with other checkouts
       shell: bash
 
     - name: Check if template
@@ -36,7 +36,7 @@ runs:
       id: short-sha
       shell: bash
       run: |
-        if [ $ACTION == opened ]; then
+        if [ $ACTION = opened ]; then
             # we have to get the head sha directly from the pr api, because github silly ig
             echo "then"
             sha=$(wget -O- --quiet https://api.github.com/repos/LemLib/LemLib/pulls/$PR_NUM | jq -r .head.sha | head -c 6)
@@ -50,6 +50,33 @@ runs:
         ACTION: ${{github.event.action}}
         PR_NUM: ${{github.event.number}}
         SHA: ${{ steps.short-sha.outputs.sha }}
+
+    - name: Get version number
+      id: version
+      run: |
+        version=$(awk -F'=' '/^VERSION:=/{print $2}' Makefile)
+        echo "version=$version" >> "$GITHUB_OUTPUT"
+
+    - name: Get Template Postfix
+      id: template-postfix
+      run: |
+        echo postfix="$VER+$SHA" >> "$GITHUB_OUTPUT"
+      env:
+        SHA: ${{ steps.short-sha.outputs.sha }}
+        VER: ${{ steps.version.outputs.version }}
+
+    - name: Get Template Name
+      id: template-name
+      run: |
+        echo name=$TEMPLATE_NAME@$POSTFIX >> "$GITHUB_OUTPUT"
+      env:
+        POSTFIX: ${{ steps.template-postfix.outputs.postfix }}
+        TEMPLATE_NAME: ${{ github.event.repository.name }}
+
+    - name: Update version in Makefile
+      run: sed -i "s/^VERSION:=.*\$/VERSION:=$POSTFIX/" Makefile
+      env:
+        POSTFIX: ${{ steps.template-postfix.outputs.postfix }}
 
     #- name: Install ARM Toolchain
     #uses: fiam/arm-none-eabi-gcc@v1
