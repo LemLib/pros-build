@@ -127,6 +127,6 @@ runs:
       if: ${{ steps.template.outputs.template == 1 && inputs.library-name != null }}
       uses: actions/upload-artifact@v3
       with:
-        name: ${{ steps.template-name.outputs.name }}
+        name: ${{ steps.project-info.outputs.name }}
         path: "template/*"
         retention-days: 89
