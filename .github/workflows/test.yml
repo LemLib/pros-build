@@ -25,4 +25,4 @@ jobs:
         uses: ./action/
         with:
           repository: LemLib/LemLib
-          upload-built-template: true
+          upload-built-template: false
