@@ -36,7 +36,7 @@ runs:
       id: short-sha
       shell: bash
       run: |
-        if [ $ACTION = opened ]; then
+        if [ $ACTION == opened ]; then
             # we have to get the head sha directly from the pr api, because github silly ig
             echo "then"
             sha=$(wget -O- --quiet https://api.github.com/repos/LemLib/LemLib/pulls/$PR_NUM | jq -r .head.sha | head -c 6)
