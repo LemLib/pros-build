@@ -17,6 +17,8 @@ runs:
       uses: actions/checkout@v4
       with:
         repository: ${{ inputs.repository }}
+        path: ./pros-project
+    - run: cp -r ./pros-project/* ./
 
     - name: Check if template
       id: template
@@ -46,31 +48,31 @@ runs:
         SHA: ${{ steps.short-sha.outputs.sha }}
 
     #- name: Install ARM Toolchain
-      #uses: fiam/arm-none-eabi-gcc@v1
-      #with:
-        #release: "10-2020-q4"
+    #uses: fiam/arm-none-eabi-gcc@v1
+    #with:
+    #release: "10-2020-q4"
 
     #- name: Setup Python
-      #uses: actions/setup-python@v2
-      #with:
-        #python-version: 3.9
+    #uses: actions/setup-python@v2
+    #with:
+    #python-version: 3.9
 
     #- name: PIP Installer
-      #uses: BSFishy/pip-action@v1
-      #with:
-        #packages: pros-cli
+    #uses: BSFishy/pip-action@v1
+    #with:
+    #packages: pros-cli
 
     #- name: Testing PROS Install
-      #run: pros --version
-      #shell: bash
+    #run: pros --version
+    #shell: bash
 
     #- name: Checkout
-      #uses: actions/checkout@v4
-      #with:
-        #repository: ${{ inputs.repository }}
-        #path: ./pros-project
+    #uses: actions/checkout@v4
+    #with:
+    #repository: ${{ inputs.repository }}
+    #path: ./pros-project
 
     #- name: Build PROS Project
-      #run: |
-        #make clean quick -j
-      #shell: bash
+    #run: |
+    #make clean quick -j
+    #shell: bash
