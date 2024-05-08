@@ -35,7 +35,7 @@ runs:
     - name: Checkout
       uses: actions/checkout@v4
       with:
-        repository: 'Lemlib/LemLib'
+        repository: ${{ inputs.repository }}
 
     - name: Build PROS Project
       run: make clean quick -j
