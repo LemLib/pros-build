@@ -19,6 +19,7 @@ runs:
         repository: ${{ inputs.repository }}
         path: ./pros-project
     - run: cp -r ./pros-project/* ./
+      shell: bash
 
     - name: Check if template
       id: template
