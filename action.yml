@@ -33,6 +33,7 @@ runs:
 
     - name: thingy
       run: echo $TEMPLATE
+      shell: bash
       env:
         TEMPLATE: ${{ steps.template.outputs.template }}
 
