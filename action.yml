@@ -17,7 +17,6 @@ runs:
       uses: actions/checkout@v4
       with:
         repository: ${{ inputs.repository }}
-        path: ./pros-project
 
     - name: Check if template
       id: template
@@ -28,6 +27,29 @@ runs:
       env:
         TEMPLATE: ${{ steps.template.outputs.template }}
       shell: bash
+
+    - name: test
+      shell: bash
+      run: |
+        if [ $TEMPLATE = 1]; then
+          exit
+        fi
+
+    - name: Get short SHA
+      if: ${{ env.TEMPLATE == 1 && inputs.upload-built-template}}
+      id: short-sha
+      run: |
+        if [ ${{ github.event.action }} = opened ]; then
+            # we have to get the head sha directly from the pr api, because github silly ig
+            echo "then"
+            sha=$(wget -O- --quiet https://api.github.com/repos/LemLib/LemLib/pulls/${{ github.event.number }} | jq -r .head.sha | head -c 6)
+        else
+            echo "else"
+            sha=$(echo ${{ github.event.after }} | head -c 6)
+        fi
+        echo "sha=$sha" >> $GITHUB_OUTPUT
+      env:
+        SHA: ${{ steps.short-sha.outputs.sha }}
 
     - name: Install ARM Toolchain
       uses: fiam/arm-none-eabi-gcc@v1
@@ -56,6 +78,5 @@ runs:
 
     - name: Build PROS Project
       run: |
-        cd pros-project
         make clean quick -j
       shell: bash
