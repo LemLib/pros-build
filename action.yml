@@ -42,7 +42,7 @@ runs:
             sha=$(wget -O- --quiet https://api.github.com/repos/LemLib/LemLib/pulls/$PR_NUM | jq -r .head.sha | head -c 6)
         else
             echo "else"
-            sha=$(echo $AFTER | head -c 6)
+            sha=$(echo "$AFTER" | head -c 6)
         fi
         echo "sha=$sha" >> $GITHUB_OUTPUT
       env:
@@ -57,6 +57,8 @@ runs:
       run: |
         version=$(awk -F'=' '/^VERSION:=/{print $2}' Makefile)
         echo "version=$version" >> "$GITHUB_OUTPUT"
+      env:
+        VER: ${{ steps.version.outputs.version }}
 
     - name: Get Template Postfix
       id: template-postfix
@@ -64,8 +66,7 @@ runs:
       run: |
         echo postfix="$VER+$SHA" >> "$GITHUB_OUTPUT"
       env:
-        SHA: ${{ steps.short-sha.outputs.sha }}
-        VER: ${{ steps.version.outputs.version }}
+        POSTFIX: ${{ steps.template-postfix.outputs.postfix }}
 
     - name: Get Template Name
       id: template-name
