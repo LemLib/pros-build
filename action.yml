@@ -36,7 +36,10 @@ runs:
       uses: actions/checkout@v4
       with:
         repository: ${{ inputs.repository }}
+        path: ./project
 
     - name: Build PROS Project
-      run: make clean quick -j
+      run: |
+        cd project
+        make clean quick -j
       shell: bash
