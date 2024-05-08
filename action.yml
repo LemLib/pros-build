@@ -103,6 +103,7 @@ runs:
       run: |
         # Update version in Makefile
         sed -i "s/^VERSION:=.*\$/VERSION:=$POSTFIX/" Makefile
+        cat Makefile
 
         pros make template
 
