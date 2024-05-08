@@ -53,12 +53,14 @@ runs:
 
     - name: Get version number
       id: version
+      shell: bash
       run: |
         version=$(awk -F'=' '/^VERSION:=/{print $2}' Makefile)
         echo "version=$version" >> "$GITHUB_OUTPUT"
 
     - name: Get Template Postfix
       id: template-postfix
+      shell: bash
       run: |
         echo postfix="$VER+$SHA" >> "$GITHUB_OUTPUT"
       env:
