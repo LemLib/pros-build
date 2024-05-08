@@ -21,6 +21,7 @@ runs:
         echo template
       env:
         TEMPLATE: ${{ steps.template.outputs.template }}
+      shell: bash
 
     - name: Install ARM Toolchain
       uses: fiam/arm-none-eabi-gcc@v1
