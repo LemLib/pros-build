@@ -56,7 +56,7 @@ runs:
         echo "postfix=$postfix" >> "$GITHUB_OUTPUT"
         echo "Postfix found: $postfix"
 
-        name="$TEMPLATE_NAME@$postfix"
+        name="${{inputs.library-name}}@$postfix"
         echo "name=$name" >> "$GITHUB_OUTPUT"
         echo "Name found: $name"
 
@@ -66,7 +66,6 @@ runs:
         AFTER: ${{ github.event.after }} # this isn't present for pr opened events
         ACTION: ${{github.event.action}}
         PR_NUM: ${{github.event.number}}
-        TEMPLATE_NAME: ${{ github.event.repository.name }}
 
         # info needed by other steps
         SHA: ${{ steps.project-info.outputs.sha }}
@@ -103,7 +102,7 @@ runs:
       shell: bash
       run: |
         # Update version in Makefile
-        #sed -i "s/^VERSION:=.*\$/VERSION:=$POSTFIX/" Makefile
+        sed -i "s/^VERSION:=.*\$/VERSION:=$POSTFIX/" Makefile
 
         pros make template
 
