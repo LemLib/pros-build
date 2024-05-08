@@ -33,10 +33,9 @@ runs:
 
     - run: echo $TEMPLATE
       shell: bash
-      
 
     - name: Get short SHA
-      if: ${{ env.TEMPLATE == 1 && inputs.upload-built-template}}
+      if: ${{ env.TEMPLATE == 0 && inputs.upload-built-template}}
       id: short-sha
       shell: bash
       run: |
