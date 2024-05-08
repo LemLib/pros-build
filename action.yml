@@ -60,8 +60,6 @@ runs:
         echo "name=$name" >> "$GITHUB_OUTPUT"
         echo "Name found: $name"
 
-        # Update version in Makefile
-        sed -i "s/^VERSION:=.*\$/VERSION:=$POSTFIX/" Makefile
       env:
         # random info needed in the step
         # TODO: try to figure out if this can be removed
@@ -104,7 +102,11 @@ runs:
       if: ${{ steps.template.outputs.template == 1 && inputs.library-name != null }}
       shell: bash
       run: |
+        # Update version in Makefile
+        sed -i "s/^VERSION:=.*\$/VERSION:=$POSTFIX/" Makefile
+
         pros make template
+
         mkdir -p template/include/lemlib/
         cp {LICENSE,README.md} template/include/"${{inputs.library-name}}"/
         echo "\n## [Github link](${{github.server_url}}/${{github.repository}})" >> template/include/"${{inputs.library-name}}"/README.md
