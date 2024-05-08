@@ -10,11 +10,6 @@ inputs:
     required: false
     default: true
 
-outputs:
-version:
-  description: The version of the template
-  value: ${{ steps.outputs.version }}
-
 runs:
   using: composite
   steps:
