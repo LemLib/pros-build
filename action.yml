@@ -11,7 +11,7 @@ inputs:
     default: true
   project-name:
     required: false
-    default: ${{ github.repository.name }}
+    default: ${{ github.repository }}
 
 runs:
   using: composite
@@ -35,7 +35,7 @@ runs:
       shell: bash
 
     - name: Get project info
-      if: ${{ steps.template.outputs.template == 1 && inputs.upload-built-template}}
+      if: ${{ steps.template.outputs.template == 1 && inputs.upload-built-template == true }}
       id: project-info
       shell: bash
       run: |
@@ -66,11 +66,14 @@ runs:
         # Update version in Makefile
         sed -i "s/^VERSION:=.*\$/VERSION:=$POSTFIX/" Makefile
       env:
+        # random info needed in the step
+        # TODO: try to figure out if this can be removed
         AFTER: ${{ github.event.after }} # this isn't present for pr opened events
         ACTION: ${{github.event.action}}
         PR_NUM: ${{github.event.number}}
         TEMPLATE_NAME: ${{ github.event.repository.name }}
 
+        # info needed by other steps
         SHA: ${{ steps.project-info.outputs.sha }}
         VER: ${{ steps.project-info.outputs.version }}
         POSTFIX: ${{ steps.project-info.outputs.postfix }}
