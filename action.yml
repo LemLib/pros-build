@@ -47,14 +47,19 @@ runs:
             echo "else"
             sha=$(echo "$AFTER" | head -c 6)
         fi
+
         echo "sha=$sha" >> $GITHUB_OUTPUT
+        echo "SHA found: $sha"
 
         version=$(awk -F'=' '/^VERSION:=/{print $2}' Makefile)
+        echo "Version found: $version"
         echo "version=$version" >> "$GITHUB_OUTPUT"
 
         echo postfix="$VER+$SHA" >> "$GITHUB_OUTPUT"
+        echo "Postfix found: $postfix"
 
         echo name=$TEMPLATE_NAME@$POSTFIX >> "$GITHUB_OUTPUT"
+        echo "Name found: $name"
 
         # Update version in Makefile
         sed -i "s/^VERSION:=.*\$/VERSION:=$POSTFIX/" Makefile
@@ -68,7 +73,6 @@ runs:
         VER: ${{ steps.project-info.outputs.version }}
         POSTFIX: ${{ steps.project-info.outputs.postfix }}
         NAME: ${{ steps.project-info.outputs.name }}
-
 
     #- name: Install ARM Toolchain
     #uses: fiam/arm-none-eabi-gcc@v1
