@@ -31,24 +31,24 @@ runs:
         TEMPLATE: ${{ steps.template.outputs.template }}
       shell: bash
 
-    - run: echo $TEMPLATE
-      shell: bash
-
     - name: Get short SHA
-      if: ${{ env.TEMPLATE == 0 && inputs.upload-built-template}}
+      if: ${{ env.TEMPLATE == 1 && inputs.upload-built-template}}
       id: short-sha
       shell: bash
       run: |
-        if [ ${{ github.event.action }} = opened ]; then
+        if [ $ACTION = opened ]; then
             # we have to get the head sha directly from the pr api, because github silly ig
             echo "then"
-            sha=$(wget -O- --quiet https://api.github.com/repos/LemLib/LemLib/pulls/${{ github.event.number }} | jq -r .head.sha | head -c 6)
+            sha=$(wget -O- --quiet https://api.github.com/repos/LemLib/LemLib/pulls/$PR_NUM | jq -r .head.sha | head -c 6)
         else
             echo "else"
-            sha=$(echo ${{ github.event.after }} | head -c 6)
+            sha=$(echo $AFTER | head -c 6)
         fi
         echo "sha=$sha" >> $GITHUB_OUTPUT
       env:
+        AFTER: ${{ github.event.after }} # this isn't present for pr opened events
+        ACTION: ${{github.event.action}}
+        PR_NUM: ${{github.event.number}}
         SHA: ${{ steps.short-sha.outputs.sha }}
 
     #- name: Install ARM Toolchain
