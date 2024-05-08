@@ -22,3 +22,5 @@ jobs:
 
       - name: test
         uses: ./
+        with: 
+          repository: "LemLib/LemLib"
