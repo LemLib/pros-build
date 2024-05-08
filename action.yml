@@ -9,6 +9,9 @@ inputs:
   upload-built-template:
     required: false
     default: true
+  project-name:
+    required: false
+    default: ${{ github.repository.name }}
 
 runs:
   using: composite
@@ -31,9 +34,9 @@ runs:
         TEMPLATE: ${{ steps.template.outputs.template }}
       shell: bash
 
-    - name: Get short SHA
+    - name: Get project info
       if: ${{ steps.template.outputs.template == 1 && inputs.upload-built-template}}
-      id: short-sha
+      id: project-info
       shell: bash
       run: |
         if [ $ACTION = opened ]; then
@@ -45,47 +48,27 @@ runs:
             sha=$(echo "$AFTER" | head -c 6)
         fi
         echo "sha=$sha" >> $GITHUB_OUTPUT
+
+        version=$(awk -F'=' '/^VERSION:=/{print $2}' Makefile)
+        echo "version=$version" >> "$GITHUB_OUTPUT"
+
+        echo postfix="$VER+$SHA" >> "$GITHUB_OUTPUT"
+
+        echo name=$TEMPLATE_NAME@$POSTFIX >> "$GITHUB_OUTPUT"
+
+        # Update version in Makefile
+        sed -i "s/^VERSION:=.*\$/VERSION:=$POSTFIX/" Makefile
       env:
         AFTER: ${{ github.event.after }} # this isn't present for pr opened events
         ACTION: ${{github.event.action}}
         PR_NUM: ${{github.event.number}}
-        SHA: ${{ steps.short-sha.outputs.sha }}
-
-    - name: Get version number
-      if: ${{ steps.template.outputs.template == 1 && inputs.upload-built-template}}
-      id: version
-      shell: bash
-      run: |
-        version=$(awk -F'=' '/^VERSION:=/{print $2}' Makefile)
-        echo "version=$version" >> "$GITHUB_OUTPUT"
-      env:
-        VER: ${{ steps.version.outputs.version }}
-
-    - name: Get Template Postfix
-      if: ${{ steps.template.outputs.template == 1 && inputs.upload-built-template}}
-      id: template-postfix
-      shell: bash
-      run: |
-        echo postfix="$VER+$SHA" >> "$GITHUB_OUTPUT"
-      env:
-        POSTFIX: ${{ steps.template-postfix.outputs.postfix }}
-
-    - name: Get Template Name
-      if: ${{ steps.template.outputs.template == 1 && inputs.upload-built-template}}
-      id: template-name
-      shell: bash
-      run: |
-        echo name=$TEMPLATE_NAME@$POSTFIX >> "$GITHUB_OUTPUT"
-      env:
-        POSTFIX: ${{ steps.template-postfix.outputs.postfix }}
         TEMPLATE_NAME: ${{ github.event.repository.name }}
 
-    - name: Update version in Makefile
-      if: ${{ steps.template.outputs.template == 1 && inputs.upload-built-template}}
-      shell: bash
-      run: sed -i "s/^VERSION:=.*\$/VERSION:=$POSTFIX/" Makefile
-      env:
-        POSTFIX: ${{ steps.template-postfix.outputs.postfix }}
+        SHA: ${{ steps.project-info.outputs.sha }}
+        VER: ${{ steps.project-info.outputs.version }}
+        POSTFIX: ${{ steps.project-info.outputs.postfix }}
+        NAME: ${{ steps.project-info.outputs.name }}
+
 
     #- name: Install ARM Toolchain
     #uses: fiam/arm-none-eabi-gcc@v1
