@@ -31,6 +31,10 @@ runs:
         TEMPLATE: ${{ steps.template.outputs.template }}
       shell: bash
 
+    - run: echo $TEMPLATE
+      shell: bash
+      
+
     - name: Get short SHA
       if: ${{ env.TEMPLATE == 1 && inputs.upload-built-template}}
       id: short-sha
