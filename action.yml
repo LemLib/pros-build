@@ -28,13 +28,6 @@ runs:
         TEMPLATE: ${{ steps.template.outputs.template }}
       shell: bash
 
-    - name: test
-      shell: bash
-      run: |
-        if [ $TEMPLATE = 0]; then
-          exit
-        fi
-
     - name: Get short SHA
       if: ${{ env.TEMPLATE == 1 && inputs.upload-built-template}}
       id: short-sha
@@ -52,32 +45,32 @@ runs:
       env:
         SHA: ${{ steps.short-sha.outputs.sha }}
 
-    - name: Install ARM Toolchain
-      uses: fiam/arm-none-eabi-gcc@v1
-      with:
-        release: "10-2020-q4"
+    #- name: Install ARM Toolchain
+      #uses: fiam/arm-none-eabi-gcc@v1
+      #with:
+        #release: "10-2020-q4"
 
-    - name: Setup Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.9
+    #- name: Setup Python
+      #uses: actions/setup-python@v2
+      #with:
+        #python-version: 3.9
 
-    - name: PIP Installer
-      uses: BSFishy/pip-action@v1
-      with:
-        packages: pros-cli
+    #- name: PIP Installer
+      #uses: BSFishy/pip-action@v1
+      #with:
+        #packages: pros-cli
 
-    - name: Testing PROS Install
-      run: pros --version
-      shell: bash
+    #- name: Testing PROS Install
+      #run: pros --version
+      #shell: bash
 
-    - name: Checkout
-      uses: actions/checkout@v4
-      with:
-        repository: ${{ inputs.repository }}
-        path: ./pros-project
+    #- name: Checkout
+      #uses: actions/checkout@v4
+      #with:
+        #repository: ${{ inputs.repository }}
+        #path: ./pros-project
 
-    - name: Build PROS Project
-      run: |
-        make clean quick -j
-      shell: bash
+    #- name: Build PROS Project
+      #run: |
+        #make clean quick -j
+      #shell: bash
