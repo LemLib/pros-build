@@ -102,6 +102,8 @@ runs:
       shell: bash
       run: |
         # Update version in Makefile
+        echo "postfix: ${{ steps.project-info.outputs.postfix }}"
+        echo "postfix: $POSTFIX"
         sed -i "s/^VERSION:=.*\$/VERSION:=$POSTFIX/" Makefile
         cat Makefile
 
