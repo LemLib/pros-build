@@ -25,11 +25,16 @@ runs:
       id: template
       run: |
         template=$(awk -F'=' '/^IS_LIBRARY:=/{print $2}' Makefile)
-        echo "template=$template" >> $GITHUB_OUTPUT
         echo template
+        echo "template=$template" >> $GITHUB_OUTPUT
       env:
         TEMPLATE: ${{ steps.template.outputs.template }}
       shell: bash
+
+    - name: thingy
+      run: echo $TEMPLATE
+      env:
+        TEMPLATE: ${{ steps.template.outputs.template }}
 
     - name: Get short SHA
       if: ${{ env.TEMPLATE == 1 && inputs.upload-built-template}}
