@@ -19,10 +19,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
+          repository: LemLib/LemLib
+          ref: 6fc0838e0aa1de03d7864002888f5d874b691910
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
           path: ./action/
 
       - name: test
         uses: ./action/
         with:
-          repository: LemLib/LemLib
           library-name: LemLib
