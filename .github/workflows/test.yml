@@ -30,7 +30,7 @@ jobs:
       - name: Test With Upload + Bonus Files
         uses: ./action/
         with:
-          library-name: LemLib
+          library-path: lemlib
 
   test-lemlib-without-upload:
     runs-on: ubuntu-latest
@@ -66,4 +66,4 @@ jobs:
       - name: Test With Upload + Bonus Files
         uses: ./action/
         with:
-          library-name: EZ-Template
+          library-path: EZ-Template

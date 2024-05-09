@@ -2,9 +2,10 @@ name: Pros Build
 description: Automatically build pros projects
 
 inputs:
-  library-name:
+  library-path:
     required: false
     default: null
+    description: The path of the library inside of the `include` directory. Specifying a value for this input will cause the action to upload the built libary in template form as an artifact.
 
 runs:
   using: composite
@@ -20,7 +21,7 @@ runs:
       shell: bash
 
     - name: Get Project Info
-      if: ${{ steps.template.outputs.template == 1 && inputs.library-name != null }}
+      if: ${{ steps.template.outputs.template == 1 && inputs.library-path != null }}
       id: project-info
       shell: bash
       run: |
@@ -82,7 +83,7 @@ runs:
       shell: bash
 
     - name: Prepare Template
-      if: ${{ steps.template.outputs.template == 1 && inputs.library-name != null }}
+      if: ${{ steps.template.outputs.template == 1 && inputs.library-path != null }}
       shell: bash
       run: |
         # Update version in Makefile
@@ -91,20 +92,22 @@ runs:
 
         pros make template
 
-        mkdir -p template/include/"${{inputs.library-name}}"/
-        cp {LICENSE,README.md} template/include/"${{inputs.library-name}}"/
-        echo "\n## [Github link](${{github.server_url}}/${{github.repository}})" >> template/include/"${{inputs.library-name}}"/README.md
-        perl -i -pe 's@(?<=[^/])(docs/assets/.*?)(?=[")])@${{github.server_url}}/${{github.repository}}/blob/master/$1?raw=true@g' template/include/"${{inputs.library-name}}"/README.md
-        echo ${{steps.project-info.outputs.postfix}} >> template/include/${{inputs.library-name}}/VERSION
+        mkdir -p template/include/"${{inputs.library-path}}"/
+
+        cp {LICENSE*,README*} template/include/"${{inputs.library-path}}"/
+
+        echo "\n## [Github link](${{github.server_url}}/${{github.repository}})" >> template/include/"${{inputs.library-path}}"/README.md
+        perl -i -pe 's@(?<=[^/])(docs/assets/.*?)(?=[")])@${{github.server_url}}/${{github.repository}}/blob/master/$1?raw=true@g' template/include/"${{inputs.library-path}}"/README.md
+        echo ${{steps.project-info.outputs.postfix}} >> template/include/${{inputs.library-path}}/VERSION
 
     - name: Unzip Template
-      if: ${{ steps.template.outputs.template == 1 && inputs.library-name != null }}
+      if: ${{ steps.template.outputs.template == 1 && inputs.library-path != null }}
       uses: montudor/action-zip@v1.0.0
       with:
         args: unzip "${{steps.project-info.outputs.name}}.zip" -d template
 
     - name: Upload Artifact
-      if: ${{ steps.template.outputs.template == 1 && inputs.library-name != null }}
+      if: ${{ steps.template.outputs.template == 1 && inputs.library-path != null }}
       uses: actions/upload-artifact@v3
       with:
         name: ${{ steps.project-info.outputs.name }}
