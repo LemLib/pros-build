@@ -65,17 +65,9 @@ runs:
         echo "Name found: $name"
 
       env:
-        # random info needed in the step
-        # TODO: try to figure out if this can be removed
         AFTER: ${{ github.event.after }} # this isn't present for pr opened events
         ACTION: ${{github.event.action}}
         PR_NUM: ${{github.event.number}}
-
-        # info needed by other steps
-        SHA: ${{ steps.project-info.outputs.sha }}
-        VER: ${{ steps.project-info.outputs.version }}
-        POSTFIX: ${{ steps.project-info.outputs.postfix }}
-        NAME: ${{ steps.project-info.outputs.name }}
 
     - name: Install ARM Toolchain
       uses: fiam/arm-none-eabi-gcc@v1
