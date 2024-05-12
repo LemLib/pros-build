@@ -105,7 +105,7 @@ runs:
 
     - name: Upload Artifact
       if: ${{ steps.template.outputs.template == 1 && inputs.library-path != null }}
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: ${{ steps.project-info.outputs.name }}
         path: "template/*"
