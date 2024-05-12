@@ -68,13 +68,15 @@ runs:
       with:
         python-version: 3.9
 
-    - name: PIP Installer
-      uses: BSFishy/pip-action@v1
+      uses: actions/setup-python@v5
       with:
-        packages: pros-cli
+        python-version: 3.10 
+        cache: pip
 
-    - name: Testing PROS Install
-      run: pros --version
+    - name: Install and Verify PROS
+      run: |
+        pip install pros-cli
+        pros --version
       shell: bash
 
     - name: Build PROS Project
