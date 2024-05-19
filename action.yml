@@ -78,6 +78,10 @@ runs:
 
         # fake pros c create-template for make template
         PATH=$PATH:$(pwd)/pros-fake/bin
+
+        ls -R
+        cat $(pwd)/pros-fake/bin
+
         echo $PATH
         whereis pros
         type pros
