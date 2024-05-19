@@ -79,6 +79,9 @@ runs:
         # fake pros c create-template for make template
         PATH=$PATH:$(pwd)/pros-fake/bin
         
+        whereis pros
+        type pros
+        
         make template
 
         mkdir -p template/include/"${{inputs.library-path}}"/
