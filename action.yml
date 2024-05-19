@@ -77,7 +77,7 @@ runs:
         cat Makefile
 
         # fake pros c create-template for make template
-        echo "$GITHUB_ACTION_PATH/pros-fake/bin" >> $GITHUB_PATH
+        PATH="$PATH:$GITHUB_ACTION_PATH/pros-fake/bin"
 
         ls -R $GITHUB_ACTION_PATH
 
