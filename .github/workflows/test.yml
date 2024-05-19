@@ -1,7 +1,6 @@
 name: Test action
 on:
   push:
-    branches: "main"
     paths-ignore:
       - .gitignore
       - README*.md
