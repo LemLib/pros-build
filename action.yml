@@ -78,14 +78,7 @@ runs:
 
         # fake pros c create-template for make template
         PATH="$PATH:$GITHUB_ACTION_PATH/pros-fake/bin"
-
-        ls -R $GITHUB_ACTION_PATH
-
-        echo $PATH
-        whereis pros
-        type pros
-        ls -l "$GITHUB_ACTION_PATH/pros-fake/bin/pros"
-
+        
         make template
 
         mkdir -p template/include/"${{inputs.library-path}}"/
