@@ -84,6 +84,7 @@ runs:
         echo $PATH
         whereis pros
         type pros
+        ls -l "$GITHUB_ACTION_PATH/pros-fake/bin/pros"
 
         make template
 
