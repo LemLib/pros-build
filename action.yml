@@ -79,6 +79,9 @@ runs:
         # fake pros c create-template for make template
         PATH="$PATH:$GITHUB_ACTION_PATH/pros-fake/bin"
         
+        # give an extra flag to our pros c create-template command by by giving the Makefile an environment variable
+        CREATE_TEMPLATE_FLAGS="--no-compress"
+        
         make template
 
         mkdir -p template/include/"${{inputs.library-path}}"/
@@ -89,11 +92,11 @@ runs:
         perl -i -pe 's@(?<=[^/])(docs/assets/.*?)(?=[")])@${{github.server_url}}/${{github.repository}}/blob/master/$1?raw=true@g' template/include/"${{inputs.library-path}}"/README.md
         echo ${{steps.project-info.outputs.postfix}} >> template/include/${{inputs.library-path}}/VERSION
 
-    - name: Unzip Template
-      if: ${{ steps.template.outputs.template == 1 && inputs.library-path != null }}
-      uses: montudor/action-zip@v1.0.0
-      with:
-        args: unzip "${{steps.project-info.outputs.name}}.zip" -d template
+    # - name: Unzip Template
+    #   if: ${{ steps.template.outputs.template == 1 && inputs.library-path != null }}
+    #   uses: montudor/action-zip@v1.0.0
+    #   with:
+    #     args: unzip "${{steps.project-info.outputs.name}}.zip" -d template
 
     - name: Upload Artifact
       if: ${{ steps.template.outputs.template == 1 && inputs.library-path != null }}

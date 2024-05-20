@@ -10,6 +10,9 @@ name=''
 version=''
 target=''
 debug=0
+# if set, tells this script to not zip the template, and instead place it in a directory
+# specified with --no-compress
+no_zip=0
 
 RED='\033[0;31m'
 YELLOW='\033[1;33m'
@@ -68,6 +71,11 @@ for arg in "$@"; do
     continue
   fi
 
+  if [ "$arg" == "--no-compress" ]; then
+    debug=1
+    continue
+  fi
+
   case $index in
   0) if [ "$arg" != "c" ]; then
     echo "Invalid argument: $arg"
@@ -108,7 +116,12 @@ if [ -z "$target" ]; then
   exit 1
 fi
 
-destination="./$name@$version.zip"
+destination="./$name@$version"
+
+if [ $no_zip -eq 0 ]; then 
+  destination="$destination.zip"
+fi
+
 debug_echo "destination: $destination"
 
 kernel_version=$(cat "$path/project.pros" | jq -r '.["py/state"].templates?.kernel.version')
@@ -257,7 +270,15 @@ system_files_json="$(echo "$system_files_strings" | jq --slurp --compact-output 
 
 template_pros_target="$tmp_dir/template.pros"
 
-zip -9 "$destination" $new_files | parse_zip_output
+if [ $no_zip -eq 0 ]; then
+  zip -9 "$destination" $new_files | parse_zip_output;
+else
+  cp -t "$destination" $new_files --verbose \
+    | sed 's/->.+//' \
+    | sed "s/'//"
+    | xargs -I {} echo "adding: {} (mimic zip output)"
+    | parse_zip_output
+fi
 
 jq --null-input --tab --sort-keys \
   --arg name "$name" \
@@ -279,6 +300,10 @@ jq --null-input --tab --sort-keys \
   }' > "$template_pros_target"
 add_tmp_file "$template_pros_target"
 
-zip -9qj "$destination" "$template_pros_target"
+if [ $no_zip -eq 0 ]; then
+  zip -9qj "$destination" "$template_pros_target";
+else
+  cp "$template_pros_target" "$destination";
+fi
 
 cleanup
