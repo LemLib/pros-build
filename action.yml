@@ -63,18 +63,7 @@ runs:
       with:
         release: "10-2020-q4"
 
-    - name: Setup Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: "3.10"
-
-    - name: Install and Verify PROS
-      run: |
-        pip install pros-cli
-        pros --version
-      shell: bash
-
-    - name: Build PROS Project
+    - name: Build Project
       run: |
         make clean quick -j
       shell: bash
@@ -87,7 +76,10 @@ runs:
         sed -i "s/^VERSION:=.*\$/VERSION:=${{steps.project-info.outputs.postfix}}/" Makefile
         cat Makefile
 
-        pros make template
+        # fake pros c create-template for make template
+        PATH="$PATH:$GITHUB_ACTION_PATH/pros-fake/bin"
+        
+        make template
 
         mkdir -p template/include/"${{inputs.library-path}}"/
 
