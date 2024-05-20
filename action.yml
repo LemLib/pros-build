@@ -59,7 +59,7 @@ runs:
         PR_NUM: ${{github.event.number}}
 
     - name: Install ARM Toolchain
-      uses: fiam/arm-none-eabi-gcc@v1
+      uses: carlosperate/arm-none-eabi-gcc-action@v1
       with:
         release: "10-2020-q4"
 
