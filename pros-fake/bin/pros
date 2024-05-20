@@ -275,8 +275,8 @@ if [ $no_zip -eq 0 ]; then
 else
   cp -t "$destination" $new_files --verbose \
     | sed 's/->.+//' \
-    | sed "s/'//"
-    | xargs -I {} echo "adding: {} (mimic zip output)"
+    | sed "s/'//" \
+    | xargs -I {} echo "adding: {} (mimic zip output)" \
     | parse_zip_output
 fi
 
