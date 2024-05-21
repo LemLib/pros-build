@@ -80,7 +80,8 @@ runs:
         PATH="$PATH:$GITHUB_ACTION_PATH/pros-fake/bin"
         
         # give an extra flag to our pros c create-template command by by giving the Makefile an environment variable
-        CREATE_TEMPLATE_FLAGS="--no-compress"
+        CREATE_TEMPLATE_FLAGS="--no-compress --destination template"
+        export CREATE_TEMPLATE_FLAGS
         
         make template
 
