@@ -30,6 +30,8 @@ jobs:
         uses: ./action/
         with:
           library-path: lemlib
+      - name: Test print PATH
+        run: echo $PATH
 
   test-lemlib-without-upload:
     runs-on: ubuntu-latest
