@@ -1,4 +1,25 @@
 #! /bin/env bash
+description="This script is a fake of the real pros-cli python program, intended only to be run in CI environments to generate PROS template zips.
+pros-fake can be found here: https://github.com/LemLib/pros-build/tree/main/pros-fake/bin/pros 
+pros-cli can be found here: https://github.com/purduesigbots/pros-cli"
+
+help_text="$description
+
+Syntax: pros-fake [options] c create-template path name version
+This is designed to be as close to the real pros-cli create-template command as possible, but some of the options are different.
+This script does not support the --user, --zip, --no-zip, --verbose, --debug, --log, --logfile options.
+Here are the extra options that this script supports:
+
+--compress      Compress the template into a zip file. This is the default behavior.
+--no-compress   Do not compress the template into a zip file. Instead, place it in a directory.
+--level LEVEL   Set the log level to LEVEL. LEVEL can be one of DEBUG, INFO, WARN, ERROR. Default is INFO."
+
+trouble_shooting_note="If you are seeing this message, something has gone wrong.
+Make sure that you're "'$PATH'" variable is set correctly.
+This script can be found at: $0
+See --help for more information."
+
+
 index=0
 is_system_arg=0
 is_target_arg=0
@@ -54,31 +75,36 @@ is_level_enabled() {
 
 debug_echo() {
     if [ "$(is_level_enabled "DEBUG")" -eq 1 ]; then
-        echo -e "$PURPLE[DEBUG]$RESET" $@
+        echo -e "$PURPLE[DEBUG]$RESET" "$@"
     fi
 }
 
 error_echo() {
     if [ "$(is_level_enabled "ERROR")" -eq 1 ]; then
-        echo -e "$RED[ERROR]$RESET" $@ >&2
+        echo -e "$RED[ERROR]$RESET" "$@" >&2
     fi
 }
 
 warning_echo() {
     if [ "$(is_level_enabled "WARN")" -eq 1 ]; then
-        echo -e "$YELLOW[WARN]$RESET" $@ >&2
+        echo -e "$YELLOW[WARN]$RESET" "$@" >&2
     fi
     
 }
 
 info_echo() {
     if [ "$(is_level_enabled "INFO")" -eq 1 ]; then
-        echo -e "$BLUE[INFO]$RESET" $@
+        echo -e "$BLUE[INFO]$RESET" "$@"
     fi
 }
 
 newline="
 "
+
+if [ $# -eq 0 ]; then
+  error_echo "No arguments provided. See --help for more information."
+  exit 6
+fi
 
 for arg in "$@"; do
   if [ $is_system_arg -eq 1 ]; then
@@ -125,6 +151,11 @@ for arg in "$@"; do
     continue
   fi
 
+  if [ "$arg" == "--help" ]; then
+    echo -e "$help_text"
+    exit 0
+  fi
+
   if [ "$arg" == "--system" ]; then
     is_system_arg=1
     continue
@@ -163,11 +194,19 @@ for arg in "$@"; do
 
   case $index in
   0) if [ "$arg" != "c" -a "$arg" != "conductor" ]; then
-    error_echo "Invalid argument: "'"'"$arg"'"'", expected c or conductor."
+    error_echo "Invalid argument: "'"'"$arg"'"'", expected c or conductor.
+This is likely because $description
+
+Troubleshooting:
+$trouble_shooting_note"
     exit 1
   fi ;;
   1) if [ "$arg" != "create-template" ]; then
-    error_echo "Invalid argument: "'"'"$arg"'"'", expected create-template."
+    error_echo "Invalid argument: "'"'"$arg"'"'", expected create-template.
+This is likely because $description
+
+Troubleshooting:
+$trouble_shooting_note"
     exit 1
   fi ;;
   2) path="$arg" ;;
