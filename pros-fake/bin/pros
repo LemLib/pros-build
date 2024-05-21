@@ -119,7 +119,7 @@ for arg in "$@"; do
   if [ $is_target_arg -eq 1 ]; then
     target="$arg"
     if [ "$target" != "v5" -a "$target" != "cortex" ]; then
-      error_echo "target must be of type v5 or cortex. Got: $target"
+      error_echo "target must be of type v5 or cortex. Got: "'"'"$target"'"'", see --help for more information."
       exit 5
     fi
     is_target_arg=0
@@ -142,7 +142,7 @@ for arg in "$@"; do
     # check if the log level is valid
     new_log_level=$(echo "${possible_log_levels[@]}" | xargs -n 1 | grep -iF "$arg")
     if [ -z new_log_level ]; then
-      error_echo "Invalid log level: $arg"
+      error_echo "Invalid log level: "'"'"$arg"'"'", see --help for more information."
       exit 5
     fi
 
@@ -191,7 +191,6 @@ for arg in "$@"; do
     continue
   fi
 
-
   case $index in
   0) if [ "$arg" != "c" -a "$arg" != "conductor" ]; then
     error_echo "Invalid argument: "'"'"$arg"'"'", expected c or conductor.
@@ -212,7 +211,7 @@ $trouble_shooting_note"
   2) path="$arg" ;;
   3) name="$arg" ;;
   4) version="$arg" ;;
-  *) warning_echo "Invalid argument: $arg" ;;
+  *) warning_echo "Invalid argument: "'"'"$arg"'"'", see --help for more information." ;;
   esac
 
   index=$((index + 1))
@@ -226,19 +225,19 @@ debug_echo "target: $target"
 debug_echo "no_zip: $no_zip"
 
 if [ -z "$path" ]; then
-  error_echo "Invalid argument: path"
+  error_echo "Invalid path argument: "'"'"$path"'"'", see --help for more information."
   exit 1
 fi
 if [ -z "$name" ]; then
-  error_echo "Invalid argument: name"
+  error_echo "Invalid name argument: "'"'"$name"'"'", see --help for more information."
   exit 1
 fi
 if [ -z "$version" ]; then
-  error_echo "Invalid argument: version"
+  error_echo "Invalid version argument: "'"'"$version"'"'", see --help for more information."
   exit 1
 fi
 if [ -z "$target" ]; then
-  error_echo "Invalid argument: target"
+  error_echo "Invalid target argument: "'"'"$target"'"'", see --help for more information."
   exit 1
 fi
 
@@ -318,7 +317,7 @@ parse_zip_output() {
     index=$(find_index "$file" "$new_files")
 
     if [ "$index" = "-1" ]; then
-      error_echo "File not found: $file"
+      error_echo "File not found: '$file'. This should not happen. Fatal error."
       exit 4
     fi
 
@@ -402,13 +401,13 @@ for path in $system_files; do
   # if is bin, copy file into firmware
   if [ "$path" != "$new_path" ]; then
     if [ -e "$new_path" ]; then
-      error_echo "File already exists: $new_path. Fatal error."
+      error_echo "File already exists: "'"'"$new_path"'"'". Fatal error."
       cleanup
       exit 2
     fi
   else
     if [ ! -f "$new_path" ]; then
-      warning_echo "File not found: $path"
+      warning_echo "File not found: "'"'"$path"'"'""
       continue
     fi
   fi
