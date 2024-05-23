@@ -2,6 +2,10 @@ name: Pros Build
 description: Automatically build pros projects
 
 inputs:
+  repository:
+    description: Target repository
+    required: false
+    default: ${{ github.repository }}
   library-path:
     required: false
     default: null
