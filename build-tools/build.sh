@@ -23,7 +23,7 @@ make template
 
 # Unzipping Template
 template_name="$library_name@$postfix"
-echo template_name
+echo $template_name
 unzip "$template_name.zip" -d template
 
 # Upload Artifact
