@@ -17,17 +17,20 @@ runs:
   shell: bash
   steps:
     - name: Run Docker Container
+      shell: bash
       run: |
         docker build -t pros-builder .
         docker run pros-builder "${{ inputs.repository }}" "${{ inputs.library-path }}"
 
     - name: Unzip Template
+      shell: bash
       if: ${{ steps.template.outputs.template == 1 && inputs.library-path != null }}
       uses: montudor/action-zip@v1.0.0
       with:
         args: unzip "${{ steps.project-info.outputs.name }}.zip" -d template
 
     - name: Upload Artifact
+      shell: bash
       if: ${{ steps.template.outputs.template == 1 && inputs.library-path != null }}
       uses: actions/upload-artifact@v4
       with:
