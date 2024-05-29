@@ -45,9 +45,11 @@ get_version &
 get_library_name &
 wait
 
+echo "Version before setting postfix: $version"
+echo "SHA before setting postfix: $sha"
 postfix="${version}+${sha}"
+echo "Postfix after setting: $postfix"
 echo "postfix=$postfix" >> "$GITHUB_OUTPUT"
-echo "Postfix found: $postfix"
 
 name="$library_name@$postfix"
 echo "name=$name" >> "$GITHUB_OUTPUT"
