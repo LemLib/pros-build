@@ -115,7 +115,7 @@ echo "::group::Updating Makefile"
 
 sed -i "s/^VERSION:=.*\$/VERSION:=${postfix}/" Makefile
 
-echo ${cat Makefile}
+cat Makefile
 
 echo "::endgroup::"
 
