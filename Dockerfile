@@ -12,9 +12,9 @@ ENV LIBRARY_PATH ${LIBRARY_PATH}
 
 RUN echo env
 
-COPY upload.js .
+COPY build-tools/upload.js .
 
-COPY build.sh . 
+COPY build-tools/build.sh . 
 RUN chmod +x ./build.sh
 RUN ls -a
 ENTRYPOINT ["/build.sh"]
