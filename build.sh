@@ -44,10 +44,10 @@ if [ -n "$library_path" ]; then
     # Zipping and moving to workspace
     cd /github/workspace/template
     zip -r "$template_name.zip" .
-    mv "$template_name.zip" /github/workspace
+    mv "$template_name.zip" .
 
-    # Putting the artifact on the github api
-    #echo "Uploading Artifact"
-    # echo all environment variables
-    env
+    # Uploading Artifact
+    node upload.js "$template_name.zip"
+
+    
 fi
