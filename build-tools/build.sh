@@ -1,5 +1,5 @@
 #!/bin/bash
-
+git config --global --add safe.directory /github/workspace
 # Fetching Project Information
 if [ "$ACTION" == "opened" ]; then
     # Fetch the head SHA directly from the PR API
