@@ -14,4 +14,5 @@ RUN echo env
 
 COPY build.sh . 
 RUN chmod +x ./build.sh
-ENTRYPOINT ["./build.sh"]
+RUN ls -a
+ENTRYPOINT ["/build.sh"]
