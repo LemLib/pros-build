@@ -1,5 +1,9 @@
-name: 'Pros Build'
+name: 'ABUCKY0 PROS Build'
 description: 'Build a PROS Project'
+branding:
+  color: 'blue'
+  icon: 'box'
+  colorized: true
 
 inputs:
   repository:
