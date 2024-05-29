@@ -10,8 +10,9 @@ inputs:
     required: false
     default: null
     description: The path of the library inside of the `include` directory. Specifying a value for this input will cause the action to upload the built library in template form as an artifact.
-jobs:
-  build:
+runs:
+  using: 'composite'
+  steps:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -29,10 +30,6 @@ jobs:
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: "Run Build"
+          name: 
           path: "template/*"
           retention-days: 89
-
-# runs:
-#   using: "Docker"
-#   image: "Dockerfile"
