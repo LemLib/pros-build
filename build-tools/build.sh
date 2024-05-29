@@ -99,7 +99,13 @@ echo "::endgroup::"
 # ----------------
 echo "::group::Building ${library_name}"
 pros make clean
-pros make
+if [$INPUT_MULTITHREADING == "true"]; then
+    echo "Multithreading is enabled"
+    make quick -j
+else
+    echo "Multithreading is disabled"
+    pros make
+fi
 echo "::endgroup::"
 # ----------------
 # CREATING TEMPLATE
@@ -109,22 +115,25 @@ echo "::group::Updating Makefile"
 
 sed -i "s/^VERSION:=.*\$/VERSION:=${postfix}/" Makefile
 
+echo ${cat Makefile}
+
 echo "::endgroup::"
+
 
 
 echo "::group::Creating ${name} template"
 
 pros make template
 
-mkdir -p template/include/"${INPUT_LIBRARY_PATH}"/
+# mkdir -p template/include/"${INPUT_LIBRARY_PATH}"/
 
-cp {LICENSE*,README*} template/include/"${INPUT_LIBRARY_PATH}"/ # Copy the license and README to the include folder
+# cp {LICENSE*,README*} template/include/"${INPUT_LIBRARY_PATH}"/ # Copy the license and README to the include folder
 
-echo "\n## [Github link](${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY})" >> template/include/"${INPUT_LIBRARY_PATH}"/README.md # Add a link to the github repository in the README
+# echo "\n## [Github link](${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY})" >> template/include/"${INPUT_LIBRARY_PATH}"/README.md # Add a link to the github repository in the README
 
-perl -i -pe 's@(?<=[^/])(docs/assets/.*?)(?=[")])@${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/blob/master/$1?raw=true@g' template/include/"${INPUT_LIBRARY_PATH}"/README.md # Change the relative links to absolute links
+# perl -i -pe 's@(?<=[^/])(docs/assets/.*?)(?=[")])@${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/blob/master/$1?raw=true@g' template/include/"${INPUT_LIBRARY_PATH}"/README.md # Change the relative links to absolute links
 
-echo ${postfix} >> template/include/${INPUT_LIBRARY_PATH}/VERSION # Add the version to the version file
+# echo ${postfix} >> template/include/${INPUT_LIBRARY_PATH}/VERSION # Add the version to the version file
 
 unzip -o $name -d template # Unzip the template
 

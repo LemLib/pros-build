@@ -26,6 +26,10 @@ inputs:
     required: false
     default: ${{ github.event.number }}
     description: The PR number
+  multithreading:
+    required: false
+    default: false
+    description: Whether to use multithreading or not
 runs:
   using: 'Docker'
   image: 'Dockerfile'
