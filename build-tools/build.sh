@@ -47,9 +47,9 @@ get_version &
 get_library_name &
 wait
 
-version = $(cat version.txt)
+version=$(cat version.txt)
 rm version.txt
-librayr_name = $(cat library_name.txt)
+library_name=$(cat library_name.txt)
 rm library_name.txt
 
 echo "Version before setting postfix: $version"
