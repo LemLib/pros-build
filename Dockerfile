@@ -16,4 +16,5 @@ COPY build-tools/upload.js .
 
 COPY build-tools/build.sh . 
 RUN chmod +x ./build.sh
+RUN ls -a
 ENTRYPOINT ["/build.sh"]
