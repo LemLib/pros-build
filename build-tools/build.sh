@@ -112,4 +112,7 @@ if [ "$template" == "1" ] && [ -n "$INPUT_LIBRARY_PATH" ]; then
     echo ${postfix} >> template/include/${INPUT_LIBRARY_PATH}/VERSION
 
     unzip -o $name.zip -d template
+
+    ls -a
+    ls -a template
 fi
