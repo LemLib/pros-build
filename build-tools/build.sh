@@ -24,14 +24,14 @@ else
 fi
 
 function get_sha() {
-echo "sha=$sha" >> $GITHUB_OUTPUT
-echo "SHA found: $sha"
+    echo "sha=$sha" >> $GITHUB_OUTPUT
+    echo "SHA found: $sha"
 }
 
 function get_version() {
-version=$(awk -F'=' '/^VERSION:=/{print $2}' Makefile)
-echo "Version found: $version"
-echo "version=$version" >> "$GITHUB_OUTPUT"
+    version=$(awk -F'=' '/^VERSION:=/{print $2}' Makefile)
+    echo "Version found: $version"
+    echo "version=$version" >> "$GITHUB_OUTPUT"
 }
 
 function get_library_name() { 
@@ -45,7 +45,7 @@ get_version &
 get_library_name &
 wait
 
-postfix="$version+$sha"
+postfix="${version}+${sha}"
 echo "postfix=$postfix" >> "$GITHUB_OUTPUT"
 echo "Postfix found: $postfix"
 
@@ -65,7 +65,7 @@ make clean quick -j
 # if: ${{ steps.template.outputs.template == 1 && inputs.library-path != null }}
 
 if [ "$template" == "1" ]; then
-    sed -i "s/^VERSION:=.*\$/VERSION:=${{$postfix}}/" Makefile
+    sed -i "s/^VERSION:=.*\$/VERSION:=${postfix}/" Makefile
     cat Makefile
 
     # fake pros c create-template for make template
@@ -77,53 +77,7 @@ if [ "$template" == "1" ]; then
 
     cp {LICENSE*,README*} template/include/"${{INPUT_LIBRARY_PATH}}"/
 
-    echo "\n## [Github link](${{GITHUB_SERVER_URL}}/${{GITHUB_REPOSITORY}})" >> template/include/"${{INPUT_LIBRARY_PATH}}"/README.md
-    perl -i -pe 's@(?<=[^/])(docs/assets/.*?)(?=[")])@${{GITHUB_SERVER_URL}}/${{GITHUB_REPOSITORY}}/blob/master/$1?raw=true@g' template/include/"${{INPUT_LIBRARY_PATH}}"/README.md
-    echo ${{$postfix}} >> template/include/${{INPUT_LIBRARY_PATH}}/VERSION
+    echo "\n## [Github link](${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY})" >> template/include/"${INPUT_LIBRARY_PATH}"/README.md
+    perl -i -pe 's@(?<=[^/])(docs/assets/.*?)(?=[")])@${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/blob/master/$1?raw=true@g' template/include/"${INPUT_LIBRARY_PATH}"/README.md
+    echo ${$postfix} >> template/include/${INPUT_LIBRARY_PATH}/VERSION
 fi
-
-# # Update version in Makefile
-# makefile_version=$(awk -F'=' '/^VERSION:=/{print $2}' Makefile)
-
-# version=$(awk -F'=' '/^VERSION:=/{print $2}' Makefile)
-# # present in makefile
-# library_name=$(awk -F'=' '/^LIBRARY_NAME:=/{print $2}' Makefile)
-# # github sha short
-# # postfix=$(git rev-parse --short HEAD)
-# postfix="$version+$sha"
-# # Making Template
-# make clean quick -j
-# pros make template
-
-# # Unzipping Template
-# template_name="$library_name@$postfix"
-# echo $template_name
-# unzip "$template_name.zip" -d template
-
-# # Upload Artifact
-# if [ -n "$library_path" ]; then
-#     echo "Uploading Artifact"
-#     artifact_dir="/github/workspace/template/include/$library_path"
-#     mkdir -p "$artifact_dir"
-    
-#     # Copying necessary files
-#     cp {LICENSE*,README*} "$artifact_dir"/
-    
-#     # Adding GitHub link to README
-#     readme_path="$artifact_dir/README.md"
-#     echo -e "\n## [Github link]($GITHUB_SERVER_URL/$REPOSITORY)" >> "$readme_path" 
-#     perl -i -pe 's@(?<=[^/])(docs/assets/.*?)(?=[")])@${GITHUB_SERVER_URL}/${REPOSITORY}/blob/master/$1?raw=true@g' "$readme_path" # I'm not smart enough for this, was aided by ChatGPT
-    
-#     # Writing version info
-#     echo "$postfix" >> "$artifact_dir/VERSION"
-
-#     # Zipping and moving to workspace
-#     cd /github/workspace/template
-#     zip -r "$template_name.zip"
-#     echo $template_name + ".zip" >> $GITHUB_OUTPUT
-#     echo $CWD
-#     # mv "$template_name.zip" /
-#     ls -a
-#     # # Uploading Artifact
-#     # node upload.js "/$template_name.zip"
-# fi
