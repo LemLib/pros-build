@@ -14,12 +14,11 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Run Docker Container
-      shell: bash
+    - name: Run Docker Container # run ./Dockerfile
       run: |
-        docker build -t pros-builder .
-        docker run pros-builder "${{ inputs.repository }}" "${{ inputs.library-path }}"
-
+        docker build -t pros-build .
+        docker run -v ${{ github.workspace }}:/workspace pros-build
+      
     - name: Unzip Template
       if: ${{ steps.template.outputs.template == 1 && inputs.library-path != null }}
       uses: montudor/action-zip@v1.0.0
