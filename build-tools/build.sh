@@ -98,6 +98,14 @@ make clean quick -j
 echo "::endgroup::"
 # ----------------
 # CREATING TEMPLATE
+# ----------------
+
+echo "::group::Updating Makefile"
+
+sed -i "s/^VERSION:=.*\$/VERSION:=${postfix}/" Makefile
+
+echo "::endgroup::"
+
 
 echo "::group::Creating ${name} template"
 
@@ -113,7 +121,7 @@ perl -i -pe 's@(?<=[^/])(docs/assets/.*?)(?=[")])@${GITHUB_SERVER_URL}/${GITHUB_
 
 echo ${postfix} >> template/include/${INPUT_LIBRARY_PATH}/VERSION # Add the version to the version file
 
-unzip -o $name.zip -d template # Unzip the template
+unzip -o $name -d template # Unzip the template
 
 echo "::endgroup::"
 
