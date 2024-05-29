@@ -13,24 +13,25 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+    - name: Checkout
+      id: checkout
+      uses: actions/checkout@v4
 
-      # Output build artifacts to /github/workspace on the container.
-      - name: Containerized Build
-        run: |
-          docker build -t pros-build .
-        shell: bash
-      
-      - name: Run Build
-        run: |
-          docker run pros-build
-        shell: bash
+    - name: Containerized Build
+      id: build
+      run: |
+        docker build -t pros-build .
+      shell: bash
+    
+    - name: Run Build
+      id: run
+      run: |
+        docker run pros-build
+      shell: bash
 
-      - name: Upload Build Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: 
-          path: "template/*"
-          retention-days: 89
+    - name: Upload Build Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: 
+        path: "template/*"
+        retention-days: 89
