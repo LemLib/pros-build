@@ -53,13 +53,21 @@ make clean quick -j
 # if: ${{ steps.template.outputs.template == 1 && inputs.library-path != null }}
 
 if [ "$template" == "1" ]; then
-    echo "Creating template"
+    sed -i "s/^VERSION:=.*\$/VERSION:=${{steps.project-info.outputs.postfix}}/" Makefile
+    cat Makefile
+
+    # fake pros c create-template for make template
+    PATH="$PATH:$GITHUB_ACTION_PATH/pros-fake/bin"
+    
     pros make template
-    template_name="$library_name@$postfix"
-    echo "template_name=$template_name" >> "$GITHUB_OUTPUT"
-    echo "Template created: $template_name"
-    ls -a
-    unzip "$template_name" -d template
+
+    mkdir -p template/include/"${{inputs.library-path}}"/
+
+    cp {LICENSE*,README*} template/include/"${{inputs.library-path}}"/
+
+    echo "\n## [Github link](${{github.server_url}}/${{github.repository}})" >> template/include/"${{inputs.library-path}}"/README.md
+    perl -i -pe 's@(?<=[^/])(docs/assets/.*?)(?=[")])@${{github.server_url}}/${{github.repository}}/blob/master/$1?raw=true@g' template/include/"${{inputs.library-path}}"/README.md
+    echo ${{steps.project-info.outputs.postfix}} >> template/include/${{inputs.library-path}}/VERSION
 fi
 
 # # Update version in Makefile
