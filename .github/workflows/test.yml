@@ -27,9 +27,17 @@ jobs:
           path: ./action/
 
       - name: Test With Upload + Bonus Files
+        id: test
         uses: ./action/
         with:
           library-path: lemlib
+            
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name:  ${{ steps.test.outputs.name }}
+          path: "template/*"
+
 
   test-lemlib-without-upload:
     runs-on: ubuntu-latest
@@ -53,14 +61,8 @@ jobs:
         with:
           path: ./action/
 
-      - name: Test With Upload + Bonus Files
+      - name: Test Without Upload + Bonus Files
         uses: ./action/
-      
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name:  ${{ steps.template.outputs.name }}
-          path: "template/*"
 
   test-ez:
     runs-on: ubuntu-latest
@@ -71,20 +73,13 @@ jobs:
           repository: EZ-Robotics/EZ-Template
           ref: v3.0.1
 
-      - name: Check If Template
-        id: template
-        run: |
-          template=$(awk -F'=' '/^IS_LIBRARY:=/{print $2}' Makefile)
-          echo $template
-          echo "template=$template" >> $GITHUB_OUTPUT
-        shell: bash
-
       - name: Checkout
         uses: actions/checkout@v4
         with:
           path: ./action/
 
       - name: Test With Upload + Bonus Files
+        id: test
         uses: ./action/
         with:
           library-path: EZ-Template
@@ -92,5 +87,5 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name:  ${{ steps.template.outputs.name }}
+          name:  ${{ steps.test.outputs.name }}
           path: "template/*"

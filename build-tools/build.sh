@@ -1,6 +1,28 @@
 #!/bin/bash
 git config --global --add safe.directory /github/workspace
 
+
+# ----------------
+# DEBUGGING VARIABLES
+# ----------------
+
+# Echo all variables starting with GITHUB_ for debugging
+for var in "${!GITHUB_@}"; do
+    echo "$var=${!var}"
+done
+
+# Echo all variables starting with INPUT_ for debugging
+for var in "${!INPUT_@}"; do
+    echo "$var=${!var}"
+done
+
+# echo all variables starting with RUNNER_ for debugging
+for var in "${!RUNNER_@}"; do
+    echo "$var=${!var}"
+done
+
+
+
 # ----------------
 # CHECK IF TEMPLATE
 # ----------------
