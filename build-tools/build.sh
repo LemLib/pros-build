@@ -94,7 +94,8 @@ echo "::endgroup::"
 # BUILDING PROJECT
 # ----------------
 echo "::group::Building ${library_name}"
-make clean quick
+pros make clean
+pros make
 echo "::endgroup::"
 # ----------------
 # CREATING TEMPLATE
