@@ -82,9 +82,9 @@ if [ "$template" == "1" ]; then
     
     pros make template
 
-    mkdir -p template/include/"${{INPUT_LIBRARY_PATH}}"/
+    mkdir -p template/include/"${INPUT_LIBRARY_PATH}"/
 
-    cp {LICENSE*,README*} template/include/"${{INPUT_LIBRARY_PATH}}"/
+    cp {LICENSE*,README*} template/include/"${INPUT_LIBRARY_PATH}"/
 
     echo "\n## [Github link](${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY})" >> template/include/"${INPUT_LIBRARY_PATH}"/README.md
     perl -i -pe 's@(?<=[^/])(docs/assets/.*?)(?=[")])@${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/blob/master/$1?raw=true@g' template/include/"${INPUT_LIBRARY_PATH}"/README.md
