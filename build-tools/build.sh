@@ -20,7 +20,7 @@ sed -i "s/^VERSION:=.*\$/VERSION:=$makefile_version/" Makefile
 # present in makefile
 $library_name = $(awk -F'=' '/^LIBRARY_NAME:=/{print $2}' Makefile)
 # github sha short
-$postfix = git rev-parse --short HEAD
+$postfix = $(git rev-parse --short HEAD)
 
 # Making Template
 make clean quick -j
