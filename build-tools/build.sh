@@ -45,9 +45,12 @@ if [ -n "$library_path" ]; then
 
     # Zipping and moving to workspace
     cd /github/workspace/template
-    zip -r "$template_name.zip" .
-    mv "$template_name.zip" .
+    zip -r "$template_name.zip"
+    mv "$template_name.zip" /github/workspace
+    echo $template_name + ".zip"
+    echo $CWD
+    # mv "$template_name.zip" /
     
-    # Uploading Artifact
-    node upload.js "/$template_name.zip"
+    # # Uploading Artifact
+    # node upload.js "/$template_name.zip"
 fi

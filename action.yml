@@ -10,7 +10,28 @@ inputs:
     required: false
     default: null
     description: The path of the library inside of the `include` directory. Specifying a value for this input will cause the action to upload the built library in template form as an artifact.
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-runs:
-  using: "Docker"
-  image: "Dockerfile"
+      # Output build artifacts to /github/workspace on the container.
+      - name: Containerized Build
+        run: |
+          docker build -t pros-build .
+      
+      - name: Run Build
+        run: |
+          docker run pros-build
+
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: workspace_artifacts
+          path: ${{ github.workspace }}
+
+# runs:
+#   using: "Docker"
+#   image: "Dockerfile"
