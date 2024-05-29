@@ -58,7 +58,7 @@ if [ "$template" == "1" ]; then
     template_name="$library_name@$postfix"
     echo "template_name=$template_name" >> "$GITHUB_OUTPUT"
     echo "Template created: $template_name"
-    unzip "$template_name.zip" -d template
+    unzip "$template_name" -d template
 fi
 
 # # Update version in Makefile
