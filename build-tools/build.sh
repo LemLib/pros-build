@@ -54,7 +54,7 @@ if [ -n "$library_path" ]; then
     echo $template_name + ".zip" >> $GITHUB_OUTPUT
     echo $CWD
     # mv "$template_name.zip" /
-    
+    ls -a
     # # Uploading Artifact
     # node upload.js "/$template_name.zip"
 fi
