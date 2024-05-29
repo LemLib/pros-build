@@ -31,7 +31,11 @@ echo "::endgroup::"
 echo "::group::Checking if this is a template"
 
 template=$(awk -F'=' '/^IS_LIBRARY:=/{print $2}' Makefile)
-echo $template
+if [ "$template" == "1" ]; then
+    echo "is template"
+else
+    echo "is not template"
+fi
 echo "template=$template" >> $GITHUB_OUTPUT
 
 echo "::endgroup::"
