@@ -37,7 +37,7 @@ jobs:
       - name: Check If Template
         id: template
         run: |
-          template=$(awk -F'=' '/^IS_LIBRARY:=/{print $2}' Makefile)
+          template=$(awk -F'=' '/^IS_LIBRARY:=/{print $2}' /github/workspaces/Makefile)
           echo $template
           echo "template=$template" >> $GITHUB_OUTPUT
         shell: bash
@@ -70,11 +70,11 @@ jobs:
         with:
           repository: EZ-Robotics/EZ-Template
           ref: v3.0.1
-          
+
       - name: Check If Template
         id: template
         run: |
-          template=$(awk -F'=' '/^IS_LIBRARY:=/{print $2}' Makefile)
+          template=$(awk -F'=' '/^IS_LIBRARY:=/{print $2}' /github/workspaces/Makefile)
           echo $template
           echo "template=$template" >> $GITHUB_OUTPUT
         shell: bash
