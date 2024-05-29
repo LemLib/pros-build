@@ -88,5 +88,5 @@ if [ "$template" == "1" ]; then
 
     echo "\n## [Github link](${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY})" >> template/include/"${INPUT_LIBRARY_PATH}"/README.md
     perl -i -pe 's@(?<=[^/])(docs/assets/.*?)(?=[")])@${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/blob/master/$1?raw=true@g' template/include/"${INPUT_LIBRARY_PATH}"/README.md
-    echo ${$postfix} >> template/include/${INPUT_LIBRARY_PATH}/VERSION
+    echo ${postfix} >> template/include/${INPUT_LIBRARY_PATH}/VERSION
 fi
