@@ -1,6 +1,35 @@
 # action.yml
 name: 'Pros Build'
 description: 'Build a PROS Project'
+
+inputs:
+  repository:
+    description: Target repository
+    required: false
+    default: ${{ github.repository }}
+  library-path:
+    required: false
+    default: null
+    description: The path of the library inside of the `include` directory. Specifying a value for this input will cause the action to upload the built library in template form as an artifact.
+
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
+  using: composite
+  steps:
+    - name: Run Docker Container
+      run: |
+        docker build -t pros-builder .
+        docker run pros-builder "${{ inputs.repository }}" "${{ inputs.library-path }}"
+
+    - name: Unzip Template
+      if: ${{ steps.template.outputs.template == 1 && inputs.library-path != null }}
+      uses: montudor/action-zip@v1.0.0
+      with:
+        args: unzip "${{ steps.project-info.outputs.name }}.zip" -d template
+
+    - name: Upload Artifact
+      if: ${{ steps.template.outputs.template == 1 && inputs.library-path != null }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ steps.project-info.outputs.name }}
+        path: "template/*"
+        retention-days: 89
