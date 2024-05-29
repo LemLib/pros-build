@@ -14,7 +14,8 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Run Docker Container # run ./Dockerfile
+    - name: Run Docker Container 
+      shell: bash
       run: |
         docker build -t pros-build .
         docker run -v ${{ github.workspace }}:/workspace pros-build
