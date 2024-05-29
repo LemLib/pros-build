@@ -94,7 +94,7 @@ echo "::endgroup::"
 # BUILDING PROJECT
 # ----------------
 echo "::group::Building ${library_name}"
-make clean quick -j
+make clean quick
 echo "::endgroup::"
 # ----------------
 # CREATING TEMPLATE
@@ -130,6 +130,8 @@ echo "::group::Debugging template folder"
 ls -a
 ls -a template
 ls -a template/include
+ls -a template/include/"${INPUT_LIBRARY_PATH}"
+ls -a include/"${INPUT_LIBRARY_PATH}"
 
 echo "::endgroup::"
 # if [ "$template" == "1" ] && [ -n "$INPUT_LIBRARY_PATH" ]; then
