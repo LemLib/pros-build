@@ -34,20 +34,19 @@ jobs:
   test-lemlib-without-upload:
     runs-on: ubuntu-latest
     steps:
-      - name: Check If Template
-        id: template
-        run: |
-          ls -a
-          template=$(awk -F'=' '/^IS_LIBRARY:=/{print $2}' Makefile)
-          echo $template
-          echo "template=$template" >> $GITHUB_OUTPUT
-        shell: bash
-
       - name: Checkout
         uses: actions/checkout@v4
         with:
           repository: LemLib/LemLib
           ref: 6fc0838e0aa1de03d7864002888f5d874b691910
+
+      - name: Check If Template
+        id: template
+        run: |
+          template=$(awk -F'=' '/^IS_LIBRARY:=/{print $2}' Makefile)
+          echo $template
+          echo "template=$template" >> $GITHUB_OUTPUT
+        shell: bash
 
       - name: Checkout
         uses: actions/checkout@v4
@@ -75,7 +74,6 @@ jobs:
       - name: Check If Template
         id: template
         run: |
-          ls -a
           template=$(awk -F'=' '/^IS_LIBRARY:=/{print $2}' Makefile)
           echo $template
           echo "template=$template" >> $GITHUB_OUTPUT
