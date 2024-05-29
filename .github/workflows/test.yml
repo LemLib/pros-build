@@ -37,7 +37,7 @@ jobs:
       - name: Check If Template
         id: template
         run: |
-          template=$(awk -F'=' '/^IS_LIBRARY:=/{print $2}' /github/workspaces/Makefile)
+          template=$(awk -F'=' '/^IS_LIBRARY:=/{print $2}' Makefile)
           echo $template
           echo "template=$template" >> $GITHUB_OUTPUT
         shell: bash
@@ -74,7 +74,7 @@ jobs:
       - name: Check If Template
         id: template
         run: |
-          template=$(awk -F'=' '/^IS_LIBRARY:=/{print $2}' /github/workspaces/Makefile)
+          template=$(awk -F'=' '/^IS_LIBRARY:=/{print $2}' Makefile)
           echo $template
           echo "template=$template" >> $GITHUB_OUTPUT
         shell: bash
