@@ -25,6 +25,7 @@ runs:
         LIBRARY_PATH: ${{ inputs.library-path }}
 
     - name: Upload Artifact
+      needs: Run Docker Container
       if: ${{ steps.template.outputs.template == 1 && inputs.library-path != null }}
       uses: actions/upload-artifact@v4
       with:
