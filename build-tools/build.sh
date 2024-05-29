@@ -32,18 +32,25 @@ function get_version() {
     version=$(awk -F'=' '/^VERSION:=/{print $2}' Makefile)
     echo "Version found: $version"
     echo "version=$version" >> "$GITHUB_OUTPUT"
+    echo $version >> "version.txt"
 }
 
 function get_library_name() { 
     library_name=$(awk -F'=' '/^LIBNAME:=/{print $2}' Makefile)
     echo "library_name=$library_name" >> "$GITHUB_OUTPUT"
     echo "Library name found: $library_name"
+    echo $library_name >> "library_name.txt"
 }
 
 get_sha &
 get_version &
 get_library_name &
 wait
+
+version = $(cat version.txt)
+rm version.txt
+librayr_name = $(cat library_name.txt)
+rm library_name.txt
 
 echo "Version before setting postfix: $version"
 echo "SHA before setting postfix: $sha"
