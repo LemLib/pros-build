@@ -19,12 +19,10 @@ runs:
       run: |
         docker build -t pros-build .
         docker run -v ${{ github.workspace }}:/workspace pros-build
-      
-    - name: Unzip Template
-      if: ${{ steps.template.outputs.template == 1 && inputs.library-path != null }}
-      uses: montudor/action-zip@v1.0.0
-      with:
-        args: unzip "${{ steps.project-info.outputs.name }}.zip" -d template
+      env:
+        PROS_PROJECT: ${{ github.workspace }}
+        REPOSITORY: ${{ inputs.repository }}
+        LIBRARY_PATH: ${{ inputs.library-path }}
 
     - name: Upload Artifact
       if: ${{ steps.template.outputs.template == 1 && inputs.library-path != null }}

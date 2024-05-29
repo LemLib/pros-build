@@ -45,4 +45,6 @@ if [ -n "$library_path" ]; then
     cd /github/workspace/template
     zip -r "$template_name.zip" .
     mv "$template_name.zip" /github/workspace
+
+    # run 
 fi
