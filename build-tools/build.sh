@@ -18,11 +18,12 @@ makefile_version=$(awk -F'=' '/^VERSION:=/{print $2}' Makefile)
 sed -i "s/^VERSION:=.*\$/VERSION:=$makefile_version/" Makefile
 
 # Making Template
+make clean quick -j
 make template
 
 # Unzipping Template
 template_name="$library_name@$postfix"
-
+echo template_name
 unzip "$template_name.zip" -d template
 
 # Upload Artifact
@@ -46,7 +47,7 @@ if [ -n "$library_path" ]; then
     cd /github/workspace/template
     zip -r "$template_name.zip" .
     mv "$template_name.zip" .
-
+    
     # Uploading Artifact
-    node upload.js "$template_name.zip"
+    node upload.js "/$template_name.zip"
 fi
