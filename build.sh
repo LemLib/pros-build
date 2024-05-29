@@ -48,6 +48,4 @@ if [ -n "$library_path" ]; then
 
     # Uploading Artifact
     node upload.js "$template_name.zip"
-
-    
 fi
