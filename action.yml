@@ -14,6 +14,7 @@ inputs:
 
 runs:
   using: composite
+  shell: bash
   steps:
     - name: Run Docker Container
       run: |
