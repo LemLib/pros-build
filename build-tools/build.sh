@@ -1,6 +1,8 @@
 #!/bin/bash
 git config --global --add safe.directory /github/workspace
 
+# Create a github group
+echo "::group::Debug Variables"
 
 # ----------------
 # DEBUGGING VARIABLES
@@ -22,19 +24,21 @@ for var in "${!RUNNER_@}"; do
 done
 
 
-
+echo "::endgroup::"
 # ----------------
 # CHECK IF TEMPLATE
 # ----------------
+echo "::group::Checking if this is a template"
 
 template=$(awk -F'=' '/^IS_LIBRARY:=/{print $2}' Makefile)
 echo $template
 echo "template=$template" >> $GITHUB_OUTPUT
 
-
+echo "::endgroup::"
 # ----------------
 # GET PROJECT INFO
 # ----------------
+echo "::group::Getting project info"
 
 if [ "$ACTION" == "opened" ]; then
     # Fetch the head SHA directly from the PR API
@@ -84,35 +88,63 @@ name="$library_name@$postfix"
 echo "name=$name" >> "$GITHUB_OUTPUT"
 echo "Name found: $name"
 
+
+echo "::endgroup::"
 # ----------------
 # BUILDING PROJECT
 # ----------------
-
+echo "::group::Building ${library_name}"
 make clean quick -j
-
+echo "::endgroup::"
 # ----------------
 # CREATING TEMPLATE
-# ----------------
-# if: ${{ steps.template.outputs.template == 1 && inputs.library-path != null }}
 
-if [ "$template" == "1" ] && [ -n "$INPUT_LIBRARY_PATH" ]; then
-    sed -i "s/^VERSION:=.*\$/VERSION:=${postfix}/" Makefile
+echo "::group::Creating ${name} template"
 
-    # fake pros c create-template for make template
-    PATH="$PATH:$GITHUB_ACTION_PATH/pros-fake/bin"
+pros make template
+
+mkdir -p template/include/"${INPUT_LIBRARY_PATH}"/
+
+cp {LICENSE*,README*} template/include/"${INPUT_LIBRARY_PATH}"/ # Copy the license and README to the include folder
+
+echo "\n## [Github link](${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY})" >> template/include/"${INPUT_LIBRARY_PATH}"/README.md # Add a link to the github repository in the README
+
+perl -i -pe 's@(?<=[^/])(docs/assets/.*?)(?=[")])@${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/blob/master/$1?raw=true@g' template/include/"${INPUT_LIBRARY_PATH}"/README.md # Change the relative links to absolute links
+
+echo ${postfix} >> template/include/${INPUT_LIBRARY_PATH}/VERSION # Add the version to the version file
+
+unzip -o $name.zip -d template # Unzip the template
+
+echo "::endgroup::"
+
+echo "::group::Debugging template folder"
+
+ls -a
+ls -a template
+ls -a template/include
+
+echo "::endgroup::"
+# if [ "$template" == "1" ] && [ -n "$INPUT_LIBRARY_PATH" ]; then
+#     echo "::group::Creating ${name} template"
+#     sed -i "s/^VERSION:=.*\$/VERSION:=${postfix}/" Makefile
+
+#     # fake pros c create-template for make template
+#     PATH="$PATH:$GITHUB_ACTION_PATH/pros-fake/bin"
     
-    pros make template
+#     pros make template
 
-    mkdir -p template/include/"${INPUT_LIBRARY_PATH}"/
+#     mkdir -p template/include/"${INPUT_LIBRARY_PATH}"/
 
-    cp {LICENSE*,README*} template/include/"${INPUT_LIBRARY_PATH}"/
+#     cp {LICENSE*,README*} template/include/"${INPUT_LIBRARY_PATH}"/
 
-    echo "\n## [Github link](${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY})" >> template/include/"${INPUT_LIBRARY_PATH}"/README.md
-    perl -i -pe 's@(?<=[^/])(docs/assets/.*?)(?=[")])@${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/blob/master/$1?raw=true@g' template/include/"${INPUT_LIBRARY_PATH}"/README.md
-    echo ${postfix} >> template/include/${INPUT_LIBRARY_PATH}/VERSION
+#     echo "\n## [Github link](${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY})" >> template/include/"${INPUT_LIBRARY_PATH}"/README.md
+#     perl -i -pe 's@(?<=[^/])(docs/assets/.*?)(?=[")])@${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/blob/master/$1?raw=true@g' template/include/"${INPUT_LIBRARY_PATH}"/README.md
+#     echo ${postfix} >> template/include/${INPUT_LIBRARY_PATH}/VERSION
 
-    unzip -o $name.zip -d template
+#     unzip -o $name.zip -d template
 
-    ls -a
-    ls -a template
-fi
+#     ls -a
+#     ls -a template
+
+#     echo "::endgroup::"
+# fi
