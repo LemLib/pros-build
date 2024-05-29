@@ -13,3 +13,7 @@ inputs:
 runs:
   using: 'Docker'
   image: 'Dockerfile'
+  env:
+    AFTER: ${{ github.event.after }} # this isn't present for pr opened events
+    ACTION: ${{github.event.action}}
+    PR_NUM: ${{github.event.number}}
