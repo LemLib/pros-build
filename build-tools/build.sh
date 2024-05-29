@@ -73,9 +73,8 @@ make clean quick -j
 # ----------------
 # if: ${{ steps.template.outputs.template == 1 && inputs.library-path != null }}
 
-if [ "$template" == "1" ]; then
+if [ "$template" == "1" ] && [ -n "$INPUT_LIBRARY_PATH" ]; then
     sed -i "s/^VERSION:=.*\$/VERSION:=${postfix}/" Makefile
-    cat Makefile
 
     # fake pros c create-template for make template
     PATH="$PATH:$GITHUB_ACTION_PATH/pros-fake/bin"
@@ -89,4 +88,6 @@ if [ "$template" == "1" ]; then
     echo "\n## [Github link](${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY})" >> template/include/"${INPUT_LIBRARY_PATH}"/README.md
     perl -i -pe 's@(?<=[^/])(docs/assets/.*?)(?=[")])@${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/blob/master/$1?raw=true@g' template/include/"${INPUT_LIBRARY_PATH}"/README.md
     echo ${postfix} >> template/include/${INPUT_LIBRARY_PATH}/VERSION
+
+    unzip -o $name.zip -d template
 fi

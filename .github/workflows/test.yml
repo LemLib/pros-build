@@ -59,7 +59,7 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name:  ${{ steps.template.outputs.template }}
+          name:  ${{ steps.template.outputs.name }}
           path: "template/*"
 
   test-ez:
@@ -92,5 +92,5 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name:  ${{ steps.template.outputs.template }}
+          name:  ${{ steps.template.outputs.name }}
           path: "template/*"
