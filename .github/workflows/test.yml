@@ -34,6 +34,14 @@ jobs:
   test-lemlib-without-upload:
     runs-on: ubuntu-latest
     steps:
+      - name: Check If Template
+        id: template
+        run: |
+          template=$(awk -F'=' '/^IS_LIBRARY:=/{print $2}' Makefile)
+          echo $template
+          echo "template=$template" >> $GITHUB_OUTPUT
+        shell: bash
+
       - name: Checkout
         uses: actions/checkout@v4
         with:
@@ -51,8 +59,8 @@ jobs:
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
         with:
-          name: lemlib
-          path: lemlib
+          name:  ${{ steps.template.outputs.template }}
+          path: "template/*"
 
   test-ez:
     runs-on: ubuntu-latest
@@ -62,6 +70,14 @@ jobs:
         with:
           repository: EZ-Robotics/EZ-Template
           ref: v3.0.1
+          
+      - name: Check If Template
+        id: template
+        run: |
+          template=$(awk -F'=' '/^IS_LIBRARY:=/{print $2}' Makefile)
+          echo $template
+          echo "template=$template" >> $GITHUB_OUTPUT
+        shell: bash
 
       - name: Checkout
         uses: actions/checkout@v4
@@ -72,3 +88,9 @@ jobs:
         uses: ./action/
         with:
           library-path: EZ-Template
+            
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name:  ${{ steps.template.outputs.template }}
+          path: "template/*"
