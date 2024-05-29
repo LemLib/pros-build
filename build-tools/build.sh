@@ -107,10 +107,26 @@ else
     pros make
 fi
 echo "::endgroup::"
+
+# --------
+# BUILDING
+# --------
+# Set IS_LIBRARY to 0 to build the project
+if (($template == 1)); then
+    echo "::group::Building ${name} non-template"
+    echo "Setting IS_LIBRARY to 0"
+    sed -i "s/^IS_LIBRARY:=.*\$/IS_LIBRARY:=0/" Makefile
+    pros make
+    echo "Setting IS_LIBRARY back to 1"
+    sed -i "s/^IS_LIBRARY:=.*\$/IS_LIBRARY:=1/" Makefile
+    echo "::endgroup::"
+fi
+
 # -----------------
 # CREATING TEMPLATE
 # -----------------
 
+if (($template == 1)); then
 echo "::group::Updating Makefile"
 
 sed -i "s/^VERSION:=.*\$/VERSION:=${postfix}/" Makefile
@@ -124,16 +140,7 @@ echo "::endgroup::"
 echo "::group::Creating ${name} template"
 
 pros make template
-
-# mkdir -p template/include/"${INPUT_LIBRARY_PATH}"/
-
-# cp {LICENSE*,README*} template/include/"${INPUT_LIBRARY_PATH}"/ # Copy the license and README to the include folder
-
-# echo "\n## [Github link](${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY})" >> template/include/"${INPUT_LIBRARY_PATH}"/README.md # Add a link to the github repository in the README
-
-# perl -i -pe 's@(?<=[^/])(docs/assets/.*?)(?=[")])@${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/blob/master/$1?raw=true@g' template/include/"${INPUT_LIBRARY_PATH}"/README.md # Change the relative links to absolute links
-
-# echo ${postfix} >> template/include/${INPUT_LIBRARY_PATH}/VERSION # Add the version to the version file
+fi 
 
 echo "::endgroup::"
 
