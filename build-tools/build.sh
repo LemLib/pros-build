@@ -4,9 +4,9 @@ git config --global --add safe.directory /github/workspace
 # Create a github group
 echo "::group::Debug Variables"
 
-# ----------------
+# -------------------
 # DEBUGGING VARIABLES
-# ----------------
+# -------------------
 
 # Echo all variables starting with GITHUB_ for debugging
 for var in "${!GITHUB_@}"; do
@@ -99,7 +99,7 @@ echo "::endgroup::"
 # ----------------
 echo "::group::Building ${library_name}"
 pros make clean
-if [$INPUT_MULTITHREADING == "true"]; then
+if [[$INPUT_MULTITHREADING == "true"]]; then
     echo "Multithreading is enabled"
     make quick -j
 else
@@ -107,9 +107,9 @@ else
     pros make
 fi
 echo "::endgroup::"
-# ----------------
+# -----------------
 # CREATING TEMPLATE
-# ----------------
+# -----------------
 
 echo "::group::Updating Makefile"
 
@@ -135,9 +135,21 @@ pros make template
 
 # echo ${postfix} >> template/include/${INPUT_LIBRARY_PATH}/VERSION # Add the version to the version file
 
+echo "::endgroup::"
+
+# --------------
+# UNZIP TEMPLATE
+# --------------
+
+echo "::group::Unzipping template"
+
 unzip -o $name -d template # Unzip the template
 
 echo "::endgroup::"
+
+# -------------------------
+# DEBUGGING TEMPLATE FOLDER
+# -------------------------
 
 echo "::group::Debugging template folder"
 
