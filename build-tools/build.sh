@@ -17,9 +17,14 @@ echo "SHA found: $sha"
 makefile_version=$(awk -F'=' '/^VERSION:=/{print $2}' Makefile)
 sed -i "s/^VERSION:=.*\$/VERSION:=$makefile_version/" Makefile
 
+# present in makefile
+$library_name = $(awk -F'=' '/^LIBRARY_NAME:=/{print $2}' Makefile)
+# github sha short
+$postfix = git rev-parse --short HEAD
+
 # Making Template
 make clean quick -j
-make template
+pros make template
 
 # Unzipping Template
 template_name="$library_name@$postfix"
