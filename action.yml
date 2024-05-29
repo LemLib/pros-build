@@ -13,7 +13,6 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -22,10 +21,12 @@ runs:
       - name: Containerized Build
         run: |
           docker build -t pros-build .
+        shell: bash
       
       - name: Run Build
         run: |
           docker run pros-build
+        shell: bash
 
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
