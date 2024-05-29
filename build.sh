@@ -46,5 +46,8 @@ if [ -n "$library_path" ]; then
     zip -r "$template_name.zip" .
     mv "$template_name.zip" /github/workspace
 
-    # run 
+    # Putting the artifact on the github api
+    #echo "Uploading Artifact"
+    # echo all environment variables
+    env
 fi
