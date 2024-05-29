@@ -46,7 +46,7 @@ if [ -n "$library_path" ]; then
     # Zipping and moving to workspace
     cd /github/workspace/template
     zip -r "$template_name.zip"
-    echo $template_name + ".zip"
+    echo $template_name + ".zip" >> $GITHUB_OUTPUT
     echo $CWD
     # mv "$template_name.zip" /
     

@@ -11,27 +11,5 @@ inputs:
     default: null
     description: The path of the library inside of the `include` directory. Specifying a value for this input will cause the action to upload the built library in template form as an artifact.
 runs:
-  using: 'composite'
-  steps:
-    - name: Checkout
-      id: checkout
-      uses: actions/checkout@v4
-
-    - name: Containerized Build
-      id: build
-      run: |
-        docker build -t pros-build .
-      shell: bash
-    
-    - name: Run Build
-      id: run
-      run: |
-        docker run pros-build
-      shell: bash
-
-    - name: Upload Build Artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: 
-        path: "template/*"
-        retention-days: 89
+  using: 'Docker'
+  image: 'Dockerfile'
