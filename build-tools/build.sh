@@ -99,7 +99,7 @@ echo "::endgroup::"
 # ----------------
 echo "::group::Building ${library_name}"
 pros make clean
-if [[$INPUT_MULTITHREADING == "true"]]; then
+if [["$INPUT_MULTITHREADING" == "true"]]; then
     echo "Multithreading is enabled"
     make quick -j
 else
