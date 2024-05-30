@@ -28,7 +28,7 @@ inputs:
     description: The PR number
   multithreading:
     required: false
-    default: false
+    default: true
     description: Whether to use multithreading or not
 runs:
   using: 'Docker'

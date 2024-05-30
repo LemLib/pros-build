@@ -127,7 +127,7 @@ if (($template == 1)); then
     echo "::endgroup::"
 else 
     echo "::group::Building ${name} template"
-    if [[ "$INPUT_MULTITHREADING" == "true" ]]; then
+    if [[ "$INPUT_MULTITHREADING" == true ]]; then
         echo "Multithreading is enabled"
         make quick -j
     else
@@ -187,9 +187,8 @@ echo "::endgroup::"
 # -----------
 # JOB SUMMARY
 # -----------
-"# Library Name: ${library_name} \
-# Version: ${version} \
-# SHA: ${sha} \
-# Postfix: ${postfix} \
-# Name: ${name} \
-" >> $GITHUB_STEP_SUMMARY
+echo "# Library Name: ${library_name}" >> $GITHUB_STEP_SUMMARY
+echo "# Version: ${version}" >> $GITHUB_STEP_SUMMARY
+echo "# SHA: ${sha}" >> $GITHUB_STEP_SUMMARY
+echo "# Postfix: ${postfix}" >> $GITHUB_STEP_SUMMARY
+echo "# Name: ${name}" >> $GITHUB_STEP_SUMMARY
