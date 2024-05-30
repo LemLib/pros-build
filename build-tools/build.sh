@@ -123,10 +123,10 @@ if (($template == 1)); then
     
     if [[ "$INPUT_MULTITHREADING" == "true" ]]; then
         echo "Multithreading is enabled"
-        make quick -j > $STD_OUTPUT 2> $ERR_OUTPUT
+        make quick -j 2> $ERR_OUTPUT | tee $STD_OUTPUT
     else
         echo "Multithreading is disabled"
-        make quick > $STD_OUTPUT 2> $ERR_OUTPUT
+        make quick 2> $ERR_OUTPUT | tee $STD_OUTPUT
     fi
 
     echo "Setting IS_LIBRARY back to 1"
@@ -136,10 +136,10 @@ else
     echo "::group::Building ${name} template"
     if [[ "$INPUT_MULTITHREADING" == true ]]; then
         echo "Multithreading is enabled"
-        make quick -j > $STD_OUTPUT 2> $ERR_OUTPUT
+        make quick -j 2> $ERR_OUTPUT | tee $STD_OUTPUT
     else
         echo "Multithreading is disabled"
-        make quick  > $STD_OUTPUT 2> $ERR_OUTPUT
+        make quick 2> $ERR_OUTPUT | tee $STD_OUTPUT
     fi
     echo "::endgroup::"
 fi
@@ -149,6 +149,7 @@ if [ -s "$ERR_OUTPUT" ]; then
     norm_output=$(cat "$STD_OUTPUT")
     echo "# 🛑 Build Failed" >> $GITHUB_STEP_SUMMARY
     echo "$norm_output" >> $GITHUB_STEP_SUMMARY
+    exit 1
 fi
 
 set -e
