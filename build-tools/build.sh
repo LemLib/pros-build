@@ -187,7 +187,6 @@ echo "::endgroup::"
 # -----------
 # JOB SUMMARY
 # -----------
-echo "# Library Name: ${library_name} @ ${version}" >> $GITHUB_STEP_SUMMARY
-echo "### SHA: ${sha}" >> $GITHUB_STEP_SUMMARY
-echo "### Postfix: ${postfix}" >> $GITHUB_STEP_SUMMARY
-echo "### Artifact Name: ${name}" >> $GITHUB_STEP_SUMMARY
+echo "# 📝 Library Name: ${library_name} @ ${version}" >> $GITHUB_STEP_SUMMARY
+echo "### 🔐 SHA: ${sha}" >> $GITHUB_STEP_SUMMARY
+echo "### 📁 Artifact Name: ${name}" >> $GITHUB_STEP_SUMMARY
