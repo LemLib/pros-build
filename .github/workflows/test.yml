@@ -43,8 +43,6 @@ jobs:
       - name: Add Artifact to Job Summary
         run: 'echo "### 📦 Artifact url: ${{ steps.upload.outputs.artifact-url}}" >> $GITHUB_STEP_SUMMARY'
 
-
-
   test-lemlib-without-upload:
     name: "Testing LemLib Without Uploading an Artifact"
     runs-on: ubuntu-latest
@@ -93,4 +91,44 @@ jobs:
       
       - name: Add Artifact to Job Summary
         run: 'echo "### 📦 Artifact url: ${{ steps.upload.outputs.artifact-url}}" >> $GITHUB_STEP_SUMMARY'
-  
+
+
+  test-lemlib-error:
+    name: "Testing LemLib Fail"
+    runs-on: ubuntu-latest
+    # Success if test fails, failure if test succeeds
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          repository: LemLib/LemLib
+          ref: 7ae0a601276c4df5eb8957495b9c4fa2093d72e3
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          path: ./action/
+
+      - name: Test With Upload + Bonus Files
+        id: test
+        uses: ./action/
+        continue-on-error: true
+        with:
+          library_path: lemlib
+
+      - name: test-lemlib-error
+        run: |
+          if [[ "${{ steps.test.outcome }}" == "success" ]]; then
+            echo "Test With Upload + Bonus Files step succeeded, failing test-lemlib-error step"
+            exit 1
+          fi
+
+      - name: Upload Artifact
+        id: upload
+        uses: actions/upload-artifact@v4
+        with:
+          name:  ${{ steps.test.outputs.name }}
+          path: "template/*"
+
+      - name: Add Artifact to Job Summary
+        run: 'echo "### 📦 Artifact url: ${{ steps.upload.outputs.artifact-url}}" >> $GITHUB_STEP_SUMMARY'
