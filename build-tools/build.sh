@@ -46,7 +46,7 @@ echo "::group::Getting project info"
 
 if [ "$INPUT_ACTION" == "opened" ]; then
 
-    Fetch the head SHA directly from the PR API
+    # Fetch the head SHA directly from the PR API
     API_URL="https://api.github.com/repos/$GITHUB_REPOSITORY/pulls/$GITHUB_PR_NUM"
     echo "API URL: $API_URL"
     API_RESPONSE=$(wget -O- --quiet "$API_URL")
