@@ -41,7 +41,7 @@ jobs:
           path: "template/*"
 
       - name: Add Artifact to Job Summary
-        run: echo "### 📦 Artifact url:${{ steps.upload.outputs.artifact-url}}" >> $GITHUB_STEP_SUMMARY
+        run: 'echo "### 📦 Artifact url: ${{ steps.upload.outputs.artifact-url}}" >> $GITHUB_STEP_SUMMARY'
 
 
 

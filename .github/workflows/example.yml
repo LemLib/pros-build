@@ -22,7 +22,12 @@ jobs:
           library_path: LemLib
 
       - name: Upload Artifact
+        id: upload
         uses: actions/upload-artifact@v4
         with:
           name:  ${{ steps.test.outputs.name }}
           path:  ${{ github.workspace }}/template/*
+
+      - name: Add Artifact to Job Summary
+        run: 'echo "### 📦 Artifact url: ${{ steps.upload.outputs.artifact-url}}" >> $GITHUB_STEP_SUMMARY'
+  
