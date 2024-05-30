@@ -13,6 +13,7 @@ concurrency:
 
 jobs:
   test-lemlib:
+    name: "Testing LemLib"
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -33,13 +34,19 @@ jobs:
           library_path: lemlib
             
       - name: Upload Artifact
+        id: upload
         uses: actions/upload-artifact@v4
         with:
           name:  ${{ steps.test.outputs.name }}
           path: "template/*"
 
+      - name: Add Artifact to Job Summary
+        run: echo "### 📦 Artifact url:${{ steps.upload.outputs.artifact-url}}" >> $GITHUB_STEP_SUMMARY
+
+
 
   test-lemlib-without-upload:
+    name: "Testing LemLib Without Uploading an Artifact"
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -57,6 +64,7 @@ jobs:
         uses: ./action/
 
   test-ez:
+    name: "Testing EZ-Template"
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -77,7 +85,12 @@ jobs:
           library_path: EZ-Template
             
       - name: Upload Artifact
+        id: upload
         uses: actions/upload-artifact@v4
         with:
           name:  ${{ steps.test.outputs.name }}
           path: "template/*"
+      
+      - name: Add Artifact to Job Summary
+        run: echo "### 📦 Artifact url:${{ steps.upload.outputs.artifact-url}}" >> $GITHUB_STEP_SUMMARY
+  
