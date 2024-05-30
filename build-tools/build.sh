@@ -1,4 +1,7 @@
 #!/bin/bash
+
+set -e
+
 git config --global --add safe.directory /github/workspace
 
 # Create a github group
@@ -107,7 +110,10 @@ echo "::endgroup::"
 # ----------------
 # BUILDING PROJECT
 # ----------------
+# Pause errors
+set +e
 pros make clean
+set -e 
 # Set IS_LIBRARY to 0 to build the project
 if (($template == 1)); then
     echo "::group::Building ${name} non-template"
@@ -132,7 +138,7 @@ else
         make quick -j
     else
         echo "Multithreading is disabled"
-        pros make
+        make quick
     fi
     echo "::endgroup::"
 fi
