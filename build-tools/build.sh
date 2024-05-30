@@ -92,33 +92,37 @@ name="$library_name@$postfix"
 echo "name=$name" >> "$GITHUB_OUTPUT"
 echo "Name found: $name"
 
-
 echo "::endgroup::"
 # ----------------
 # BUILDING PROJECT
 # ----------------
-echo "::group::Building ${library_name}"
 pros make clean
-if [[ "$INPUT_MULTITHREADING" == "true" ]]; then
-    echo "Multithreading is enabled"
-    make quick -j
-else
-    echo "Multithreading is disabled"
-    pros make
-fi
-echo "::endgroup::"
-
-# --------
-# BUILDING
-# --------
 # Set IS_LIBRARY to 0 to build the project
 if (($template == 1)); then
     echo "::group::Building ${name} non-template"
     echo "Setting IS_LIBRARY to 0"
     sed -i "s/^IS_LIBRARY:=.*\$/IS_LIBRARY:=0/" Makefile
-    pros make
+    
+    if [[ "$INPUT_MULTITHREADING" == "true" ]]; then
+        echo "Multithreading is enabled"
+        make quick -j
+    else
+        echo "Multithreading is disabled"
+        pros make
+    fi
+
     echo "Setting IS_LIBRARY back to 1"
     sed -i "s/^IS_LIBRARY:=.*\$/IS_LIBRARY:=1/" Makefile
+    echo "::endgroup::"
+else 
+    echo "::group::Building ${name} template"
+    if [[ "$INPUT_MULTITHREADING" == "true" ]]; then
+        echo "Multithreading is enabled"
+        make quick -j
+    else
+        echo "Multithreading is disabled"
+        pros make
+    fi
     echo "::endgroup::"
 fi
 
@@ -140,9 +144,9 @@ echo "::endgroup::"
 echo "::group::Creating ${name} template"
 
 pros make template
-fi 
 
 echo "::endgroup::"
+fi 
 
 # --------------
 # UNZIP TEMPLATE
@@ -167,27 +171,3 @@ ls -a template/include/"${INPUT_LIBRARY_PATH}"
 ls -a include/"${INPUT_LIBRARY_PATH}"
 
 echo "::endgroup::"
-# if [ "$template" == "1" ] && [ -n "$INPUT_LIBRARY_PATH" ]; then
-#     echo "::group::Creating ${name} template"
-#     sed -i "s/^VERSION:=.*\$/VERSION:=${postfix}/" Makefile
-
-#     # fake pros c create-template for make template
-#     PATH="$PATH:$GITHUB_ACTION_PATH/pros-fake/bin"
-    
-#     pros make template
-
-#     mkdir -p template/include/"${INPUT_LIBRARY_PATH}"/
-
-#     cp {LICENSE*,README*} template/include/"${INPUT_LIBRARY_PATH}"/
-
-#     echo "\n## [Github link](${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY})" >> template/include/"${INPUT_LIBRARY_PATH}"/README.md
-#     perl -i -pe 's@(?<=[^/])(docs/assets/.*?)(?=[")])@${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/blob/master/$1?raw=true@g' template/include/"${INPUT_LIBRARY_PATH}"/README.md
-#     echo ${postfix} >> template/include/${INPUT_LIBRARY_PATH}/VERSION
-
-#     unzip -o $name.zip -d template
-
-#     ls -a
-#     ls -a template
-
-#     echo "::endgroup::"
-# fi
