@@ -45,9 +45,15 @@ echo "::endgroup::"
 echo "::group::Getting project info"
 
 if [ "$ACTION" == "opened" ]; then
+
     # Fetch the head SHA directly from the PR API
     API_URL="https://api.github.com/repos/$GITHUB_REPOSITORY/pulls/$GITHUB_PR_NUM"
-    sha=$(wget -O- --quiet "$API_URL" | jq -r '.head.sha' | head -c 6)
+    API_RESPONSE=$(wget -O- --quiet "$API_URL")
+    if [ $? -ne 0 ]; then
+        echo "Error fetching data from GitHub API"
+        exit $?
+    fi
+    sha=$(echo "$API_RESPONSE" | jq -r '.head.sha' | head -c 6)
 else
     # Use the commit SHA after the event
     sha=$(git rev-parse HEAD | head -c 6)
