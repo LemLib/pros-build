@@ -173,7 +173,7 @@ echo "::endgroup::"
 # DEBUGGING TEMPLATE FOLDER
 # -------------------------
 
-echo "::group::Debugging template folder"
+echo "::group::Listing Files in template folder"
 
 ls -a
 ls -a template
@@ -182,3 +182,14 @@ ls -a template/include/"${INPUT_LIBRARY_PATH}"
 ls -a include/"${INPUT_LIBRARY_PATH}"
 
 echo "::endgroup::"
+
+
+# -----------
+# JOB SUMMARY
+# -----------
+"# Library Name: ${library_name} \
+# Version: ${version} \
+# SHA: ${sha} \
+# Postfix: ${postfix} \
+# Name: ${name} \
+" >> $GITHUB_STEP_SUMMARY
