@@ -113,7 +113,7 @@ echo "::endgroup::"
 # Pause errors
 set +e
 pros make clean
-set -e 
+ERR_OUTPUT=$(mktemp)
 # Set IS_LIBRARY to 0 to build the project
 if (($template == 1)); then
     echo "::group::Building ${name} non-template"
@@ -122,10 +122,10 @@ if (($template == 1)); then
     
     if [[ "$INPUT_MULTITHREADING" == "true" ]]; then
         echo "Multithreading is enabled"
-        make quick -j
+        make quick -j 2> >(tee /dev/stderr > "$ERR_OUTPUT")
     else
         echo "Multithreading is disabled"
-        pros make
+        make quick 2> >(tee /dev/stderr > "$ERR_OUTPUT")
     fi
 
     echo "Setting IS_LIBRARY back to 1"
@@ -135,14 +135,21 @@ else
     echo "::group::Building ${name} template"
     if [[ "$INPUT_MULTITHREADING" == true ]]; then
         echo "Multithreading is enabled"
-        make quick -j
+        make quick -j  2> >(tee /dev/stderr > "$ERR_OUTPUT")
     else
         echo "Multithreading is disabled"
-        make quick
+        make quick 2> >(tee /dev/stderr > "$ERR_OUTPUT")
     fi
     echo "::endgroup::"
 fi
 
+if [ -s "$ERR_OUTPUT" ]; then
+    error_output=$(cat "$ERR_OUTPUT")
+    echo "# 🛑 Build Failed" >> $GITHUB_STEP_SUMMARY
+    echo "$error_output" >> $GITHUB_STEP_SUMMARY
+fi
+
+set -e
 # -----------------
 # CREATING TEMPLATE
 # -----------------
@@ -178,7 +185,7 @@ echo "::endgroup::"
 # -------------------------
 # DEBUGGING TEMPLATE FOLDER
 # -------------------------
-
+set +e # This isn't a critical step to error on
 echo "::group::Listing Files in template folder"
 
 ls -a
@@ -193,6 +200,7 @@ echo "::endgroup::"
 # -----------
 # JOB SUMMARY
 # -----------
-echo "# 📝 Library Name: ${library_name} @ ${version}" >> $GITHUB_STEP_SUMMARY
+echo "# ✅ Build Completed" >> $GITHUB_STEP_SUMMARY
+echo "## 📝 Library Name: ${library_name} @ ${version}" >> $GITHUB_STEP_SUMMARY
 echo "### 🔐 SHA: ${sha}" >> $GITHUB_STEP_SUMMARY
 echo "### 📁 Artifact Name: ${name}" >> $GITHUB_STEP_SUMMARY
