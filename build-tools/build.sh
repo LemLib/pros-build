@@ -47,8 +47,7 @@ echo "::endgroup::"
 # ----------------
 echo "::group::Getting project info"
 
-if [ "$INPUT_ACTION" == "opened" ]; then
-
+if [ "$GITHUB_EVENT_NAME" == "pull_request" ]; then
     # Fetch the head SHA directly from the PR API
     API_URL="https://api.github.com/repos/$GITHUB_REPOSITORY/pulls/$GITHUB_PR_NUM"
     echo "API URL: $API_URL"
@@ -184,21 +183,6 @@ echo "::group::Unzipping template"
 unzip -o $name -d template # Unzip the template
 
 echo "::endgroup::"
-
-# -------------------------
-# DEBUGGING TEMPLATE FOLDER
-# -------------------------
-set +e # This isn't a critical step to error on
-echo "::group::Listing Files in template folder"
-
-ls -a
-ls -a template
-ls -a template/include
-ls -a template/include/"${INPUT_LIBRARY_PATH}"
-ls -a include/"${INPUT_LIBRARY_PATH}"
-
-echo "::endgroup::"
-
 
 # -----------
 # JOB SUMMARY
