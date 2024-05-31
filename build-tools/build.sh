@@ -108,19 +108,19 @@ rm library_name.txt
 
 echo "Version before setting postfix: $version"
 echo "SHA before setting postfix: $sha"
-postfix="${version}+${sha}"
+
+if [ $INPUT_NO_COMMIT_HASH == "true" ]; then
+    postfix="${version}+${sha}"
+else
+    postfix="${version}"
+fi
 echo "Postfix after setting: $postfix"
 echo "postfix=$postfix" >> "$GITHUB_OUTPUT"
 
-if [ "$INPUT_NO_COMMIT_HASH" == "true" ]; then
-    name="$library_name@$postfix"
-    echo "name=$name" >> "$GITHUB_OUTPUT"
-    echo "Name found: $name"
-else 
-    name="$library_name@$version"
-    echo "name=$name" >> "$GITHUB_OUTPUT"
-    echo "Name found: $name"
-fi
+name="$library_name@$postfix"
+echo "name=$name" >> "$GITHUB_OUTPUT"
+echo "Name found: $name"
+
 echo "::endgroup::"
 # ----------------
 # BUILDING PROJECT
