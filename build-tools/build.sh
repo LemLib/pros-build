@@ -109,7 +109,7 @@ rm library_name.txt
 echo "Version before setting postfix: $version"
 echo "SHA before setting postfix: $sha"
 
-if [ $INPUT_NO_COMMIT_HASH == "true" ]; then
+if [ "$INPUT_NO_COMMIT_HASH" == "true" ]; then
     postfix="${version}+${sha}"
 else
     postfix="${version}"
