@@ -1,12 +1,11 @@
 name: Test action
 on:
-  push:
-    paths-ignore:
-      - .gitignore
-      - README*.md
-      - LICENSE
-      - .github/**
-      - "!.github/workflows/test.yml"
+  workflow_run:
+    workflows: ["Docker CI"]
+    types:
+      - completed
+    branches:
+      - main
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -29,7 +28,7 @@ jobs:
 
       - name: Test With Upload
         id: test
-        uses: ./action/
+        uses: ghcr.io/abucky0/pros-build
             
       - name: Upload Artifact
         id: upload
