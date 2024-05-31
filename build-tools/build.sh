@@ -177,7 +177,7 @@ if [ -s "$ERR_OUTPUT" ]; then
     echo "# 🛑 Build Failed" >> $GITHUB_STEP_SUMMARY
     echo "#### 📄 Error Output" >> $GITHUB_STEP_SUMMARY
     echo "Build failed in $build_time seconds" >> $GITHUB_STEP_SUMMARY
-    echo "Total Script Runtime: $(($SECONDS - $script_start_time)) seconds" >> $GITHUB_STEP_SUMMARY
+    echo "Total Build Script Runtime: $(($SECONDS - $script_start_time)) seconds" >> $GITHUB_STEP_SUMMARY
     echo "<details><summary>Click to expand</summary>" >> $GITHUB_STEP_SUMMARY
     echo "" >> $GITHUB_STEP_SUMMARY
     echo "" >> $GITHUB_STEP_SUMMARY
@@ -231,7 +231,7 @@ fi
 norm_output=$(cat "$STD_EDITED_OUTPUT")
 echo "# ✅ Build Completed" >> $GITHUB_STEP_SUMMARY
 echo "Build completed in $build_time seconds" >> $GITHUB_STEP_SUMMARY
-echo "Total Script Runtime: $(($SECONDS - $script_start_time)) seconds" >> $GITHUB_STEP_SUMMARY
+echo "Total Build Script Runtime: $(($SECONDS - $script_start_time)) seconds" >> $GITHUB_STEP_SUMMARY
 echo "## 📝 Library Name: ${library_name} @ ${version}" >> $GITHUB_STEP_SUMMARY
 echo "### 🔐 SHA: ${sha}" >> $GITHUB_STEP_SUMMARY
 if (($template == 1)); then
