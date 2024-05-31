@@ -30,8 +30,6 @@ jobs:
       - name: Test With Upload + Bonus Files
         id: test
         uses: ./action/
-        with:
-          library_path: lemlib
             
       - name: Upload Artifact
         id: upload
@@ -79,8 +77,6 @@ jobs:
       - name: Test With Upload + Bonus Files
         id: test
         uses: ./action/
-        with:
-          library_path: EZ-Template
             
       - name: Upload Artifact
         id: upload
@@ -113,8 +109,6 @@ jobs:
         id: test
         uses: ./action/
         continue-on-error: true
-        with:
-          library_path: lemlib
 
       - name: test-lemlib-error
         run: |
