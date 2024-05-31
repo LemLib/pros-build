@@ -112,7 +112,7 @@ postfix="${version}+${sha}"
 echo "Postfix after setting: $postfix"
 echo "postfix=$postfix" >> "$GITHUB_OUTPUT"
 
-if [ "$INPUT_NO_COMMIT_HASH == true" ]; then
+if [ "$INPUT_NO_COMMIT_HASH" == "true" ]; then
     name="$library_name@$postfix"
     echo "name=$name" >> "$GITHUB_OUTPUT"
     echo "Name found: $name"
