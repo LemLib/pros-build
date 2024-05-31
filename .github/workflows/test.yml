@@ -122,13 +122,3 @@ jobs:
             echo "Test With Upload + Bonus Files step succeeded, failing test-lemlib-error step"
             exit 1
           fi
-
-      - name: Upload Artifact
-        id: upload
-        uses: actions/upload-artifact@v4
-        with:
-          name:  ${{ steps.test.outputs.name }}
-          path: "template/*"
-
-      - name: Add Artifact to Job Summary
-        run: 'echo "### 📦 Artifact url: ${{ steps.upload.outputs.artifact-url}}" >> $GITHUB_STEP_SUMMARY'
