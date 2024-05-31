@@ -110,9 +110,9 @@ echo "Version before setting postfix: $version"
 echo "SHA before setting postfix: $sha"
 
 if [ "$INPUT_NO_COMMIT_HASH" == "true" ]; then
-    postfix="${version}+${sha}"
-else
     postfix="${version}"
+else
+    postfix="${version}+${sha}"
 fi
 echo "Postfix after setting: $postfix"
 echo "postfix=$postfix" >> "$GITHUB_OUTPUT"
