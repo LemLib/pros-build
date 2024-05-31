@@ -25,7 +25,7 @@ jobs:
 
       - name: Run abucky0/pros-build
         id: test
-        uses: abucky0/pros-build@v1.0.0-alpha
+        uses: LemLib/pros-build@latest
         with:
           library_path: LemLib
 

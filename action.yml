@@ -1,5 +1,5 @@
-name: 'ABUCKY0 PROS Build'
-description: 'Build a PROS Project'
+name: 'PROS Build'
+description: 'Automatically build PROS templates'
 branding:
   color: 'blue'
   icon: 'box'
