@@ -199,7 +199,7 @@ echo "::group::Creating ${name} template"
 pros make template
 
 echo "::endgroup::"
-fi 
+
 
 # --------------
 # UNZIP TEMPLATE
@@ -211,6 +211,10 @@ unzip -o $name -d template # Unzip the template
 
 echo "::endgroup::"
 
+
+fi 
+
+
 # -----------
 # JOB SUMMARY
 # -----------
@@ -218,7 +222,9 @@ norm_output=$(cat "$STD_EDITED_OUTPUT")
 echo "# ✅ Build Completed" >> $GITHUB_STEP_SUMMARY
 echo "## 📝 Library Name: ${library_name} @ ${version}" >> $GITHUB_STEP_SUMMARY
 echo "### 🔐 SHA: ${sha}" >> $GITHUB_STEP_SUMMARY
+if (($template == 1)); then
 echo "### 📁 Artifact Name: ${name}" >> $GITHUB_STEP_SUMMARY
+fi
 echo "***" >> $GITHUB_STEP_SUMMARY
 echo "#### 📄 Output from Make" >> $GITHUB_STEP_SUMMARY
 echo "<details><summary>Click to expand</summary>" >> $GITHUB_STEP_SUMMARY
