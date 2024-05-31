@@ -6,10 +6,6 @@ branding:
   colorized: true
 
 inputs:
-  action:
-    required: false
-    default: ${{ github.event.action }}
-    description: The action that triggered the workflow
   multithreading:
     required: false
     default: true
