@@ -23,9 +23,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Run abucky0/pros-build
+      - name: Run LemLib/pros-build
         id: test
-        uses: LemLib/pros-build@latest
+        uses: LemLib/pros-build@v1.1.0
         with:
           library_path: LemLib
 
