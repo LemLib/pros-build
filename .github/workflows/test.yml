@@ -27,7 +27,7 @@ jobs:
         with:
           path: ./action/
 
-      - name: Test With Upload + Bonus Files
+      - name: Test With Upload
         id: test
         uses: ./action/
             
@@ -40,6 +40,38 @@ jobs:
 
       - name: Add Artifact to Job Summary
         run: 'echo "### 📦 Artifact url: ${{ steps.upload.outputs.artifact-url}}" >> $GITHUB_STEP_SUMMARY'
+
+  test-lemlib-nohash:
+    name: "Testing LemLib Without Adding the Commit Hash"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          repository: LemLib/LemLib
+          ref: 6fc0838e0aa1de03d7864002888f5d874b691910
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          path: ./action/
+
+      - name: Test With Upload No Hash
+        id: test
+        uses: ./action/
+        with:
+          no_commit_hash: true
+            
+      - name: Upload Artifact
+        id: upload
+        uses: actions/upload-artifact@v4
+        with:
+          name:  ${{ steps.test.outputs.name }}
+          path: "template/*"
+
+      - name: Add Artifact to Job Summary
+        run: 'echo "### 📦 Artifact url: ${{ steps.upload.outputs.artifact-url}}" >> $GITHUB_STEP_SUMMARY'
+
 
   test-lemlib-without-upload:
     name: "Testing LemLib Without Uploading an Artifact"
@@ -56,7 +88,7 @@ jobs:
         with:
           path: ./action/
 
-      - name: Test Without Upload + Bonus Files
+      - name: Test Without Upload
         uses: ./action/
 
   test-ez:

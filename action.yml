@@ -10,6 +10,10 @@ inputs:
     required: false
     default: true
     description: Whether to use multithreading or not
+  no_commit_hash:
+    required: false
+    default: false
+    description: Whether to not include the commit hash in the artifact name
 runs:
   using: 'Docker'
   image: 'Dockerfile'
