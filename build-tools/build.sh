@@ -1,5 +1,16 @@
 #!/bin/bash
 
+# ------------
+# ECHO LICENSE
+# ------------
+echo "::group::License"
+cat LICENSE
+echo "::endgroup::"
+
+# ----------------
+# SETTING VARIABLES
+# ----------------
+
 set -e
 
 git config --global --add safe.directory /github/workspace

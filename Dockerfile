@@ -9,5 +9,6 @@ RUN env
 COPY build-tools/build.sh . 
 RUN chmod +x ./build.sh
 
+COPY LICENSE .
 
 ENTRYPOINT ["/build.sh"]
