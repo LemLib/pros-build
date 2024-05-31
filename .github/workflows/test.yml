@@ -26,9 +26,9 @@ jobs:
         with:
           path: ./action/
 
-      - name: Test With Upload
+      - name: Test With Upload No Hash
         id: test
-        uses: ghcr.io/abucky0/pros-build
+        uses: ./action/
             
       - name: Upload Artifact
         id: upload

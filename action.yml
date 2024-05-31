@@ -1,4 +1,4 @@
-name: 'PROS Build'
+name: 'ABUCKY0 PROS Build'
 description: 'Automatically build PROS templates'
 branding:
   color: 'blue'
@@ -16,4 +16,4 @@ inputs:
     description: Whether to not include the commit hash in the artifact name
 runs:
   using: 'Docker'
-  image: 'Dockerfile'
+  image: 'ghcr.io/abucky0/pros-build:main'
