@@ -154,11 +154,18 @@ else
     echo "::endgroup::"
 fi
 
+STD_EDITED_OUTPUT=$(mktemp)
+# Remove ANSI color codes from the output
+sed -e 's/\x1b\[[0-9;]*m//g' $STD_OUTPUT > $STD_EDITED_OUTPUT
+
 if [ -s "$ERR_OUTPUT" ]; then
     error_output=$(cat "$ERR_OUTPUT")
-    norm_output=$(cat "$STD_OUTPUT")
+    norm_output=$(cat "$STD_EDITED_OUTPUT")
     echo "# 🛑 Build Failed" >> $GITHUB_STEP_SUMMARY
+    echo "#### 📄 Error Output" >> $GITHUB_STEP_SUMMARY
+    echo "<details><summary>Click to expand</summary>" >> $GITHUB_STEP_SUMMARY
     echo "$norm_output" >> $GITHUB_STEP_SUMMARY
+    echo "</details>" >> $GITHUB_STEP_SUMMARY
     exit 1
 fi
 
@@ -198,10 +205,13 @@ echo "::endgroup::"
 # -----------
 # JOB SUMMARY
 # -----------
+norm_output=$(cat "$STD_EDITED_OUTPUT")
 echo "# ✅ Build Completed" >> $GITHUB_STEP_SUMMARY
 echo "## 📝 Library Name: ${library_name} @ ${version}" >> $GITHUB_STEP_SUMMARY
 echo "### 🔐 SHA: ${sha}" >> $GITHUB_STEP_SUMMARY
 echo "### 📁 Artifact Name: ${name}" >> $GITHUB_STEP_SUMMARY
 echo "***" >> $GITHUB_STEP_SUMMARY
 echo "#### 📄 Output from Make" >> $GITHUB_STEP_SUMMARY
+echo "<details><summary>Click to expand</summary>" >> $GITHUB_STEP_SUMMARY
 echo "$norm_output" >> $GITHUB_STEP_SUMMARY
+echo "</details>" >> $GITHUB_STEP_SUMMARY
