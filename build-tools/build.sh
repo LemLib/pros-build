@@ -163,7 +163,8 @@ if [ -s "$ERR_OUTPUT" ]; then
     norm_output=$(cat "$STD_EDITED_OUTPUT")
     echo "# 🛑 Build Failed" >> $GITHUB_STEP_SUMMARY
     echo "#### 📄 Error Output" >> $GITHUB_STEP_SUMMARY
-    echo "<details><summary>Click to expand</summary>\n" >> $GITHUB_STEP_SUMMARY
+    echo "<details><summary>Click to expand</summary> \
+    " >> $GITHUB_STEP_SUMMARY
     echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
     echo "$norm_output" >> $GITHUB_STEP_SUMMARY
     echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
@@ -214,7 +215,8 @@ echo "### 🔐 SHA: ${sha}" >> $GITHUB_STEP_SUMMARY
 echo "### 📁 Artifact Name: ${name}" >> $GITHUB_STEP_SUMMARY
 echo "***" >> $GITHUB_STEP_SUMMARY
 echo "#### 📄 Output from Make" >> $GITHUB_STEP_SUMMARY
-echo "<details><summary>Click to expand</summary>\n" >> $GITHUB_STEP_SUMMARY
+echo "<details><summary>Click to expand</summary> \
+" >> $GITHUB_STEP_SUMMARY
 echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
 echo "$norm_output" >> $GITHUB_STEP_SUMMARY
 echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
