@@ -16,4 +16,4 @@ inputs:
     description: Whether to not include the commit hash in the artifact name
 runs:
   using: 'Docker'
-  image: 'ghcr.io/abucky0/pros-build:main'
+  image: 'docker://ghcr.io/abucky0/pros-build:main'
