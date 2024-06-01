@@ -1,7 +1,5 @@
 # PROS Build Action
 
-This action uses `ghcr.io/abucky0/pros-build-container:main` (https://github.com/ABUCKY0/pros-build-container)
-
 ## Usage:
 
 ```yml
