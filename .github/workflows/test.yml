@@ -9,7 +9,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  test-lemlib:
+  Test_LemLib:
     name: "Testing LemLib"
     runs-on: ubuntu-latest
     steps:
@@ -38,7 +38,7 @@ jobs:
       - name: Add Artifact to Job Summary
         run: 'echo "### 📦 Artifact url: ${{ steps.upload.outputs.artifact-url}}" >> $GITHUB_STEP_SUMMARY'
 
-  test-lemlib-nohash:
+  Test_LemLib_Without_Adding_the_Commit_Hash:
     name: "Testing LemLib Without Adding the Commit Hash"
     runs-on: ubuntu-latest
     steps:
@@ -70,7 +70,7 @@ jobs:
         run: 'echo "### 📦 Artifact url: ${{ steps.upload.outputs.artifact-url}}" >> $GITHUB_STEP_SUMMARY'
 
 
-  test-lemlib-without-upload:
+  Test_LemLib_Without_Uploading_an_Artifact:
     name: "Testing LemLib Without Uploading an Artifact"
     runs-on: ubuntu-latest
     steps:
@@ -88,7 +88,7 @@ jobs:
       - name: Test Without Upload
         uses: ./action/
 
-  test-ez:
+  Test_EZ_Template:
     name: "Testing EZ-Template"
     runs-on: ubuntu-latest
     steps:
