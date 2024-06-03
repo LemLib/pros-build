@@ -9,7 +9,7 @@ inputs:
   multithreading:
     required: false
     default: true
-    description: Whether to use multithreading or not
+    description: Whether to use multithreading when building the project (-j flag in make)
   no_commit_hash:
     required: false
     default: false
