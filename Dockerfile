@@ -33,6 +33,33 @@ ENV PATH="/gcc-arm-none-eabi-10.3-2021.10/bin:${PATH}"
 RUN python3 -m pip install pros-cli
 
 # ------------
+# Cleanup 
+# ------------
+
+# Cleanup APT
+RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Cleanup PIP cache
+RUN python3 -m pip cache purge
+
+# ------------
+# Information
+# ------------
+
+# List PIP Packages and their size
+RUN pip list \
+| tail -n +3 \
+| awk '{print $1}' \
+| xargs pip show \
+| grep -E 'Location:|Name:' \
+| cut -d ' ' -f 2 \
+| paste -d ' ' - - \
+| awk '{print $2 "/" tolower($1)}' \
+| xargs du -sh 2> /dev/null \
+| sort -hr
+
+
+# ------------
 # Verify Installation
 # ------------
 RUN python3 --version
@@ -45,7 +72,6 @@ RUN git --version
 RUN make --version
 RUN unzip 
 RUN awk --version
-
 
 
 # ------------
