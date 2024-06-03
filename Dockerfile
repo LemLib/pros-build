@@ -1,10 +1,8 @@
-#FROM ghcr.io/abucky0/pros-build-container:main
 FROM ubuntu:20.04
-#FROM python:3.8
 
 LABEL version="1.0" \
-      description="This is a base image that builds an environment capable of building PROS projects." \
-      maintainer="@ABUCKY0 (And LemLib Contributors)"
+      description="PROS-Build Container" \
+      maintainer="LemLib"
 
 # ------------
 # Install Required Packages
