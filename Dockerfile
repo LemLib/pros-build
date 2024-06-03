@@ -40,7 +40,7 @@ RUN python3 -m pip install pros-cli
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Cleanup PIP cache
-RUN python3 -m pip cache purge
+#RUN python3 -m pip cache purge
 
 # ------------
 # Information
