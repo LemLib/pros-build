@@ -24,7 +24,7 @@ jobs:
         with:
           path: ./action/
 
-      - name: Test With Upload No Hash
+      - name: Test With Upload
         id: test
         uses: ./action/
             
