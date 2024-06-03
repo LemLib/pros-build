@@ -130,42 +130,32 @@ set +e
 pros make clean
 ERR_OUTPUT=$(mktemp)
 STD_OUTPUT=$(mktemp)
-# Set IS_LIBRARY to 0 to build the project
+# Set IS_LIBRARY to 0 to build the project if $template is 1
 if (($template == 1)); then
-    echo "::group::Building ${name} non-template"
+    echo "::group::Building ${name}"
     echo "Setting IS_LIBRARY to 0"
     sed -i "s/^IS_LIBRARY:=.*\$/IS_LIBRARY:=0/" Makefile
-    
-    if [[ "$INPUT_MULTITHREADING" == "true" ]]; then
-        echo "Multithreading is enabled"
-        start_build_time=$SECONDS
-        make quick -j 2> $ERR_OUTPUT | tee $STD_OUTPUT
-        build_time=$((SECONDS - $start_build_time))
-    else
-        echo "Multithreading is disabled"
-        start_build_time=$SECONDS
-        make quick 2> $ERR_OUTPUT | tee $STD_OUTPUT
-        build_time=$((SECONDS - $start_build_time))
-    fi
+fi
 
+
+if [[ "$INPUT_MULTITHREADING" == "true" ]]; then
+    echo "Multithreading is enabled"
+    start_build_time=$SECONDS
+    make quick -j 2> $ERR_OUTPUT | tee $STD_OUTPUT
+    build_time=$((SECONDS - $start_build_time))
+else
+    echo "Multithreading is disabled"
+    start_build_time=$SECONDS
+    make quick 2> $ERR_OUTPUT | tee $STD_OUTPUT
+    build_time=$((SECONDS - $start_build_time))
+fi
+
+
+if (($template == 1)); then
     echo "Setting IS_LIBRARY back to 1"
     sed -i "s/^IS_LIBRARY:=.*\$/IS_LIBRARY:=1/" Makefile
     echo "::endgroup::"
 else 
-    echo "::group::Building ${name} template"
-    if [[ "$INPUT_MULTITHREADING" == true ]]; then
-        echo "Multithreading is enabled"
-        start_build_time=$SECONDS
-        make quick -j 2> $ERR_OUTPUT | tee $STD_OUTPUT
-        build_time=$((SECONDS - $start_build_time))
-    else
-        echo "Multithreading is disabled"
-        start_build_time=$SECONDS
-        make quick 2> $ERR_OUTPUT | tee $STD_OUTPUT
-        build_time=$((SECONDS - $start_build_time))
-    fi
-    echo "::endgroup::"
-fi
 
 STD_EDITED_OUTPUT=$(mktemp)
 # Remove ANSI color codes from the output

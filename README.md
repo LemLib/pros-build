@@ -1,5 +1,9 @@
 # PROS Build Action
 
+[![Test action](https://github.com/LemLib/pros-build/actions/workflows/test.yml/badge.svg)](https://github.com/LemLib/pros-build/actions/workflows/test.yml)
+
+
+
 ## Usage:
 
 ```yml
