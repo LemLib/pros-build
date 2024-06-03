@@ -11,34 +11,11 @@ echo "::endgroup::"
 # SETTING VARIABLES
 # ----------------
 
-set -e
+set -e # Exit on error
 
 git config --global --add safe.directory /github/workspace
 
-# Create a github group
-echo "::group::Debug Variables"
 
-# -------------------
-# DEBUGGING VARIABLES
-# -------------------
-
-# Echo all variables starting with GITHUB_ for debugging
-for var in "${!GITHUB_@}"; do
-    echo "$var=${!var}"
-done
-
-# Echo all variables starting with INPUT_ for debugging
-for var in "${!INPUT_@}"; do
-    echo "$var=${!var}"
-done
-
-# echo all variables starting with RUNNER_ for debugging
-for var in "${!RUNNER_@}"; do
-    echo "$var=${!var}"
-done
-
-
-echo "::endgroup::"
 # ----------------
 # CHECK IF TEMPLATE
 # ----------------
@@ -53,6 +30,8 @@ fi
 echo "template=$template" >> $GITHUB_OUTPUT
 
 echo "::endgroup::"
+
+
 # ----------------
 # GET PROJECT INFO
 # ----------------
