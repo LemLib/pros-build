@@ -29,8 +29,9 @@ jobs:
                 summary: 'This test should pass'
               }
             }).then(result =>  {
-              console.log(result.data);
               core.setOutput('runId', result.data.id);
+              core.exportVariable('runId', result.data.id);
+              console.log(`::set-output name=runId::${result.data.id}`);
             })
 
       - name: Checkout
