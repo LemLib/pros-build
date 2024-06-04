@@ -134,7 +134,7 @@ if (($template == 1)); then
     echo "Setting IS_LIBRARY back to 1"
     sed -i "s/^IS_LIBRARY:=.*\$/IS_LIBRARY:=1/" Makefile
     echo "::endgroup::"
-else 
+fi
 
 STD_EDITED_OUTPUT=$(mktemp)
 # Remove ANSI color codes from the output
