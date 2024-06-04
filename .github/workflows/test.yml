@@ -259,7 +259,12 @@ jobs:
                 title: 'Test LemLib Fail',
                 summary: 'This test should fail'
               }
-            }).then(result => core.exportVariable('runId', result.data.id))
+            }).then(result =>
+            {
+              core.exportVariable('runId', result.data.id);
+              console.log('result.status: ' + result.status);
+              console.log('result.data: ' + result.data);
+            })
 
       - name: Checkout
         uses: actions/checkout@v4
