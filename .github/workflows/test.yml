@@ -38,6 +38,30 @@ jobs:
       - name: Add Artifact to Job Summary
         run: 'echo "### 📦 Artifact url: ${{ steps.upload.outputs.artifact-url}}" >> $GITHUB_STEP_SUMMARY'
 
+      - name: Create check run
+        uses: actions/github-script@v7
+        if: always()
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { owner, repo } = context.repo
+            const sha = '${{ github.sha }}'
+            const conclusion = '${{ job.status }}' === 'success' ? 'success' : 'failure'
+            const output = {
+              title: 'Test Results',
+              summary: '${{ job.status }}',
+              text: 'The tests were completed.'
+            }
+            await github.checks.create({
+              owner,
+              repo,
+              name: 'Test LemLib',
+              head_sha: sha,
+              status: conclusion,
+              conclusion,
+              output
+            })
+
   Test_LemLib_Without_Adding_the_Commit_Hash:
     name: "Testing LemLib Without Adding the Commit Hash"
     runs-on: ubuntu-latest
@@ -69,6 +93,29 @@ jobs:
       - name: Add Artifact to Job Summary
         run: 'echo "### 📦 Artifact url: ${{ steps.upload.outputs.artifact-url}}" >> $GITHUB_STEP_SUMMARY'
 
+      - name: Create check run
+        uses: actions/github-script@v7
+        if: always()
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { owner, repo } = context.repo
+            const sha = '${{ github.sha }}'
+            const conclusion = '${{ job.status }}' === 'success' ? 'success' : 'failure'
+            const output = {
+              title: 'Test Results',
+              summary: '${{ job.status }}',
+              text: 'The tests were completed.'
+            }
+            await github.checks.create({
+              owner,
+              repo,
+              name: 'Test LemLib',
+              head_sha: sha,
+              status: conclusion,
+              conclusion,
+              output
+            })
 
   Test_LemLib_Without_Uploading_an_Artifact:
     name: "Testing LemLib Without Uploading an Artifact"
@@ -87,6 +134,29 @@ jobs:
 
       - name: Test Without Upload
         uses: ./action/
+      - name: Create check run
+        uses: actions/github-script@v7
+        if: always()
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { owner, repo } = context.repo
+            const sha = '${{ github.sha }}'
+            const conclusion = '${{ job.status }}' === 'success' ? 'success' : 'failure'
+            const output = {
+              title: 'Test Results',
+              summary: '${{ job.status }}',
+              text: 'The tests were completed.'
+            }
+            await github.checks.create({
+              owner,
+              repo,
+              name: 'Test LemLib',
+              head_sha: sha,
+              status: conclusion,
+              conclusion,
+              output
+            })
 
   Test_EZ_Template:
     name: "Testing EZ-Template"
@@ -116,7 +186,30 @@ jobs:
       
       - name: Add Artifact to Job Summary
         run: 'echo "### 📦 Artifact url: ${{ steps.upload.outputs.artifact-url}}" >> $GITHUB_STEP_SUMMARY'
-
+        
+      - name: Create check run
+        uses: actions/github-script@v7
+        if: always()
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { owner, repo } = context.repo
+            const sha = '${{ github.sha }}'
+            const conclusion = '${{ job.status }}' === 'success' ? 'success' : 'failure'
+            const output = {
+              title: 'Test Results',
+              summary: '${{ job.status }}',
+              text: 'The tests were completed.'
+            }
+            await github.checks.create({
+              owner,
+              repo,
+              name: 'Test LemLib',
+              head_sha: sha,
+              status: conclusion,
+              conclusion,
+              output
+            })
 
   test-lemlib-error:
     name: "Testing LemLib Fail"
@@ -145,3 +238,29 @@ jobs:
             echo "Test With Upload + Bonus Files step succeeded, failing test-lemlib-error step"
             exit 1
           fi
+
+      - name: Create check run
+        uses: actions/github-script@v7
+        if: always()
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const { owner, repo } = context.repo
+            const sha = '${{ github.sha }}'
+            const conclusion = '${{ job.status }}' === 'success' ? 'success' : 'failure'
+            const output = {
+              title: 'Test Results',
+              summary: '${{ job.status }}',
+              text: 'The tests were completed.'
+            }
+            await github.checks.create({
+              owner,
+              repo,
+              name: 'Test LemLib',
+              head_sha: sha,
+              status: conclusion,
+              conclusion,
+              output
+            })
+    
+        
