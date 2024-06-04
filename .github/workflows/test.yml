@@ -44,22 +44,14 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const { owner, repo } = context.repo
-            const sha = '${{ github.sha }}'
-            const conclusion = '${{ job.status }}' === 'success' ? 'success' : 'failure'
-            const output = {
-              title: 'Test Results',
-              summary: '${{ job.status }}',
-              text: 'The tests were completed.'
-            }
-            await github.rest.checks.create({
-              owner,
-              repo,
+            github.rest.checks.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
               name: 'Test LemLib',
-              head_sha: sha,
-              status: conclusion,
-              conclusion,
-              output
+              head_sha: context.sha,
+              output.title: 'Test LemLib With Upload',
+              output.summary: '${{ job.status }}',
+              conclusion: '${{ job.status }}' === 'success' ? 'success' : 'failure'
             })
 
   Test_LemLib_Without_Adding_the_Commit_Hash:
@@ -99,23 +91,16 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const { owner, repo } = context.repo
-            const sha = '${{ github.sha }}'
-            const conclusion = '${{ job.status }}' === 'success' ? 'success' : 'failure'
-            const output = {
-              title: 'Test Results',
-              summary: '${{ job.status }}',
-              text: 'The tests were completed.'
-            }
-            await github.rest.checks.create({
-              owner,
-              repo,
-              name: 'Test LemLib',
-              head_sha: sha,
-              status: conclusion,
-              conclusion,
-              output
+            github.rest.checks.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              name: 'Test LemLib Without Adding the Commit Hash to the Artifact Name',
+              head_sha: context.sha,
+              output.title: 'Test LemLib With Upload',
+              output.summary: '${{ job.status }}',
+              conclusion: '${{ job.status }}' === 'success' ? 'success' : 'failure'
             })
+
 
   Test_LemLib_Without_Uploading_an_Artifact:
     name: "Testing LemLib Without Uploading an Artifact"
@@ -134,29 +119,23 @@ jobs:
 
       - name: Test Without Upload
         uses: ./action/
+
       - name: Create check run
         uses: actions/github-script@v7
         if: always()
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const { owner, repo } = context.repo
-            const sha = '${{ github.sha }}'
-            const conclusion = '${{ job.status }}' === 'success' ? 'success' : 'failure'
-            const output = {
-              title: 'Test Results',
-              summary: '${{ job.status }}',
-              text: 'The tests were completed.'
-            }
-            await github.rest.checks.create({
-              owner,
-              repo,
+            github.rest.checks.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
               name: 'Test LemLib',
-              head_sha: sha,
-              status: conclusion,
-              conclusion,
-              output
+              head_sha: context.sha,
+              output.title: 'Test LemLib Without Uploading an Artifact',
+              output.summary: '${{ job.status }}',
+              conclusion: '${{ job.status }}' === 'success' ? 'success' : 'failure'
             })
+
 
   Test_EZ_Template:
     name: "Testing EZ-Template"
@@ -193,23 +172,16 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const { owner, repo } = context.repo
-            const sha = '${{ github.sha }}'
-            const conclusion = '${{ job.status }}' === 'success' ? 'success' : 'failure'
-            const output = {
-              title: 'Test Results',
-              summary: '${{ job.status }}',
-              text: 'The tests were completed.'
-            }
-            await github.rest.checks.create({
-              owner,
-              repo,
+            github.rest.checks.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
               name: 'Test LemLib',
-              head_sha: sha,
-              status: conclusion,
-              conclusion,
-              output
+              head_sha: context.sha,
+              output.title: 'Test EZ Template',
+              output.summary: '${{ job.status }}',
+              conclusion: '${{ job.status }}' === 'success' ? 'success' : 'failure'
             })
+
 
   test-lemlib-error:
     name: "Testing LemLib Fail"
@@ -245,22 +217,14 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const { owner, repo } = context.repo
-            const sha = '${{ github.sha }}'
-            const conclusion = '${{ job.status }}' === 'success' ? 'success' : 'failure'
-            const output = {
-              title: 'Test Results',
-              summary: '${{ job.status }}',
-              text: 'The tests were completed.'
-            }
-            await github.rest.checks.create({
-              owner,
-              repo,
+            github.rest.checks.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
               name: 'Test LemLib',
-              head_sha: sha,
-              status: conclusion,
-              conclusion,
-              output
+              head_sha: context.sha,
+              output.title: 'Test LemLib With Upload',
+              output.summary: '${{ job.status }}',
+              conclusion: '${{ job.status }}' === 'success' ? 'failure' : 'success
             })
-    
-        
+
+      
