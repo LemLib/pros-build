@@ -52,7 +52,7 @@ jobs:
               summary: '${{ job.status }}',
               text: 'The tests were completed.'
             }
-            await octokit.rest.checks.create({
+            await github.rest.checks.create({
               owner,
               repo,
               name: 'Test LemLib',
@@ -107,7 +107,7 @@ jobs:
               summary: '${{ job.status }}',
               text: 'The tests were completed.'
             }
-            await octokit.rest.checks.create({
+            await github.rest.checks.create({
               owner,
               repo,
               name: 'Test LemLib',
@@ -148,7 +148,7 @@ jobs:
               summary: '${{ job.status }}',
               text: 'The tests were completed.'
             }
-            await octokit.rest.checks.create({
+            await github.rest.checks.create({
               owner,
               repo,
               name: 'Test LemLib',
@@ -201,7 +201,7 @@ jobs:
               summary: '${{ job.status }}',
               text: 'The tests were completed.'
             }
-            await octokit.rest.checks.create({
+            await github.rest.checks.create({
               owner,
               repo,
               name: 'Test LemLib',
@@ -253,7 +253,7 @@ jobs:
               summary: '${{ job.status }}',
               text: 'The tests were completed.'
             }
-            await octokit.rest.checks.create({
+            await github.rest.checks.create({
               owner,
               repo,
               name: 'Test LemLib',
