@@ -49,8 +49,10 @@ jobs:
               repo: context.repo.repo,
               name: 'Test LemLib',
               head_sha: context.sha,
-              output.title: 'Test LemLib With Upload',
-              output.summary: '${{ job.status }}',
+              output {
+                title: 'Test LemLib With Upload',
+                summary: '${{ job.status }}'
+              },
               conclusion: '${{ job.status }}' === 'success' ? 'success' : 'failure'
             })
 
@@ -96,8 +98,11 @@ jobs:
               repo: context.repo.repo,
               name: 'Test LemLib Without Adding the Commit Hash to the Artifact Name',
               head_sha: context.sha,
-              output.title: 'Test LemLib With Upload',
-              output.summary: '${{ job.status }}',
+              output
+              {
+                title: 'Test LemLib With Upload',
+                output.summary: '${{ job.status }}'
+              },
               conclusion: '${{ job.status }}' === 'success' ? 'success' : 'failure'
             })
 
@@ -131,8 +136,10 @@ jobs:
               repo: context.repo.repo,
               name: 'Test LemLib',
               head_sha: context.sha,
-              output.title: 'Test LemLib Without Uploading an Artifact',
-              output.summary: '${{ job.status }}',
+              output {
+                title: 'Test LemLib Without Uploading an Artifact',
+                summary: '${{ job.status }}'
+              },
               conclusion: '${{ job.status }}' === 'success' ? 'success' : 'failure'
             })
 
@@ -177,8 +184,10 @@ jobs:
               repo: context.repo.repo,
               name: 'Test LemLib',
               head_sha: context.sha,
-              output.title: 'Test EZ Template',
-              output.summary: '${{ job.status }}',
+              output {
+                title: 'Test EZ-Template With Upload',
+                summary: '${{ job.status }}'
+              },
               conclusion: '${{ job.status }}' === 'success' ? 'success' : 'failure'
             })
 
@@ -222,8 +231,10 @@ jobs:
               repo: context.repo.repo,
               name: 'Test LemLib',
               head_sha: context.sha,
-              output.title: 'Test LemLib With Upload',
-              output.summary: '${{ job.status }}',
+              output {
+                title: 'Test LemLib With Upload',
+                summary: '${{ job.status }}'
+              },
               conclusion: '${{ job.status }}' === 'success' ? 'failure' : 'success
             })
 
