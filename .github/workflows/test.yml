@@ -28,7 +28,7 @@ jobs:
                 title: 'Test LemLib',
                 summary: 'This test should pass'
               }
-            }).then(result => core.setOutput('runId', result.id) && console.log(result))
+            }).then(result => core.setOutput('runId', result.data.id))
 
       - name: Checkout
         uses: actions/checkout@v4
@@ -86,7 +86,7 @@ jobs:
                 title: 'Test LemLib Without Adding the Commit Hash',
                 summary: 'This test should pass'
               }
-            }).then(result => core.setOutput('runId', result.id))
+            }).then(result => core.setOutput('runId', result.data.id))
 
       - name: Checkout
         uses: actions/checkout@v4
@@ -148,7 +148,7 @@ jobs:
                 title: 'Test LemLib Without Uploading an Artifact',
                 summary: 'This test should pass'
               }
-            }).then(result => core.setOutput('runId', result.id))
+            }).then(result => core.setOutput('runId', result.data.id))
 
       - name: Checkout
         uses: actions/checkout@v4
@@ -196,7 +196,7 @@ jobs:
                 title: 'Test EZ-Template',
                 summary: 'This test should pass'
               }
-            }).then(result => core.setOutput('runId', result.id))
+            }).then(result => core.setOutput('runId', result.data.id))
 
       - name: Checkout
         uses: actions/checkout@v4
@@ -257,7 +257,7 @@ jobs:
                 title: 'Test LemLib Fail',
                 summary: 'This test should fail'
               }
-            }).then(result => core.setOutput('runId', result.id))
+            }).then(result => core.setOutput('runId', result.data.id))
 
       - name: Checkout
         uses: actions/checkout@v4
