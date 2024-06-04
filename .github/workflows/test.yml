@@ -69,7 +69,7 @@ jobs:
             github.rest.checks.update({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              check_run_id: ${{ steps.create-check.outputs.result.runid }},
+              check_run_id: process.env.runid,
               conclusion: '${{ job.status }}'
             })
   Test_LemLib_Without_Adding_the_Commit_Hash:
