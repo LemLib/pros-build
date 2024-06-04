@@ -29,9 +29,10 @@ jobs:
                 summary: 'This test should pass'
               }
             }).then(result =>  {
-              core.setOutput('runId', result.data.id);
-              core.exportVariable('runId', result.data.id);
-              console.log(`::set-output name=runId::${result.data.id}`);
+              core.setOutput('runid', result.data.id);
+              core.exportVariable('runid', result.data.id);
+              console.log('Check run id:', result.data.id);
+              console.log(result.data);
             })
 
       - name: Checkout
@@ -68,7 +69,7 @@ jobs:
             github.rest.checks.update({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              check_run_id: ${{ steps.create-check.outputs.result.runId }},
+              check_run_id: ${{ steps.create-check.outputs.result.runid }},
               conclusion: '${{ job.status }}'
             })
   Test_LemLib_Without_Adding_the_Commit_Hash:
