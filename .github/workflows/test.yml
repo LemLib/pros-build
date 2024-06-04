@@ -28,7 +28,7 @@ jobs:
                 title: 'Test LemLib',
                 summary: 'This test should pass'
               }
-            }).then(result => core.setOutput('runId', result.id))
+            }).then(result => core.setOutput('runId', result.id) && console.log(result))
 
       - name: Checkout
         uses: actions/checkout@v4
