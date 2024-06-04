@@ -13,6 +13,22 @@ jobs:
     name: "Testing LemLib"
     runs-on: ubuntu-latest
     steps:
+      - name: Create Check Run
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.checks.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              name: 'Test LemLib',
+              head_sha: context.sha,
+              status: 'in_progress',
+              output: {
+                title: 'Test LemLib',
+                summary: 'This test should pass'
+              }
+            })
+
       - name: Checkout
         uses: actions/checkout@v4
         with:
@@ -38,28 +54,38 @@ jobs:
       - name: Add Artifact to Job Summary
         run: 'echo "### 📦 Artifact url: ${{ steps.upload.outputs.artifact-url}}" >> $GITHUB_STEP_SUMMARY'
 
-      - name: Create check run
+      - name: Update check run
         uses: actions/github-script@v7
         if: always()
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            github.rest.checks.create({
+            github.rest.checks.update({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              name: 'Test LemLib',
-              head_sha: context.sha,
-              output {
-                title: 'Test LemLib With Upload',
-                summary: '${{ job.status }}'
-              },
-              conclusion: '${{ job.status }}' === 'success' ? 'success' : 'failure'
+              check_run_id: context.runId,
+              conclusion: ${{ job.status }}
             })
-
   Test_LemLib_Without_Adding_the_Commit_Hash:
     name: "Testing LemLib Without Adding the Commit Hash"
     runs-on: ubuntu-latest
     steps:
+      - name: Create Check Run
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.checks.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              name: 'Test LemLib Without Adding the Commit Hash',
+              head_sha: context.sha,
+              status: 'in_progress',
+              output: {
+                title: 'Test LemLib Without Adding the Commit Hash',
+                summary: 'This test should pass'
+              }
+            })
+
       - name: Checkout
         uses: actions/checkout@v4
         with:
@@ -87,22 +113,17 @@ jobs:
       - name: Add Artifact to Job Summary
         run: 'echo "### 📦 Artifact url: ${{ steps.upload.outputs.artifact-url}}" >> $GITHUB_STEP_SUMMARY'
 
-      - name: Create check run
+      - name: Update Check Run
         uses: actions/github-script@v7
         if: always()
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            github.rest.checks.create({
+            github.rest.checks.update({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              name: 'Test LemLib Without Adding the Commit Hash to the Artifact Name',
-              head_sha: context.sha,
-              output:{
-                title: 'Test LemLib With Upload',
-                summary: '${{ job.status }}'
-              },
-              conclusion: '${{ job.status }}' === 'success' ? 'success' : 'failure'
+              check_run_id: context.runId,
+              conclusion: ${{ job.status }},
             })
 
 
@@ -110,6 +131,22 @@ jobs:
     name: "Testing LemLib Without Uploading an Artifact"
     runs-on: ubuntu-latest
     steps:
+      - name: Create Check Status
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.checks.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              name: 'Test LemLib Without Uploading an Artifact',
+              head_sha: context.sha,
+              status: 'in_progress',
+              output: {
+                title: 'Test LemLib Without Uploading an Artifact',
+                summary: 'This test should pass'
+              }
+            })
+
       - name: Checkout
         uses: actions/checkout@v4
         with:
@@ -124,29 +161,39 @@ jobs:
       - name: Test Without Upload
         uses: ./action/
 
-      - name: Create check run
+      - name: Update Check Run
         uses: actions/github-script@v7
         if: always()
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            github.rest.checks.create({
+            github.rest.checks.update({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              name: 'Test LemLib',
-              head_sha: context.sha,
-              output: {
-                title: 'Test LemLib Without Uploading an Artifact',
-                summary: '${{ job.status }}'
-              },
-              conclusion: '${{ job.status }}' === 'success' ? 'success' : 'failure'
+              check_run_id: context.runId,
+              conclusion: ${{ job.status }},
             })
-
 
   Test_EZ_Template:
     name: "Testing EZ-Template"
     runs-on: ubuntu-latest
     steps:
+      - name: Create Check Run
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.checks.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              name: 'Test EZ-Template',
+              head_sha: context.sha,
+              status: 'in_progress',
+              output: {
+                title: 'Test EZ-Template',
+                summary: 'This test should pass'
+              }
+            })
+
       - name: Checkout
         uses: actions/checkout@v4
         with:
@@ -171,31 +218,42 @@ jobs:
       
       - name: Add Artifact to Job Summary
         run: 'echo "### 📦 Artifact url: ${{ steps.upload.outputs.artifact-url}}" >> $GITHUB_STEP_SUMMARY'
-        
-      - name: Create check run
+
+      - name: Update Check Run
         uses: actions/github-script@v7
         if: always()
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            github.rest.checks.create({
+            github.rest.checks.update({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              name: 'Test LemLib',
-              head_sha: context.sha,
-              output: {
-                title: 'Test EZ-Template With Upload',
-                summary: '${{ job.status }}'
-              },
-              conclusion: '${{ job.status }}' === 'success' ? 'success' : 'failure'
+              check_run_id: context.runId,
+              conclusion: ${{ job.status }},
             })
-
 
   test-lemlib-error:
     name: "Testing LemLib Fail"
     runs-on: ubuntu-latest
     # Success if test fails, failure if test succeeds
     steps:
+      # Create a check run
+      - name: Create Check Run
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.checks.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              name: 'Test LemLib',
+              head_sha: context.sha,
+              status: 'in_progress',
+              output: {
+                title: 'Test LemLib Fail',
+                summary: 'This test should fail'
+              }
+            })
+
       - name: Checkout
         uses: actions/checkout@v4
         with:
@@ -219,22 +277,17 @@ jobs:
             exit 1
           fi
 
-      - name: Create check run
+      - name: Update check run
         uses: actions/github-script@v7
         if: always()
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            github.rest.checks.create({
+            github.rest.checks.update({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              name: 'Test LemLib',
-              head_sha: context.sha,
-              output: {
-                title: 'Test LemLib With Upload',
-                summary: '${{ job.status }}'
-              },
-              conclusion: '${{ job.status }}' === 'success' ? 'failure' : 'success
+              check_run_id: context.runId,
+              conclusion: ${{ job.status }}
             })
 
       
