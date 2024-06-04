@@ -252,7 +252,7 @@ jobs:
             github.rest.checks.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              name: 'Test LemLib',
+              name: 'Test LemLib Fail',
               head_sha: context.sha,
               status: 'in_progress',
               output: {
@@ -262,8 +262,6 @@ jobs:
             }).then(result =>
             {
               core.exportVariable('runId', result.data.id);
-              console.log('result.status: ' + result.status);
-              console.log('result.data: ' + result.data);
             })
 
       - name: Checkout
