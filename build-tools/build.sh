@@ -10,7 +10,7 @@ if [[ "$INPUT_COPY_README_AND_LICENSE_TO_INCLUDE" == "true" && -z "$INPUT_LIB_FO
     echo "You must provide a library folder name if copy_readme_and_license_to_include is true" >&2
     echo "You must provide a library folder name if copy_readme_and_license_to_include is true"
     # Add to Workflow summary
-    echo "# ::error::You must provide a library folder name if copy_readme_and_license_to_include is true" >> $GITHUB_STEP_SUMMARY
+    echo "# ::error::You must provide a library folder name if copy_readme_and_license_to_include is true" >>$GITHUB_STEP_SUMMARY
     exit 102502 # This is the string "pros-build" turned into int values, added together, and then multiplied by 10 plus the error code at the end. This is to hopefully avoid conflicts with other error codes.
 fi
 
@@ -29,7 +29,6 @@ set -e # Exit on error
 
 git config --global --add safe.directory /github/workspace
 
-
 # ----------------
 # CHECK IF TEMPLATE
 # ----------------
@@ -41,10 +40,8 @@ if [ "$template" == "1" ]; then
 else
     echo "is not template"
 fi
-echo "template=$template" >> $GITHUB_OUTPUT
 
 echo "::endgroup::"
-
 
 # ----------------
 # GET PROJECT INFO
@@ -68,25 +65,20 @@ else
     sha=$(git rev-parse HEAD | head -c 6)
 fi
 
-
-
 function get_sha() {
-    echo "sha=$sha" >> $GITHUB_OUTPUT
     echo "SHA found: $sha"
 }
 
 function get_version() {
     version=$(awk -F'=' '/^VERSION:=/{print $2}' Makefile)
     echo "Version found: $version"
-    echo "version=$version" >> "$GITHUB_OUTPUT"
-    echo $version >> "version.txt"
+    echo $version >>"version.txt"
 }
 
-function get_library_name() { 
+function get_library_name() {
     library_name=$(awk -F'=' '/^LIBNAME:=/{print $2}' Makefile)
-    echo "library_name=$library_name" >> "$GITHUB_OUTPUT"
     echo "Library name found: $library_name"
-    echo $library_name >> "library_name.txt"
+    echo $library_name >>"library_name.txt"
 }
 
 get_sha &
@@ -108,10 +100,9 @@ else
     postfix="${version}+${sha}"
 fi
 echo "Postfix after setting: $postfix"
-echo "postfix=$postfix" >> "$GITHUB_OUTPUT"
 
 name="$library_name@$postfix"
-echo "name=$name" >> "$GITHUB_OUTPUT"
+echo "name=$name" >>"$GITHUB_OUTPUT"
 echo "Name found: $name"
 
 echo "::endgroup::"
@@ -130,19 +121,17 @@ if (($template == 1)); then
     sed -i "s/^IS_LIBRARY:=.*\$/IS_LIBRARY:=0/" Makefile
 fi
 
-
 if [[ "$INPUT_MULTITHREADING" == "true" ]]; then
     echo "Multithreading is enabled"
     start_build_time=$SECONDS
-    make quick -j 2> $ERR_OUTPUT | tee $STD_OUTPUT
+    make quick -j 2>$ERR_OUTPUT | tee $STD_OUTPUT
     build_time=$((SECONDS - $start_build_time))
 else
     echo "Multithreading is disabled"
     start_build_time=$SECONDS
-    make quick 2> $ERR_OUTPUT | tee $STD_OUTPUT
+    make quick 2>$ERR_OUTPUT | tee $STD_OUTPUT
     build_time=$((SECONDS - $start_build_time))
 fi
-
 
 if (($template == 1)); then
     echo "Setting IS_LIBRARY back to 1"
@@ -152,22 +141,22 @@ fi
 
 STD_EDITED_OUTPUT=$(mktemp)
 # Remove ANSI color codes from the output
-sed -e 's/\x1b\[[0-9;]*m//g' $STD_OUTPUT > $STD_EDITED_OUTPUT
+sed -e 's/\x1b\[[0-9;]*m//g' $STD_OUTPUT >$STD_EDITED_OUTPUT
 
 if [ -s "$ERR_OUTPUT" ]; then
     error_output=$(cat "$ERR_OUTPUT")
     norm_output=$(cat "$STD_EDITED_OUTPUT")
-    echo "# 🛑 Build Failed" >> $GITHUB_STEP_SUMMARY
-    echo "#### 📄 Error Output" >> $GITHUB_STEP_SUMMARY
-    echo "Build failed in $build_time seconds" >> $GITHUB_STEP_SUMMARY
-    echo "Total Build Script Runtime: $(($SECONDS - $script_start_time)) seconds" >> $GITHUB_STEP_SUMMARY
-    echo "<details><summary>Click to expand</summary>" >> $GITHUB_STEP_SUMMARY
-    echo "" >> $GITHUB_STEP_SUMMARY
-    echo "" >> $GITHUB_STEP_SUMMARY
-    echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
-    echo "$norm_output" >> $GITHUB_STEP_SUMMARY
-    echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
-    echo "</details>" >> $GITHUB_STEP_SUMMARY
+    echo "# 🛑 Build Failed" >>$GITHUB_STEP_SUMMARY
+    echo "#### 📄 Error Output" >>$GITHUB_STEP_SUMMARY
+    echo "Build failed in $build_time seconds" >>$GITHUB_STEP_SUMMARY
+    echo "Total Build Script Runtime: $(($SECONDS - $script_start_time)) seconds" >>$GITHUB_STEP_SUMMARY
+    echo "<details><summary>Click to expand</summary>" >>$GITHUB_STEP_SUMMARY
+    echo "" >>$GITHUB_STEP_SUMMARY
+    echo "" >>$GITHUB_STEP_SUMMARY
+    echo "\`\`\`" >>$GITHUB_STEP_SUMMARY
+    echo "$norm_output" >>$GITHUB_STEP_SUMMARY
+    echo "\`\`\`" >>$GITHUB_STEP_SUMMARY
+    echo "</details>" >>$GITHUB_STEP_SUMMARY
     exit 1
 fi
 
@@ -178,35 +167,31 @@ fi
 set -e # Exit on error
 
 if (($template == 1)); then
-echo "::group::Updating Makefile"
+    echo "::group::Updating Makefile"
 
-sed -i "s/^VERSION:=.*\$/VERSION:=${postfix}/" Makefile
+    sed -i "s/^VERSION:=.*\$/VERSION:=${postfix}/" Makefile
 
-cat Makefile
+    cat Makefile
 
-echo "::endgroup::"
+    echo "::endgroup::"
 
+    echo "::group::Creating ${name} template"
 
+    pros make template
 
-echo "::group::Creating ${name} template"
+    echo "::endgroup::"
 
-pros make template
+    # --------------
+    # UNZIP TEMPLATE
+    # --------------
 
-echo "::endgroup::"
+    echo "::group::Unzipping template"
 
+    unzip -o $name -d template # Unzip the template
 
-# --------------
-# UNZIP TEMPLATE
-# --------------
+    echo "::endgroup::"
 
-echo "::group::Unzipping template"
-
-unzip -o $name -d template # Unzip the template
-
-echo "::endgroup::"
-
-
-fi 
+fi
 
 # ---------------------------
 # ADDING VERSION, LICENSE
@@ -233,20 +218,20 @@ fi
 # JOB SUMMARY
 # -----------
 norm_output=$(cat "$STD_EDITED_OUTPUT")
-echo "# ✅ Build Completed" >> $GITHUB_STEP_SUMMARY
-echo "Build completed in $build_time seconds" >> $GITHUB_STEP_SUMMARY
-echo "Total Build Script Runtime: $(($SECONDS - $script_start_time)) seconds" >> $GITHUB_STEP_SUMMARY
-echo "## 📝 Library Name: ${library_name} @ ${version}" >> $GITHUB_STEP_SUMMARY
-echo "### 🔐 SHA: ${sha}" >> $GITHUB_STEP_SUMMARY
+echo "# ✅ Build Completed" >>$GITHUB_STEP_SUMMARY
+echo "Build completed in $build_time seconds" >>$GITHUB_STEP_SUMMARY
+echo "Total Build Script Runtime: $(($SECONDS - $script_start_time)) seconds" >>$GITHUB_STEP_SUMMARY
+echo "## 📝 Library Name: ${library_name} @ ${version}" >>$GITHUB_STEP_SUMMARY
+echo "### 🔐 SHA: ${sha}" >>$GITHUB_STEP_SUMMARY
 if (($template == 1)); then
-echo "### 📁 Artifact Name: ${name}" >> $GITHUB_STEP_SUMMARY
+    echo "### 📁 Artifact Name: ${name}" >>$GITHUB_STEP_SUMMARY
 fi
-echo "***" >> $GITHUB_STEP_SUMMARY
-echo "#### 📄 Output from Make" >> $GITHUB_STEP_SUMMARY
-echo "<details><summary>Click to expand</summary>" >> $GITHUB_STEP_SUMMARY
-echo "" >> $GITHUB_STEP_SUMMARY
-echo "" >> $GITHUB_STEP_SUMMARY
-echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
-echo "$norm_output" >> $GITHUB_STEP_SUMMARY
-echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
-echo "</details>" >> $GITHUB_STEP_SUMMARY
+echo "***" >>$GITHUB_STEP_SUMMARY
+echo "#### 📄 Output from Make" >>$GITHUB_STEP_SUMMARY
+echo "<details><summary>Click to expand</summary>" >>$GITHUB_STEP_SUMMARY
+echo "" >>$GITHUB_STEP_SUMMARY
+echo "" >>$GITHUB_STEP_SUMMARY
+echo "\`\`\`" >>$GITHUB_STEP_SUMMARY
+echo "$norm_output" >>$GITHUB_STEP_SUMMARY
+echo "\`\`\`" >>$GITHUB_STEP_SUMMARY
+echo "</details>" >>$GITHUB_STEP_SUMMARY
