@@ -67,7 +67,6 @@ fi
 
 echo "SHA found: $sha"
 
-
 version=$(awk -F'=' '/^VERSION:=/{print $2}' Makefile)
 echo "Version found: $version"
 
@@ -181,8 +180,8 @@ fi
 # AND README TO THE TEMPLATE
 # FOLDER
 # ---------------------------
-if [["$INPUT_COPY_README_AND_LICENSE_TO_INCLUDE" == "true"]]; then
-    if [["$INPUT_LIB_FOLDER_NAME" != ""]]; then
+if [[ "$INPUT_COPY_README_AND_LICENSE_TO_INCLUDE" == "true" ]]; then
+    if [[ "$INPUT_LIB_FOLDER_NAME" != "" ]]; then
         echo "::group::Adding version, license and readme to the template folder"
         cp version.txt template/$INPUT_LIB_FOLDER_NAME/version.txt
         cp LICENSE template/$INPUT_LIB_FOLDER_NAME/LICENSE
