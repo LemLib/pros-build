@@ -347,7 +347,7 @@ jobs:
         id: upload
         uses: actions/upload-artifact@v4
         with:
-          name:  ${{ steps.test.outputs.name }}
+          name:  ${{ steps.test.outputs.name }}-libname
           path: "template/*"
 
       - name: Add Artifact to Job Summary
