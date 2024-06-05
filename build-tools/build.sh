@@ -103,18 +103,21 @@ if (($template == 1)); then
     sed -i "s/^IS_LIBRARY:=.*\$/IS_LIBRARY:=0/" Makefile
 fi
 
+# Multithreading
 if [[ "$INPUT_MULTITHREADING" == "true" ]]; then
     echo "Multithreading is enabled"
-    start_build_time=$SECONDS
-    make quick -j 2>$ERR_OUTPUT | tee $STD_OUTPUT
-    build_time=$((SECONDS - $start_build_time))
+    make_args="-j"
 else
     echo "Multithreading is disabled"
-    start_build_time=$SECONDS
-    make quick 2>$ERR_OUTPUT | tee $STD_OUTPUT
-    build_time=$((SECONDS - $start_build_time))
+    make_args=""
 fi
 
+# Actual build
+start_build_time=$SECONDS
+make quick $make_args 2>$ERR_OUTPUT | tee $STD_OUTPUT
+build_time=$((SECONDS - $start_build_time))
+
+# Set IS_LIBRARY back to 1 if $template was 1
 if (($template == 1)); then
     echo "Setting IS_LIBRARY back to 1"
     sed -i "s/^IS_LIBRARY:=.*\$/IS_LIBRARY:=1/" Makefile
@@ -146,7 +149,7 @@ fi
 # CREATING TEMPLATE
 # -----------------
 
-set -e # Exit on error
+set -e # Enable exiting on error
 
 if (($template == 1)); then
     echo "::group::Updating Makefile"
@@ -184,9 +187,9 @@ if [[ "$INPUT_COPY_README_AND_LICENSE_TO_INCLUDE" == "true" ]]; then
     if [[ "$INPUT_LIB_FOLDER_NAME" != "" ]]; then
         echo "::group::Adding version, license and readme to the template folder"
 
-        echo $version > template/include/$INPUT_LIB_FOLDER_NAME/VERSION
-        find . -maxdepth 0  -type f -iname "LICENSE" -exec cp -n {} template/include/$INPUT_LIB_FOLDER_NAME/ \;
-        find . -maxdepth 0  -type f -iname "README*" -exec cp -n {} template/include/$INPUT_LIB_FOLDER_NAME/ \;
+        echo $version >template/include/$INPUT_LIB_FOLDER_NAME/VERSION
+        find . -maxdepth 0 -type f -iname "LICENSE" -exec cp -n {} template/include/$INPUT_LIB_FOLDER_NAME/ \;
+        find . -maxdepth 0 -type f -iname "README*" -exec cp -n {} template/include/$INPUT_LIB_FOLDER_NAME/ \;
         echo "::endgroup::"
     else
         echo "::group::Adding version, license and readme to the template folder"
