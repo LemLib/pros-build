@@ -1,6 +1,14 @@
 #!/bin/bash
 script_start_time=$SECONDS
 
+
+# ----------------
+# ECHO ENV VARS
+# ----------------
+echo "::group::Environment Variables"
+printenv | grep INPUT_
+printenv | grep GITHUB_
+echo "::endgroup::"
 # ----------------
 # VERIFY INPUTS
 # ----------------
