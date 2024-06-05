@@ -23,7 +23,7 @@ env:
 
 
 jobs:
-  Build_Container_NonPR:
+  Build_Container:
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     permissions:
@@ -74,38 +74,22 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-  Build_Container_PR:
-    if: github.event_name == 'pull_request'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: none
-      id-token: none
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      # Set up BuildKit Docker container builder to be able to build
-      # multi-platform images and export cache
-      # https://github.com/docker/setup-buildx-action
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@f95db51fddba0c2d1ec667646a06c2ce06100226 # v3.0.0
-
-      # Build Docker image with Buildx (don't push on PR)
-      # https://github.com/docker/build-push-action
-      - name: Build and push Docker image
-        id: build-and-push
-        uses: docker/build-push-action@0565240e2d4ab88bba5387d719585280857ece09 # v5.0.0
-        with:
-          context: .
-          push: false
-          tags: temp-tag
-          cache-from: type=gha
-    
-  run-tests-pr:
-    needs: Build_Container_PR
-    uses: ./.github/workflows/run-tests.yml
-  run-tests-nonpr:
-    needs: Build_Container_NonPR
-    uses: ./.github/workflows/run-tests.yml
+  run-lemlib:
+    needs: Build_Container
+    uses: ./.github/workflows/test-lemlib.yml
+  run-lemlib-no-artifact:
+    needs: Build_Container
+    uses: ./.github/workflows/test-lemlib-no-artifact.yml
+  run-lemlib-no-hash:
+    needs: Build_Container
+    uses: ./.github/workflows/test-lemlib-no-hash.yml
+  run-ez-template:
+    needs: Build_Container
+    uses: ./.github/workflows/test-ez-template.yml
+  run-lemlib-copy:
+    needs: Build_Container
+    uses: ./.github/workflows/test-lemlib-with-copying-info-files.yml
+  run-lemlib-errors:
+    needs: Build_Container
+    uses: ./.github/workflows/test-lemlib-with-errors.yml
