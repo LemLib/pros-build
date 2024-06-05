@@ -341,6 +341,7 @@ jobs:
         id: test
         uses: ./action/
         with:
+          copy_readme_and_license_to_include: true
           lib_folder_name: "lemlib"
 
       - name: Upload Artifact
