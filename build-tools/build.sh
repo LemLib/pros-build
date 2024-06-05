@@ -131,17 +131,18 @@ sed -e 's/\x1b\[[0-9;]*m//g' $STD_OUTPUT >$STD_EDITED_OUTPUT
 if [ -s "$ERR_OUTPUT" ]; then
     error_output=$(cat "$ERR_OUTPUT")
     norm_output=$(cat "$STD_EDITED_OUTPUT")
-    echo "# 🛑 Build Failed" >>$GITHUB_STEP_SUMMARY
-    echo "#### 📄 Error Output" >>$GITHUB_STEP_SUMMARY
-    echo "Build failed in $build_time seconds" >>$GITHUB_STEP_SUMMARY
-    echo "Total Build Script Runtime: $(($SECONDS - $script_start_time)) seconds" >>$GITHUB_STEP_SUMMARY
-    echo "<details><summary>Click to expand</summary>" >>$GITHUB_STEP_SUMMARY
-    echo "" >>$GITHUB_STEP_SUMMARY
-    echo "" >>$GITHUB_STEP_SUMMARY
-    echo "\`\`\`" >>$GITHUB_STEP_SUMMARY
-    echo "$norm_output" >>$GITHUB_STEP_SUMMARY
-    echo "\`\`\`" >>$GITHUB_STEP_SUMMARY
-    echo "</details>" >>$GITHUB_STEP_SUMMARY
+    echo "
+    # 🛑 Build Failed
+    #### 📄 Error Output
+    Build failed in $build_time seconds
+    Total Build Script Runtime: $(($SECONDS - $script_start_time)) seconds
+    <details><summary>Click to expand</summary>
+    
+    
+    \`\`\`
+    $norm_output
+    \`\`\`
+    </details>" >>$GITHUB_STEP_SUMMARY
     exit 1
 fi
 
@@ -203,20 +204,21 @@ fi
 # JOB SUMMARY
 # -----------
 norm_output=$(cat "$STD_EDITED_OUTPUT")
-echo "# ✅ Build Completed" >>$GITHUB_STEP_SUMMARY
-echo "Build completed in $build_time seconds" >>$GITHUB_STEP_SUMMARY
-echo "Total Build Script Runtime: $(($SECONDS - $script_start_time)) seconds" >>$GITHUB_STEP_SUMMARY
-echo "## 📝 Library Name: ${library_name} @ ${version}" >>$GITHUB_STEP_SUMMARY
-echo "### 🔐 SHA: ${sha}" >>$GITHUB_STEP_SUMMARY
+echo "
+# ✅ Build Completed
+Build completed in $build_time seconds
+Total Build Script Runtime: $(($SECONDS - $script_start_time)) seconds
+## 📝 Library Name: ${library_name} @ ${version}
+### 🔐 SHA: ${sha}
+" >>$GITHUB_STEP_SUMMARY
 if (($template == 1)); then
     echo "### 📁 Artifact Name: ${name}" >>$GITHUB_STEP_SUMMARY
 fi
-echo "***" >>$GITHUB_STEP_SUMMARY
-echo "#### 📄 Output from Make" >>$GITHUB_STEP_SUMMARY
-echo "<details><summary>Click to expand</summary>" >>$GITHUB_STEP_SUMMARY
-echo "" >>$GITHUB_STEP_SUMMARY
-echo "" >>$GITHUB_STEP_SUMMARY
-echo "\`\`\`" >>$GITHUB_STEP_SUMMARY
-echo "$norm_output" >>$GITHUB_STEP_SUMMARY
-echo "\`\`\`" >>$GITHUB_STEP_SUMMARY
-echo "</details>" >>$GITHUB_STEP_SUMMARY
+echo "***
+#### 📄 Output from Make
+<details><summary>Click to expand</summary>
+
+\`\`\`
+$norm_output
+\`\`\`
+</details>" >>$GITHUB_STEP_SUMMARY
