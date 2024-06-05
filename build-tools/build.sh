@@ -159,7 +159,7 @@ if (($template == 1)); then
 
     echo "::group::Creating ${name} template"
 
-    pros make template
+    make template
 
     echo "::endgroup::"
 
