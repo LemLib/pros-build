@@ -183,9 +183,9 @@ fi
 if [[ "$INPUT_COPY_README_AND_LICENSE_TO_INCLUDE" == "true" ]]; then
     if [[ "$INPUT_LIB_FOLDER_NAME" != "" ]]; then
         echo "::group::Adding version, license and readme to the template folder"
-        cp version.txt template/$INPUT_LIB_FOLDER_NAME/version.txt
-        cp LICENSE template/$INPUT_LIB_FOLDER_NAME/LICENSE
-        cp README.md template/$INPUT_LIB_FOLDER_NAME/README.md
+        echo $version > template/$INPUT_LIB_FOLDER_NAME/VERSION
+        find . -type f -iname "LICENSE" -exec cp {} template/$INPUT_LIB_FOLDER_NAME/ \;
+        find . -type f -iname "README*" -exec cp {} template/$INPUT_LIB_FOLDER_NAME/ \;
         echo "::endgroup::"
     else
         echo "::group::Adding version, license and readme to the template folder"
