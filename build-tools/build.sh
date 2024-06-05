@@ -14,6 +14,16 @@ if [[ "$INPUT_COPY_README_AND_LICENSE_TO_INCLUDE" == "true" && -z "$INPUT_LIB_FO
     exit 102502 # This is the string "pros-build" turned into int values, added together, and then multiplied by 10 plus the error code at the end. This is to hopefully avoid conflicts with other error codes.
 fi
 
+
+# Multithreading
+if [[ "$INPUT_MULTITHREADING" == "true" ]]; then
+    echo "Multithreading is enabled"
+    make_args="-j"
+else
+    echo "Multithreading is disabled"
+    make_args=""
+fi
+
 # ------------
 # ECHO LICENSE
 # ------------
@@ -103,15 +113,6 @@ if (($template == 1)); then
     sed -i "s/^IS_LIBRARY:=.*\$/IS_LIBRARY:=0/" Makefile
 fi
 
-# Multithreading
-if [[ "$INPUT_MULTITHREADING" == "true" ]]; then
-    echo "Multithreading is enabled"
-    make_args="-j"
-else
-    echo "Multithreading is disabled"
-    make_args=""
-fi
-
 # Actual build
 start_build_time=$SECONDS
 make quick $make_args 2>$ERR_OUTPUT | tee $STD_OUTPUT
@@ -162,7 +163,7 @@ if (($template == 1)); then
 
     echo "::group::Creating ${name} template"
 
-    make template
+    make template $make_args
 
     echo "::endgroup::"
 
