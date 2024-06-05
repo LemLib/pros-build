@@ -65,31 +65,14 @@ else
     sha=$(git rev-parse HEAD | head -c 6)
 fi
 
-function get_sha() {
-    echo "SHA found: $sha"
-}
+echo "SHA found: $sha"
 
-function get_version() {
-    version=$(awk -F'=' '/^VERSION:=/{print $2}' Makefile)
-    echo "Version found: $version"
-    echo $version >>"version.txt"
-}
 
-function get_library_name() {
-    library_name=$(awk -F'=' '/^LIBNAME:=/{print $2}' Makefile)
-    echo "Library name found: $library_name"
-    echo $library_name >>"library_name.txt"
-}
+version=$(awk -F'=' '/^VERSION:=/{print $2}' Makefile)
+echo "Version found: $version"
 
-get_sha &
-get_version &
-get_library_name &
-wait
-
-version=$(cat version.txt)
-rm version.txt
-library_name=$(cat library_name.txt)
-rm library_name.txt
+library_name=$(awk -F'=' '/^LIBNAME:=/{print $2}' Makefile)
+echo "Library name found: $library_name"
 
 echo "Version before setting postfix: $version"
 echo "SHA before setting postfix: $sha"
