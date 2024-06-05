@@ -14,7 +14,6 @@ if [[ "$INPUT_COPY_README_AND_LICENSE_TO_INCLUDE" == "true" && -z "$INPUT_LIB_FO
     exit 102502 # This is the string "pros-build" turned into int values, added together, and then multiplied by 10 plus the error code at the end. This is to hopefully avoid conflicts with other error codes.
 fi
 
-
 # Multithreading
 if [[ "$INPUT_MULTITHREADING" == "true" ]]; then
     echo "Multithreading is enabled"
