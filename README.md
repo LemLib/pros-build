@@ -2,7 +2,7 @@
 
 [![Test action](https://github.com/LemLib/pros-build/actions/workflows/test.yml/badge.svg)](https://github.com/LemLib/pros-build/actions/workflows/test.yml)
 
-This action creates an environment capable of building PROS projects, and builds them using [build.sh](/build-tools/build.sh)
+This action creates an environment capable of building PROS projects and templates, and builds them using [build.sh](/build-tools/build.sh)
 
 
 Instructions on creating a custom build script, adding additional packages, and using this image as a base are located at the end of this readme.
