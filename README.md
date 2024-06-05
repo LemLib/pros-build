@@ -2,20 +2,8 @@
 
 [![Test action](https://github.com/LemLib/pros-build/actions/workflows/test.yml/badge.svg)](https://github.com/LemLib/pros-build/actions/workflows/test.yml)
 
-This action creates an environment capable of building PROS projects. 
+This action creates an environment capable of building PROS projects, and builds them using [build.sh](/build-tools/build.sh)
 
-It by default includes the packages built into the Ubuntu docker image, and contains the additional packages below:
-
-```
-jq
-wget
-git
-gawk
-python3-minimal
-python3-pip
-unzip
-pros-cli (through python)
-```
 
 Instructions on creating a custom build script, adding additional packages, and using this image as a base are located at the end of this readme.
 
@@ -56,6 +44,18 @@ jobs:
 
 If you wish to use your own build script using this container as a base, you can do so with the following:
 
+It by default includes the packages built into the Ubuntu docker image, and contains the additional packages below:
+
+```
+jq (Used to parse the GitHub API response in build.sh)
+wget (Used to download the toolchain)
+git (Used to get the HEAD SHA hash)
+gawk (Used to get lines from the user project's Makefile)
+python3-minimal (Minimal installation of Python used for pros-cli)
+python3-pip (Used to install pros-cli in the Dockerfile)
+unzip (Unzips the template so that it can be uploaded to Github Actions)
+pros-cli (through python) 
+```
 
 ```Dockerfile
 FROM ghcr.io/LemLib/pros-build:main
