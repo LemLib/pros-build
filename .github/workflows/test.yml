@@ -286,7 +286,7 @@ jobs:
 
       - name: test-lemlib-error
         run: |
-          if [[ "${{ steps.test.outcome }}" == "success" ]]; then
+          if [[ "${{ steps.test.outcome.code }}" == "1" ]]; then
             echo "Test With Upload + Bonus Files step succeeded, failing test-lemlib-error step"
             exit 1
           fi
@@ -303,5 +303,63 @@ jobs:
               check_run_id: process.env.runId,
               conclusion: '${{ job.status }}'
             })
+  test-library-name:
+    name: "Testing Library Name"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create Check Run
+        id: create-check
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.checks.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              name: 'Test Library Name',
+              head_sha: context.sha,
+              status: 'in_progress',
+              output: {
+                title: 'Test Library Name',
+                summary: 'This test should pass'
+              }
+            }).then(result => core.exportVariable('runId', result.data.id))
 
-      
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          repository: LemLib/LemLib
+          ref: 6fc0838e0aa1de03d7864002888f5d874b691910
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          path: ./action/
+
+      - name: Test With Upload
+        id: test
+        uses: ./action/
+        with:
+          lib_folder_name: "lemlib"
+
+      - name: Upload Artifact
+        id: upload
+        uses: actions/upload-artifact@v4
+        with:
+          name:  ${{ steps.test.outputs.name }}
+          path: "template/*"
+
+      - name: Add Artifact to Job Summary
+        run: 'echo "### 📦 Artifact url: ${{ steps.upload.outputs.artifact-url}}" >> $GITHUB_STEP_SUMMARY'
+
+      - name: Update Check Run
+        uses: actions/github-script@v7
+        if: always()
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            github.rest.checks.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              check_run_id: process.env.runId,
+              conclusion: '${{ job.status }}',
+            })

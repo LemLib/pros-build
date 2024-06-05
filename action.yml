@@ -14,6 +14,14 @@ inputs:
     required: false
     default: false
     description: Whether to not include the commit hash in the artifact name
+  copy_readme_and_license_to_include:
+    required: false
+    default: false
+    description: Whether to copy the README.md and LICENSE files to the include directory
+  lib_folder_name:
+    required: false
+    default: ''
+    description: The name of the folder under the include directory that contains the headers for the project. Required if copy_readme_and_license_to_include is true
 runs:
   using: 'Docker'
   image: 'docker://ghcr.io/abucky0/pros-build:main'

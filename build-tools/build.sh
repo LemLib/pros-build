@@ -1,5 +1,19 @@
 #!/bin/bash
 script_start_time=$SECONDS
+
+# ----------------
+# VERIFY INPUTS
+# ----------------
+
+# Check if the user has provided a library folder name if copy_readme_and_license_to_include: is true
+if [[ "$INPUT_COPY_README_AND_LICENSE_TO_INCLUDE" == "true" && -z "$INPUT_LIB_FOLDER_NAME" ]]; then
+    echo "You must provide a library folder name if copy_readme_and_license_to_include is true" >&2
+    echo "You must provide a library folder name if copy_readme_and_license_to_include is true"
+    # Add to Workflow summary
+    echo "# ::error::You must provide a library folder name if copy_readme_and_license_to_include is true" >> $GITHUB_STEP_SUMMARY
+    exit 102502 # This is the string "pros-build" turned into int values, added together, and then multiplied by 10 plus the error code at the end. This is to hopefully avoid conflicts with other error codes.
+fi
+
 # ------------
 # ECHO LICENSE
 # ------------
@@ -157,10 +171,11 @@ if [ -s "$ERR_OUTPUT" ]; then
     exit 1
 fi
 
-set -e
 # -----------------
 # CREATING TEMPLATE
 # -----------------
+
+set -e # Exit on error
 
 if (($template == 1)); then
 echo "::group::Updating Makefile"
@@ -193,7 +208,27 @@ echo "::endgroup::"
 
 fi 
 
-
+# ---------------------------
+# ADDING VERSION, LICENSE
+# AND README TO THE TEMPLATE
+# FOLDER
+# ---------------------------
+if (($INPUT_COPY_README_AND_LICENSE_TO_INCLUDE == 1)); then
+    if [[$INPUT_LIB_FOLDER_NAME != ""]]; then
+        echo "::group::Adding version, license and readme to the template folder"
+        cp version.txt template/$INPUT_LIB_FOLDER_NAME/version.txt
+        cp LICENSE template/$INPUT_LIB_FOLDER_NAME/LICENSE
+        cp README.md template/$INPUT_LIB_FOLDER_NAME/README.md
+        echo "::endgroup::"
+    else
+        echo "::group::Adding version, license and readme to the template folder"
+        echo "Error: You must provide a library folder name if copy_readme_and_license_to_include is true" >&2
+        echo "::endgroup::"
+        # exit with an error code of 2, representing the error code for missing library folder name
+        # Redundant, but just in case
+        exit 102502 # This is the string "pros-build" turned into int values, added together, and then multiplied by 10 plus the error code at the end (error code 3). This is to hopefully avoid conflicts with other error codes.
+    fi
+fi
 # -----------
 # JOB SUMMARY
 # -----------
