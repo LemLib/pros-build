@@ -40,7 +40,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: LemLib/LemLib
-          ref: 6fc0838e0aa1de03d7864002888f5d874b691910
+          ref: stable
 
       - name: Checkout
         uses: actions/checkout@v4
@@ -73,6 +73,7 @@ jobs:
               check_run_id: process.env.runid,
               conclusion: '${{ job.status }}'
             })
+
   Test_LemLib_Without_Adding_the_Commit_Hash:
     name: "Testing LemLib Without Adding the Commit Hash"
     runs-on: ubuntu-latest
@@ -98,7 +99,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: LemLib/LemLib
-          ref: 6fc0838e0aa1de03d7864002888f5d874b691910
+          ref: stable
 
       - name: Checkout
         uses: actions/checkout@v4
@@ -328,7 +329,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: LemLib/LemLib
-          ref: 6fc0838e0aa1de03d7864002888f5d874b691910
+          ref: stable
 
       - name: Checkout
         uses: actions/checkout@v4
