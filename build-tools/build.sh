@@ -111,7 +111,7 @@ echo "::endgroup::"
 # ----------------
 # Pause errors
 set +e
-pros make clean
+make clean
 ERR_OUTPUT=$(mktemp)
 STD_OUTPUT=$(mktemp)
 # Set IS_LIBRARY to 0 to build the project if $template is 1
