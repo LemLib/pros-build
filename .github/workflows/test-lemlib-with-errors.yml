@@ -1,0 +1,31 @@
+name: Test An Intentionally Erroring Version of LemLib
+on:
+  workflow_call:
+jobs:
+  test-lemlib-error:
+    name: "Testing LemLib Fail"
+    runs-on: ubuntu-latest
+    # Success if test fails, failure if test succeeds
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          repository: LemLib/LemLib
+          ref: 7ae0a601276c4df5eb8957495b9c4fa2093d72e3
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          path: ./action/
+
+      - name: Test With Upload + Bonus Files
+        id: test
+        uses: ./action/
+        continue-on-error: true
+
+      - name: test-lemlib-error
+        run: |
+          if [[ "${{ steps.test.outcome.code }}" == "1" ]]; then
+            echo "Test With Upload + Bonus Files step succeeded, failing test-lemlib-error step"
+            exit 1
+          fi

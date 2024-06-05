@@ -1,0 +1,22 @@
+name: Test LemLib without Uploading an Artifact
+on:
+  workflow_call:
+
+jobs:
+  Test_LemLib_Without_Uploading_an_Artifact:
+    name: "Testing LemLib Without Uploading an Artifact"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          repository: LemLib/LemLib
+          ref: 6fc0838e0aa1de03d7864002888f5d874b691910
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          path: ./action/
+
+      - name: Test Without Upload
+        uses: ./action/

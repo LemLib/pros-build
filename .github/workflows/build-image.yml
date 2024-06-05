@@ -102,3 +102,10 @@ jobs:
           push: false
           tags: temp-tag
           cache-from: type=gha
+    
+  run-tests-pr:
+    needs: Build_Container_PR
+    uses: ./.github/workflows/run-tests.yml
+  run-tests-nonpr:
+    needs: Build_Container_NonPR
+    uses: ./.github/workflows/run-tests.yml

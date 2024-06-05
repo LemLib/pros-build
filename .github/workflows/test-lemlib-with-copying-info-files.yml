@@ -1,0 +1,35 @@
+name: Test LemLib with Copying VERSION, README, AND LICENSE Files to Header Directory
+on:
+  workflow_call:
+jobs:
+  test-library-name:
+    name: "Testing Library Name"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          repository: LemLib/LemLib
+          ref: stable
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          path: ./action/
+
+      - name: Test With Upload
+        id: test
+        uses: ./action/
+        with:
+          copy_readme_and_license_to_include: true
+          lib_folder_name: "lemlib"
+
+      - name: Upload Artifact
+        id: upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.test.outputs.name }}-libname
+          path: "template/*"
+
+      - name: Add Artifact to Job Summary
+        run: 'echo "### 📦 Artifact url: ${{ steps.upload.outputs.artifact-url}}" >> $GITHUB_STEP_SUMMARY'
