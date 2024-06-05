@@ -24,7 +24,6 @@ env:
 
 jobs:
   Build_Container:
-    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     permissions:
       contents: read
