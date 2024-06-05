@@ -184,21 +184,20 @@ fi
 # FOLDER
 # ---------------------------
 if [[ "$INPUT_COPY_README_AND_LICENSE_TO_INCLUDE" == "true" ]]; then
+    echo "::group::Adding version, license and readme to the template folder"
     if [[ "$INPUT_LIB_FOLDER_NAME" != "" ]]; then
-        echo "::group::Adding version, license and readme to the template folder"
 
         echo $version >template/include/$INPUT_LIB_FOLDER_NAME/VERSION
         find . -maxdepth 0 -type f -iname "LICENSE*" -exec cp -n {} template/include/$INPUT_LIB_FOLDER_NAME/ \;
         find . -maxdepth 0 -type f -iname "README*" -exec cp -n {} template/include/$INPUT_LIB_FOLDER_NAME/ \;
-        echo "::endgroup::"
     else
-        echo "::group::Adding version, license and readme to the template folder"
         echo "Error: You must provide a library folder name if copy_readme_and_license_to_include is true" >&2
         echo "::endgroup::"
         # exit with an error code of 2, representing the error code for missing library folder name
         # Redundant, but just in case
         exit 102502 # This is the string "pros-build" turned into int values, added together, and then multiplied by 10 plus the error code at the end (error code 3). This is to hopefully avoid conflicts with other error codes.
     fi
+    echo "::endgroup::"
 fi
 # -----------
 # JOB SUMMARY
