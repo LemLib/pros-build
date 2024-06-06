@@ -139,13 +139,13 @@ if (($make_exit_code != 0)); then
         norm_output=$(cat "$STD_EDITED_OUTPUT")
         rm -rf $STD_OUTPUT $STD_EDITED_OUTPUT
         echo "
-    # 🛑 Build Failed
-    #### 📄 Error Output
-    Build failed in $build_time seconds
-    Total Build Script Runtime: $(($SECONDS - $script_start_time)) seconds
-    <details><summary>Click to expand</summary>   
-    $norm_output 
-    </details>" >>$GITHUB_STEP_SUMMARY
+# 🛑 Build Failed
+#### 📄 Error Output
+Build failed in $build_time seconds
+Total Build Script Runtime: $(($SECONDS - $script_start_time)) seconds
+<details><summary>Click to expand</summary>   
+$norm_output 
+</details>" >>$GITHUB_STEP_SUMMARY
     fi
     exit 1
 fi
