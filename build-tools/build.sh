@@ -107,7 +107,6 @@ echo "::endgroup::"
 # Pause errors
 set +e
 make clean $make_args
-ERR_OUTPUT=$(mktemp)
 STD_OUTPUT=$(mktemp)
 # Set IS_LIBRARY to 0 to build the project if $template is 1
 if (($template == 1)); then
@@ -118,7 +117,8 @@ fi
 
 # Actual build
 start_build_time=$SECONDS
-make quick $make_args 2>$ERR_OUTPUT | tee $STD_OUTPUT
+make quick $make_args | tee $STD_OUTPUT
+make_exit_code=${PIPESTATUS[0]}
 build_time=$((SECONDS - $start_build_time))
 
 # Set IS_LIBRARY back to 1 if $template was 1
@@ -132,9 +132,9 @@ STD_EDITED_OUTPUT=$(mktemp)
 # Remove ANSI color codes from the output
 sed -e 's/\x1b\[[0-9;]*m//g' $STD_OUTPUT >$STD_EDITED_OUTPUT
 
-if [ -s "$ERR_OUTPUT" ]; then
-    error_output=$(cat "$ERR_OUTPUT")
+if (($make_exit_code != 0)); then
     norm_output=$(cat "$STD_EDITED_OUTPUT")
+    rm -rf $STD_OUTPUT $STD_EDITED_OUTPUT
     echo "
     # 🛑 Build Failed
     #### 📄 Error Output
@@ -208,6 +208,7 @@ fi
 # JOB SUMMARY
 # -----------
 norm_output=$(cat "$STD_EDITED_OUTPUT")
+rm -rf $STD_OUTPUT $STD_EDITED_OUTPUT
 echo "
 # ✅ Build Completed
 Build completed in $build_time seconds
@@ -226,3 +227,6 @@ echo "***
 $norm_output
 \`\`\`
 </details>" >>$GITHUB_STEP_SUMMARY
+
+
+exit 0
