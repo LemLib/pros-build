@@ -39,7 +39,7 @@ jobs:
       #     path: image.tar
       - name: Download Image
         run: |
-          curl -L -o image.tar ${{ inputs.URL }}
+          curl -H "Authorization: token ${{github.token}}" -L -o image.tar ${{ inputs.URL }}
       - name: Setup Image
         run: |
           docker load -i image.tar
