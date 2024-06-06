@@ -91,7 +91,7 @@ jobs:
     outputs:
       prnum: ${{ github.event.number }}
       url: ${{ steps.upload.outputs.artifact-url }}
-      tag: ${{ steps.meta.outputs.tags }}
+      tag:  ${{ env.IMAGE_NAME }}
   
   run-lemlib:
     needs: Build_Container
@@ -115,7 +115,7 @@ jobs:
     uses: ./.github/workflows/test-ez-template.yml
     with:
       GH_PR_NUM: ${{ needs.Build_Container.outputs.prnum }}
-      TAG:  ${{ env.IMAGE_NAME }}
+      TAG:  ${{ needs.Build_Container.outputs.tag }}
   run-lemlib-copy:
     needs: Build_Container
     uses: ./.github/workflows/test-lemlib-with-copying-info-files.yml
