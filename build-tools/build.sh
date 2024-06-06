@@ -7,6 +7,7 @@ script_start_time=$SECONDS
 echo "::group::Environment Variables"
 printenv | grep ^GITHUB_ | grep -v GITHUB_TOKEN
 printenv | grep ^INPUT_
+printenv | grep ^GH_
 echo "::endgroup::"
 
 # ----------------
