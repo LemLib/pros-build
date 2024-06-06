@@ -33,13 +33,17 @@ jobs:
         with:
           name: image.tar
           path: image.tar
+      
       - name: Setup Image
         run: |
           docker load -i image.tar
+      
       - name: Edit Action.yml With Local Image
         run: |
-          sed -i 's/docker:\/\/ghcr.io\/abucky0\/pros-build:main/${{inputs.TAG}}/g' action/action.yml
           cat action/action.yml
+          sed -i 's|docker://ghcr.io/abucky0/pros-build:main|docker://${{ inputs.TAG }}|g' action/action.yml
+          cat action/action.yml
+      
       - name: Test With Upload (EZ-Template)
         id: test
         uses: ./action/
