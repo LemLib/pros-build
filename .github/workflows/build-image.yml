@@ -72,15 +72,16 @@ jobs:
           cache-to: type=gha,mode=max
       - name: Add Environment Variables
         run: |
-          echo "GITHUB_PR_NUM=${{ github.event.number }}" >> $GITHUB_ENV
-          echo "GITHUB_EVENT_NAME=${{ github.event_name }}" >> $GITHUB_ENV
-          echo "GITHUB_REPOSITORY=${{ github.repository }}" >> $GITHUB_ENV
+          echo "GH_PULLREQ_NUM=${{ github.event.number }}" >> $GITHUB_ENV
+          echo "GH_EEVENT_NAME=${{ github.event_name }}" >> $GITHUB_ENV
+          echo "GH_RREPOSITORY=${{ github.repository }}" >> $GITHUB_ENV
 
   run-lemlib:
     needs: Build_Container
     uses: ./.github/workflows/test-lemlib.yml
-    secrets:
-      GH_PR_NUM: "${{ format('{0}', github.event.number) }}"
+    # secrets:
+    #   GH_PR_NUM: "${{ format('{0}', github.event.number) }}"
+
   run-lemlib-no-artifact:
     needs: Build_Container
     uses: ./.github/workflows/test-lemlib-no-artifact.yml
