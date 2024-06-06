@@ -2,6 +2,14 @@
 script_start_time=$SECONDS
 
 # ----------------
+# ECHO ENV VARS
+# ----------------
+echo "::group::Environment Variables"
+printenv | grep ^GITHUB_ | grep -v GITHUB_TOKEN
+printenv | grep ^INPUT_
+echo "::endgroup::"
+
+# ----------------
 # VERIFY INPUTS
 # ----------------
 
