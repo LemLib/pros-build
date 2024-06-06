@@ -78,29 +78,29 @@ jobs:
     needs: Build_Container
     uses: ./.github/workflows/test-lemlib.yml
     with:
-      GITHUB_PR_NUM: ${{ github.action.pr.number}}
+      GITHUB_PR_NUM: ${{github.event.number}}
   run-lemlib-no-artifact:
     needs: Build_Container
     uses: ./.github/workflows/test-lemlib-no-artifact.yml
     with:
-      GITHUB_PR_NUM: ${{ github.action.pr.number}}
+      GITHUB_PR_NUM: ${{github.event.number}}
   run-lemlib-no-hash:
     needs: Build_Container
     uses: ./.github/workflows/test-lemlib-no-hash.yml
     with:
-      GITHUB_PR_NUM: ${{ github.action.pr.number}}
+      GITHUB_PR_NUM: ${{github.event.number}}
   run-ez-template:
     needs: Build_Container
     uses: ./.github/workflows/test-ez-template.yml
     with:
-      GITHUB_PR_NUM: ${{ github.action.pr.number}}
+      GITHUB_PR_NUM: ${{github.event.number}}
   run-lemlib-copy:
     needs: Build_Container
     uses: ./.github/workflows/test-lemlib-with-copying-info-files.yml
     with:
-      GITHUB_PR_NUM: ${{ github.action.pr.number}}
+      GITHUB_PR_NUM: ${{github.event.number}}
   run-lemlib-errors:
     needs: Build_Container
     uses: ./.github/workflows/test-lemlib-with-errors.yml
     with:
-      GITHUB_PR_NUM: ${{ github.action.pr.number}}
+      GITHUB_PR_NUM: ${{github.event.number}}
