@@ -81,6 +81,7 @@ jobs:
       - name: Create Tar Image For Upload
         id: tar
         run: |
+          docker images
           tag=${{ steps.meta.outputs.tags }}
           tag=${tag#ghcr.io/}
           echo $tag
