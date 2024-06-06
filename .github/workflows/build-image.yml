@@ -66,6 +66,7 @@ jobs:
         with:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
+          load: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
@@ -79,7 +80,7 @@ jobs:
       - name: Create Tar Image For Upload
         id: tar
         run: |
-          docker save -o image.tar ${{ steps.meta.outputs.tags }}
+          docker save -o image.tar ${{ env.IMAGE_NAME }}
       
       - name: Upload Artifact
         id: upload
@@ -114,7 +115,7 @@ jobs:
     uses: ./.github/workflows/test-ez-template.yml
     with:
       GH_PR_NUM: ${{ needs.Build_Container.outputs.prnum }}
-      TAG: ${{ needs.Build_Container.outputs.tag }}
+      TAG:  ${{ env.IMAGE_NAME }}
   run-lemlib-copy:
     needs: Build_Container
     uses: ./.github/workflows/test-lemlib-with-copying-info-files.yml
