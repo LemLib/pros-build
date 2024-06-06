@@ -61,7 +61,7 @@ jobs:
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
       - name: Build and push Docker image
-        id: build-and-push
+        id: buildandpush
         uses: docker/build-push-action@0565240e2d4ab88bba5387d719585280857ece09 # v5.0.0
         with:
           context: .
@@ -76,9 +76,22 @@ jobs:
           echo "GH_PULLREQ_NUM=${{ github.event.number }}" >> $GITHUB_ENV
           echo "GH_EEVENT_NAME=${{ github.event_name }}" >> $GITHUB_ENV
           echo "GH_RREPOSITORY=${{ github.repository }}" >> $GITHUB_ENV
+      - name: Create Tar Image For Upload
+        id: tar
+        run: |
+          docker save -o image.tar ${{ steps.meta.outputs.tags }}
+      
+      - name: Upload Artifact
+        id: upload
+        uses: actions/upload-artifact
+        with:
+          name: image.tar
+          path: image.tar
     outputs:
       prnum: ${{ github.event.number }}
-
+      url: ${{ steps.upload.outputs.artifact-url }}
+      tag: ${{ steps.meta.outputs.tags }}
+  
   run-lemlib:
     needs: Build_Container
     uses: ./.github/workflows/test-lemlib.yml
@@ -90,6 +103,7 @@ jobs:
     uses: ./.github/workflows/test-lemlib-no-artifact.yml
     with:
       GH_PR_NUM: ${{ needs.Build_Container.outputs.prnum }}
+
   run-lemlib-no-hash:
     needs: Build_Container
     uses: ./.github/workflows/test-lemlib-no-hash.yml
@@ -100,6 +114,7 @@ jobs:
     uses: ./.github/workflows/test-ez-template.yml
     with:
       GH_PR_NUM: ${{ needs.Build_Container.outputs.prnum }}
+      TAG: ${{ needs.Build_Container.outputs.tag }}
   run-lemlib-copy:
     needs: Build_Container
     uses: ./.github/workflows/test-lemlib-with-copying-info-files.yml
