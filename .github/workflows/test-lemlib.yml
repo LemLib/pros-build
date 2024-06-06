@@ -1,18 +1,6 @@
 name: Test LemLib
 on:
   workflow_call:
-    inputs:
-      GITHUB_PR_NUM:
-        description: "The PR number"
-        required: true
-        type: number
-      GH_EVENT_NAME:
-        description: "The event name"
-        required: true
-        type: string
-env:
-  GH_PR_NUM: ${{ github.event.inputs.GITHUB_PR_NUM }}
-  GH_EVENT_NAME: ${{ github.event.inputs.GH_EVENT_NAME }}
 
 jobs:
   Test_LemLib:
