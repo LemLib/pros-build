@@ -21,9 +21,6 @@ jobs:
       - name: Test With Upload
         id: test
         uses: ./action/
-        env:
-          GH_PR_NUM: ${{ env.GH_PR_NUM }}
-          GH_EVENT_NAME: ${{ env.GH_EVENT_NAME }}
 
       - name: Upload Artifact
         id: upload
