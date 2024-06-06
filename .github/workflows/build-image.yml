@@ -72,35 +72,44 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-
+  
+  # get pr num from GITHUB_REF
+  get-pr-num:
+    runs-on: ubuntu-latest
+    outputs:
+      GITHUB_PR_NUM: ${{ steps.get-pr-num.outputs.GITHUB_PR_NUM }}
+    steps:
+      - name: Get PR number
+        id: get-pr-num
+        run: echo "pr_num=$(echo $GITHUB_REF | cut -d'/' -f3)" >> $GITHUB_ENV
 
   run-lemlib:
     needs: Build_Container
     uses: ./.github/workflows/test-lemlib.yml
     with:
-      GITHUB_PR_NUM: ${{github.event.number}}
+      GITHUB_PR_NUM: ${{ github.event.number || -1 }}
   run-lemlib-no-artifact:
     needs: Build_Container
     uses: ./.github/workflows/test-lemlib-no-artifact.yml
     with:
-      GITHUB_PR_NUM: ${{github.event.number}}
+      GITHUB_PR_NUM: ${{ github.event.number || -1 }}
   run-lemlib-no-hash:
     needs: Build_Container
     uses: ./.github/workflows/test-lemlib-no-hash.yml
     with:
-      GITHUB_PR_NUM: ${{github.event.number}}
+      GITHUB_PR_NUM: ${{ github.event.number || -1 }}
   run-ez-template:
     needs: Build_Container
     uses: ./.github/workflows/test-ez-template.yml
     with:
-      GITHUB_PR_NUM: ${{github.event.number}}
+      GITHUB_PR_NUM: ${{ github.event.number || -1 }}
   run-lemlib-copy:
     needs: Build_Container
     uses: ./.github/workflows/test-lemlib-with-copying-info-files.yml
     with:
-      GITHUB_PR_NUM: ${{github.event.number}}
+      GITHUB_PR_NUM: ${{ github.event.number || -1 }}
   run-lemlib-errors:
     needs: Build_Container
     uses: ./.github/workflows/test-lemlib-with-errors.yml
     with:
-      GITHUB_PR_NUM: ${{github.event.number}}
+      GITHUB_PR_NUM: ${{ github.event.number || -1 }}
