@@ -1,11 +1,14 @@
 name: Test An Intentionally Erroring Version of LemLib
 on:
   workflow_call:
-    secrets:
+    inputs:
       GH_PR_NUM:
+        description: "The PR number"
+        required: true
+        type: string
 
 env:
-  GH_PR_NUM: ${{ secrets.GH_PR_NUM }}
+  GH_PR_NUM: ${{ inputs.GH_PR_NUM }}
 jobs:
   test-lemlib-error:
     name: "Testing LemLib Fail"
@@ -15,18 +18,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          repository: LemLib/LemLib
-          ref: 7ae0a601276c4df5eb8957495b9c4fa2093d72e3
+          repository: LemLib/LemLib 
+          ref: 7ae0a601276c4df5eb8957495b9c4fa2093d72e3 # Intentionally selected, because it is an erroring commit
 
       - name: Checkout
         uses: actions/checkout@v4
         with:
           path: ./action/
 
-      - name: Test With Upload + Bonus Files
+      - name: Test With Upload + Error
         id: test
         uses: ./action/
         continue-on-error: true
+        env:
+            GH_PR_NUM: ${{ inputs.GH_PR_NUM }}
 
       - name: test-lemlib-error
         run: |

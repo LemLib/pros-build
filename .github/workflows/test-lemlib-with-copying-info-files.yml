@@ -1,10 +1,13 @@
 name: Test LemLib with Copying VERSION, README, AND LICENSE Files to Header Directory
 on:
   workflow_call:
-    secrets:
+    inputs:
       GH_PR_NUM:
+        description: "The PR number"
+        required: true
+        type: string
 env:
-    GH_PR_NUM: ${{ secrets.GH_PR_NUM }}
+    GH_PR_NUM: ${{ inputs.GH_PR_NUM }}
 jobs:
   test-library-name:
     name: "Testing Library Name"
@@ -21,12 +24,14 @@ jobs:
         with:
           path: ./action/
 
-      - name: Test With Upload
+      - name: Test With Upload + Copy Files
         id: test
         uses: ./action/
         with:
           copy_readme_and_license_to_include: true
           lib_folder_name: "lemlib"
+        env:
+            GH_PR_NUM: ${{ inputs.GH_PR_NUM }}
 
       - name: Upload Artifact
         id: upload

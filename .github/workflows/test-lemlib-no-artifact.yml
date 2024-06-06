@@ -1,11 +1,14 @@
 name: Test LemLib without Uploading an Artifact
 on:
     workflow_call:
-        secrets:
+        inputs:
             GH_PR_NUM:
+                description: "The PR number"
+                required: true
+                type: string
 env:
-    GH_PR_NUM: ${{ secrets.GH_PR_NUM }}
-    
+    GH_PR_NUM: ${{ inputs.GH_PR_NUM }}
+
 jobs:
   Test_LemLib_Without_Uploading_an_Artifact:
     name: "Testing LemLib Without Uploading an Artifact"
@@ -24,3 +27,5 @@ jobs:
 
       - name: Test Without Upload
         uses: ./action/
+        env:
+            GH_PR_NUM: ${{ inputs.GH_PR_NUM }}

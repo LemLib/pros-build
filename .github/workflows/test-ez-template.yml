@@ -1,11 +1,14 @@
 name: Test EZ Template
 on:
   workflow_call:
-    secrets:
-        GH_PR_NUM:
+    inputs:
+      GH_PR_NUM:
+        description: "The PR number"
+        required: true
+        type: string
 
 env:
-    GH_PR_NUM: ${{ secrets.GH_PR_NUM }}
+    GH_PR_NUM: ${{ inputs.GH_PR_NUM }}
 jobs:
   Test_EZ_Template:
     name: "Testing EZ-Template"
@@ -22,9 +25,11 @@ jobs:
         with:
           path: ./action/
 
-      - name: Test With Upload + Bonus Files
+      - name: Test With Upload (EZ-Template)
         id: test
         uses: ./action/
+        env:
+            GH_PR_NUM: ${{ inputs.GH_PR_NUM }}
 
       - name: Upload Artifact
         id: upload

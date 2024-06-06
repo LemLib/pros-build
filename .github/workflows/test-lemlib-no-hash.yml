@@ -1,10 +1,13 @@
 name: Test LemLib Without the File Hash
 on:
   workflow_call:
-    secrets:
+    inputs:
       GH_PR_NUM:
+        description: "The PR number"
+        required: true
+        type: string
 env:
-    GH_PR_NUM: ${{ secrets.GH_PR_NUM }}
+    GH_PR_NUM: ${{ inputs.GH_PR_NUM }}
 jobs:
   Test_LemLib_Without_Adding_the_Commit_Hash:
     name: "Testing LemLib Without Adding the Commit Hash"
@@ -26,6 +29,8 @@ jobs:
         uses: ./action/
         with:
           no_commit_hash: true
+        env:
+            GH_PR_NUM: ${{ inputs.GH_PR_NUM }}
 
       - name: Upload Artifact
         id: upload
