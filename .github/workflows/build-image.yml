@@ -71,6 +71,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          
       - name: Add Environment Variables
         id: env
         run: |
@@ -80,8 +81,11 @@ jobs:
       - name: Create Tar Image For Upload
         id: tar
         run: |
-          docker save -o image.tar ${{ env.IMAGE_NAME }}
-      
+          tag=${{ steps.meta.outputs.tags }}
+          tag=${tag#ghcr.io/}
+          tag=${tag#*/}
+          docker save -o image.tar $tag
+        
       - name: Upload Artifact
         id: upload
         uses: actions/upload-artifact@v4
