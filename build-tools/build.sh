@@ -132,7 +132,7 @@ STD_EDITED_OUTPUT=$(mktemp)
 # # Remove ANSI color codes from the output
 # sed -e 's/\x1b\[[0-9;]*m//g' $STD_OUTPUT >$STD_EDITED_OUTPUT
 
-make quick  | aha --no-header | cat <(echo '<pre>') - <(echo '</pre>') >$STD_EDITED_OUTPUT
+make quick | sed 's/'$(printf '\xef\xbf\xbd')'/'$(printf '\x1b')'/g' | aha --no-header | cat <(echo '<pre>') - <(echo '</pre>') >$STD_EDITED_OUTPUT
 
 if (($make_exit_code != 0)); then
     norm_output=$(cat "$STD_EDITED_OUTPUT")
@@ -143,12 +143,9 @@ if (($make_exit_code != 0)); then
     Build failed in $build_time seconds
     Total Build Script Runtime: $(($SECONDS - $script_start_time)) seconds
     <details><summary>Click to expand</summary>
-    
-    
-    \`\`\`
-    $norm_output
-    \`\`\`
-    </details>" >>$GITHUB_STEP_SUMMARY
+    "
+    echo $norm_output >> $GITHUB_STEP_SUMMARY
+    echo "</details>" >>$GITHUB_STEP_SUMMARY
     exit 1
 fi
 
@@ -224,10 +221,9 @@ fi
 echo "***
 #### 📄 Output from Make
 <details><summary>Click to expand</summary>
-
-\`\`\`
-$norm_output
-\`\`\`
+" >>$GITHUB_STEP_SUMMARY
+echo $norm_output >>$GITHUB_STEP_SUMMARY
+echo "
 </details>" >>$GITHUB_STEP_SUMMARY
 
 
