@@ -42,17 +42,15 @@ jobs:
         with:
           name: image.tar
           github-token: ${{ inputs.CALLER_TOKEN }}
-      # - name: Download Image
-      #   run: |
-      #     curl -H "Authorization: token ${{github.token}}" -L -o image.tar ${{ inputs.URL }}
-      # - name: Setup Image
-      #   run: |
-      #     docker load -i image.tar
+
+      - name: Load Image
+        id: load
+        run: docker load -i image.tar
       
       - name: Edit Action.yml With Local Image
         run: |
           cat action/action.yml
-          sed -i 's|docker://ghcr.io/abucky0/pros-build:main|docker://${{ inputs.TAG }}|g' action/action.yml
+          sed -i 's|docker://ghcr.io/abucky0/pros-build:main|docker://${{ steps.load.outputs.tag }}|g' action/action.yml
           cat action/action.yml
       
       - name: Test With Upload (EZ-Template)
