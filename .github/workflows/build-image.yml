@@ -83,6 +83,7 @@ jobs:
         run: |
           tag=${{ steps.meta.outputs.tags }}
           tag=${tag#ghcr.io/}
+          echo $tag
           docker save -o image.tar $tag
         
       - name: Upload Artifact
