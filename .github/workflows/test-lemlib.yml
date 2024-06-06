@@ -1,8 +1,11 @@
 name: Test LemLib
 on:
   workflow_call:
-    secrets:
-      GH_PR_NUM: 
+    inputs:
+      GH_PR_NUM:
+        description: "The PR number"
+        required: true
+        type: string
 
 env:
   GH_PR_NUM: ${{ secrets.GH_PR_NUM }}
