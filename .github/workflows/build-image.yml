@@ -121,6 +121,7 @@ jobs:
       GH_PR_NUM: ${{ needs.Build_Container.outputs.prnum }}
       TAG:  ${{ needs.Build_Container.outputs.tag }}
       URL:  ${{ needs.Build_Container.outputs.url }}
+      CALLER_TOKEN: ${{ github.token }}
   run-lemlib-copy:
     needs: Build_Container
     uses: ./.github/workflows/test-lemlib-with-copying-info-files.yml

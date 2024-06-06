@@ -14,9 +14,14 @@ on:
         description: "The URL of the image"
         required: true
         type: string
+      CALLER_TOKEN:
+        description: "The token of the caller"
+        required: true
+        type: string
 
 env:
     GH_PR_NUM: ${{ inputs.GH_PR_NUM }}
+
 jobs:
   Test_EZ_Template:
     name: "Testing EZ-Template"
@@ -32,17 +37,17 @@ jobs:
         uses: actions/checkout@v4
         with:
           path: ./action/
-      # - name: Download Artifact
-      #   uses: actions/download-artifact@v2
-      #   with:
-      #     name: image.tar
-      #     path: image.tar
-      - name: Download Image
-        run: |
-          curl -H "Authorization: token ${{github.token}}" -L -o image.tar ${{ inputs.URL }}
-      - name: Setup Image
-        run: |
-          docker load -i image.tar
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: image.tar
+          github-token: ${{ inputs.CALLER_TOKEN }}
+      # - name: Download Image
+      #   run: |
+      #     curl -H "Authorization: token ${{github.token}}" -L -o image.tar ${{ inputs.URL }}
+      # - name: Setup Image
+      #   run: |
+      #     docker load -i image.tar
       
       - name: Edit Action.yml With Local Image
         run: |
