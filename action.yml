@@ -26,6 +26,11 @@ inputs:
     required: false
     default: true
     description: Whether to write the artifact URL to the job summary
+
+outputs:
+  name:
+    description: 'The name of the artifact'
+    
 runs:
   using: 'Docker'
   image: 'docker://ghcr.io/abucky0/pros-build:main'
