@@ -1,4 +1,4 @@
-name: Test An Intentionally Erroring Version of LemLib
+name: Test LemLib With Errors
 on:
   workflow_call:
     inputs:
