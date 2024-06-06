@@ -1,6 +1,13 @@
 name: Test EZ Template
 on:
   workflow_call:
+    inputs:
+        GITHUB_PR_NUM:
+            description: "The PR number"
+            required: true
+            type: number
+env:
+  GITHUB_PR_NUM: ${{ github.event.inputs.GITHUB_PR_NUM }}
 
 jobs:
   Test_EZ_Template:

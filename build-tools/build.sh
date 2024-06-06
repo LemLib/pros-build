@@ -59,6 +59,10 @@ echo "::group::Getting project info"
 
 if [ "$GITHUB_EVENT_NAME" == "pull_request" ]; then
     # Fetch the head SHA directly from the PR API
+    # if /$GITHUB_PR_NUM is "" check $INPUT_GITHUB_PR_NUM
+    if [ -z "$GITHUB_PR_NUM" ]; then
+        GITHUB_PR_NUM=$INPUT_GITHUB_PR_NUM
+    fi
     API_URL="https://api.github.com/repos/$GITHUB_REPOSITORY/pulls/$GITHUB_PR_NUM"
     echo "API URL: $API_URL"
     API_RESPONSE=$(wget -O- --quiet "$API_URL")
