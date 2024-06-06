@@ -47,10 +47,14 @@ jobs:
         id: load
         run: docker load -i image.tar
       
+      - name: Read Image Tag
+        id: readtag
+        run: echo "tag=$(docker inspect --format='{{index .RepoTags 0}}' ${{ steps.load.outputs.tag }})" >> $GITHUB_OUTPUT
+      
       - name: Edit Action.yml With Local Image
         run: |
           cat action/action.yml
-          sed -i 's|docker://ghcr.io/abucky0/pros-build:main|docker://${{ steps.load.outputs.tag }}|g' action/action.yml
+          sed -i 's|docker://ghcr.io/abucky0/pros-build:main|docker://${{steps.readtag.outputs.tag}}|g' action/action.yml
           cat action/action.yml
       
       - name: Test With Upload (EZ-Template)
