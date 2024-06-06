@@ -129,8 +129,10 @@ if (($template == 1)); then
 fi
 
 STD_EDITED_OUTPUT=$(mktemp)
-# Remove ANSI color codes from the output
-sed -e 's/\x1b\[[0-9;]*m//g' $STD_OUTPUT >$STD_EDITED_OUTPUT
+# # Remove ANSI color codes from the output
+# sed -e 's/\x1b\[[0-9;]*m//g' $STD_OUTPUT >$STD_EDITED_OUTPUT
+
+make quick  | aha --no-header | cat <(echo '<pre>') - <(echo '</pre>') >$STD_EDITED_OUTPUT
 
 if (($make_exit_code != 0)); then
     norm_output=$(cat "$STD_EDITED_OUTPUT")
