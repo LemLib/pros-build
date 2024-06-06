@@ -79,6 +79,8 @@ jobs:
   run-lemlib:
     needs: Build_Container
     uses: ./.github/workflows/test-lemlib.yml
+    secrets:
+      GH_PR_NUM: ${{ github.event.number }}
   run-lemlib-no-artifact:
     needs: Build_Container
     uses: ./.github/workflows/test-lemlib-no-artifact.yml

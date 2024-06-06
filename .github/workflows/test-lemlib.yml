@@ -1,7 +1,11 @@
 name: Test LemLib
 on:
   workflow_call:
+    secrets:
+      GH_PR_NUM: 
 
+env:
+  GH_PR_NUM: ${{ secrets.GH_PR_NUM }}
 jobs:
   Test_LemLib:
     name: "Testing LemLib"
