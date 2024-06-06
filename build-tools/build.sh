@@ -143,10 +143,9 @@ if (($make_exit_code != 0)); then
     #### 📄 Error Output
     Build failed in $build_time seconds
     Total Build Script Runtime: $(($SECONDS - $script_start_time)) seconds
-    <details><summary>Click to expand</summary>
-    "
-        echo $norm_output >>$GITHUB_STEP_SUMMARY
-        echo "</details>" >>$GITHUB_STEP_SUMMARY
+    <details><summary>Click to expand</summary>   
+    $norm_output 
+    </details>" >>$GITHUB_STEP_SUMMARY
     fi
     exit 1
 fi
@@ -226,10 +225,9 @@ Total Build Script Runtime: $(($SECONDS - $script_start_time)) seconds
     fi
     echo "***
 #### 📄 Output from Make
-<details><summary>Click to expand</summary>
-" >>$GITHUB_STEP_SUMMARY
-    echo $norm_output >>$GITHUB_STEP_SUMMARY
-    echo "
+<details><summary>Click to expand</summary> 
+
+$norm_output
 </details>" >>$GITHUB_STEP_SUMMARY
 fi
 
