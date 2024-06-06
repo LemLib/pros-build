@@ -72,16 +72,6 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-  
-  # get pr num from GITHUB_REF
-  get-pr-num:
-    runs-on: ubuntu-latest
-    outputs:
-      GITHUB_PR_NUM: ${{ steps.get-pr-num.outputs.GITHUB_PR_NUM }}
-    steps:
-      - name: Get PR number
-        id: get-pr-num
-        run: echo "pr_num=$(echo $GITHUB_REF | cut -d'/' -f3)" >> $GITHUB_ENV
 
   run-lemlib:
     needs: Build_Container
