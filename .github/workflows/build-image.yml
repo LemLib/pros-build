@@ -84,15 +84,25 @@ jobs:
   run-lemlib-no-artifact:
     needs: Build_Container
     uses: ./.github/workflows/test-lemlib-no-artifact.yml
+    secrets:
+      GH_PR_NUM: "${{ format('{0}', github.event.number) }}"
   run-lemlib-no-hash:
     needs: Build_Container
     uses: ./.github/workflows/test-lemlib-no-hash.yml
+    secrets:
+      GH_PR_NUM: "${{ format('{0}', github.event.number) }}"
   run-ez-template:
     needs: Build_Container
     uses: ./.github/workflows/test-ez-template.yml
+    secrets:
+      GH_PR_NUM: "${{ format('{0}', github.event.number) }}"
   run-lemlib-copy:
     needs: Build_Container
     uses: ./.github/workflows/test-lemlib-with-copying-info-files.yml
+    secrets:
+      GH_PR_NUM: "${{ format('{0}', github.event.number) }}"
   run-lemlib-errors:
     needs: Build_Container
     uses: ./.github/workflows/test-lemlib-with-errors.yml
+    secrets:
+      GH_PR_NUM: "${{ format('{0}', github.event.number) }}"

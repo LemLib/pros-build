@@ -1,7 +1,10 @@
 name: Test LemLib Without the File Hash
 on:
   workflow_call:
-
+    secrets:
+      GH_PR_NUM:
+env:
+    GH_PR_NUM: ${{ secrets.GH_PR_NUM }}
 jobs:
   Test_LemLib_Without_Adding_the_Commit_Hash:
     name: "Testing LemLib Without Adding the Commit Hash"

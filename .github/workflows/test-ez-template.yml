@@ -1,11 +1,11 @@
 name: Test EZ Template
 on:
   workflow_call:
+    secrets:
+        GH_PR_NUM:
 
 env:
-  GH_PR_NUM: ${{ github.event.inputs.GITHUB_PR_NUM }}
-  GH_EVENT_NAME: ${{ github.event.inputs.GH_EVENT_NAME }}
-
+    GH_PR_NUM: ${{ secrets.GH_PR_NUM }}
 jobs:
   Test_EZ_Template:
     name: "Testing EZ-Template"

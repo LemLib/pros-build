@@ -1,7 +1,10 @@
 name: Test LemLib with Copying VERSION, README, AND LICENSE Files to Header Directory
 on:
   workflow_call:
-
+    secrets:
+      GH_PR_NUM:
+env:
+    GH_PR_NUM: ${{ secrets.GH_PR_NUM }}
 jobs:
   test-library-name:
     name: "Testing Library Name"
