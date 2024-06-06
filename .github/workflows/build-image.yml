@@ -74,7 +74,7 @@ jobs:
           cache-to: type=gha,mode=max
       - name: Add Environment Variables
         run: |
-          echo "GITHUB_PR_NUM=${{ github.event.pull_request.number }}" >> $GITHUB_ENV
+          echo "GITHUB_PR_NUM=${{ github.event.number }}" >> $GITHUB_ENV
           echo "GITHUB_EVENT_NAME=${{ github.event_name }}" >> $GITHUB_ENV
           echo "GITHUB_REPOSITORY=${{ github.repository }}" >> $GITHUB_ENV
 
