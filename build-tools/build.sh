@@ -135,17 +135,19 @@ STD_EDITED_OUTPUT=$(mktemp)
 make quick | sed 's/'$(printf '\xef\xbf\xbd')'/'$(printf '\x1b')'/g' | aha --no-header | cat <(echo '<pre>') - <(echo '</pre>') >$STD_EDITED_OUTPUT
 
 if (($make_exit_code != 0)); then
-    norm_output=$(cat "$STD_EDITED_OUTPUT")
-    rm -rf $STD_OUTPUT $STD_EDITED_OUTPUT
-    echo "
+    if [[ "$INPUT_WRITE_JOB_SUMMARY" == "true" ]]; then
+        norm_output=$(cat "$STD_EDITED_OUTPUT")
+        rm -rf $STD_OUTPUT $STD_EDITED_OUTPUT
+        echo "
     # 🛑 Build Failed
     #### 📄 Error Output
     Build failed in $build_time seconds
     Total Build Script Runtime: $(($SECONDS - $script_start_time)) seconds
     <details><summary>Click to expand</summary>
     "
-    echo $norm_output >> $GITHUB_STEP_SUMMARY
-    echo "</details>" >>$GITHUB_STEP_SUMMARY
+        echo $norm_output >>$GITHUB_STEP_SUMMARY
+        echo "</details>" >>$GITHUB_STEP_SUMMARY
+    fi
     exit 1
 fi
 
@@ -197,6 +199,9 @@ if [[ "$INPUT_COPY_README_AND_LICENSE_TO_INCLUDE" == "true" ]]; then
     else
         echo "Error: You must provide a library folder name if copy_readme_and_license_to_include is true" >&2
         echo "::endgroup::"
+        if [[ "$INPUT_WRITE_JOB_SUMMARY" == "true" ]]; then
+            echo "# ::error::You must provide a library folder name if copy_readme_and_license_to_include is true" >>$GITHUB_STEP_SUMMARY
+        fi
         # exit with an error code of 2, representing the error code for missing library folder name
         # Redundant, but just in case
         exit 102502 # This is the string "pros-build" turned into int values, added together, and then multiplied by 10 plus the error code at the end (error code 3). This is to hopefully avoid conflicts with other error codes.
@@ -208,23 +213,24 @@ fi
 # -----------
 norm_output=$(cat "$STD_EDITED_OUTPUT")
 rm -rf $STD_OUTPUT $STD_EDITED_OUTPUT
-echo "
+if [[ "$INPUT_WRITE_JOB_SUMMARY" == "true" ]]; then
+    echo "
 # ✅ Build Completed
 Build completed in $build_time seconds
 Total Build Script Runtime: $(($SECONDS - $script_start_time)) seconds
 ## 📝 Library Name: ${library_name} @ ${version}
 ### 🔐 SHA: ${sha}
 " >>$GITHUB_STEP_SUMMARY
-if (($template == 1)); then
-    echo "### 📁 Artifact Name: ${name}" >>$GITHUB_STEP_SUMMARY
-fi
-echo "***
+    if (($template == 1)); then
+        echo "### 📁 Artifact Name: ${name}" >>$GITHUB_STEP_SUMMARY
+    fi
+    echo "***
 #### 📄 Output from Make
 <details><summary>Click to expand</summary>
 " >>$GITHUB_STEP_SUMMARY
-echo $norm_output >>$GITHUB_STEP_SUMMARY
-echo "
+    echo $norm_output >>$GITHUB_STEP_SUMMARY
+    echo "
 </details>" >>$GITHUB_STEP_SUMMARY
-
+fi
 
 exit 0
