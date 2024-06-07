@@ -44,7 +44,7 @@ jobs:
 
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
-      - name: Log into registry ${{ env.REGISTRY }}
+      - name: Log into registry ${{ env.REGISTRY }}s
         if: github.event_name != 'pull_request'
         uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d # v3.0.0
         with:
@@ -209,7 +209,7 @@ jobs:
       - name: Delete Image
         uses: actions/github-script@v7
         with:
-          github-token: ${{ github.token }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             github.rest.actions.deleteArtifact({
               owner: context.repo.owner,
