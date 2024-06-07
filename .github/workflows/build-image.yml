@@ -97,6 +97,7 @@ jobs:
       prnum: ${{ github.event.number }}
       url: ${{ steps.upload.outputs.artifact-url }}
       tag: ${{ env.IMAGE_NAME }}
+      artifact_id: ${{ steps.upload.outputs.artifact-id }}
   test-action:
     needs: Build_Container
     strategy:
@@ -199,3 +200,18 @@ jobs:
       - name: Push the image
         if: ${{ github.event_name != 'pull_request' }}
         run: docker push ${{ steps.load.outputs.tag }}
+  delete-image:
+    needs: [Build_Container, test-action]
+    if: ${{ needs.Build_Container.result == 'success'}}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete Image
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.actions.deleteArtifact({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              artifact_id: ${{ needs.Build_Container.outputs.artifact_id }}
+            })
+          
