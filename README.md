@@ -82,7 +82,6 @@ python3-minimal (Minimal installation of Python used for pros-cli)
 python3-pip (Used to install pros-cli in the Dockerfile)
 unzip (Unzips the template so that it can be uploaded to Github Actions)
 pros-cli (through python)
-aha (markdown coloring make output)
 ```
 
 ### Editing the Dockerfile
