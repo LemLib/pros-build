@@ -130,17 +130,16 @@ jobs:
           - upload_artifact: true
             expect_error: true
 
-          # - append_sha_to_version: false
-          #   add_extra_files: false
-          # - append_sha_to_version: false
-          #   write_job_summary: false
-          # - append_sha_to_version: false
-          #   expect_error: true
+          - append_sha_to_version: false
+            add_extra_files: false
+            upload_artifact: true
+          - append_sha_to_version: false
+            write_job_summary: false
           
           - add_extra_files: true
             repository: EZ-Robotics/EZ-Template
-          # - add_extra_files: false
-          #   write_job_summary: false
+          - add_extra_files: false
+            write_job_summary: false
 
 
         include:
