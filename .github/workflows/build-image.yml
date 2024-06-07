@@ -102,18 +102,44 @@ jobs:
       matrix:
         repository: [lemlib/lemlib, EZ-Robotics/EZ-Template]
         multithreading: [true, false]
-        append_sha_to_version: [true, false]
         upload_artifact: [true, false]
+        append_sha_to_version: [true, false]
         add_extra_files: [true, false]
         write_job_summary: [true, false]
         expect_error: [true, false]
         exclude:
+          - expect_error: true
+            repository: EZ-Robotics/EZ-Template
+          
+          - multithreading: false
+            append_sha_to_version: false
+          - multithreading: false
+            upload_artifact: false
+          - multithreading: false
+            add_extra_files: false
+          - multithreading: false
+            write_job_summary: false
+            
           - upload_artifact: false
             append_sha_to_version: true
           - upload_artifact: false
             add_extra_files: true
-          - expect_error: true
+          - upload_artifact: true
+            expect_error: true
+
+          - append_sha_to_version: false
+            add_extra_files: false
+          - append_sha_to_version: false
+            write_job_summary: false
+          - append_sha_to_version: false
+            expect_error: true
+          
+          - add_extra_files: true
             repository: EZ-Robotics/EZ-Template
+          - add_extra_files: true
+            write_job_summary: true
+
+
         include:
           - repository: EZ-Robotics/EZ-Template
             ref: v3.0.1
