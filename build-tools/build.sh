@@ -129,11 +129,14 @@ if (($template == 1)); then
     echo "::endgroup::"
 fi
 
+
+make quick > $STD_OUTPUT
+
 STD_EDITED_OUTPUT=$(mktemp)
 # # Remove ANSI color codes from the output
-# sed -e 's/\x1b\[[0-9;]*m//g' $STD_OUTPUT >$STD_EDITED_OUTPUT
-
-make quick > $STD_EDITED_OUTPUT
+sed -e 's/\x1b\[[0-9;]*m//g' $STD_OUTPUT >$STD_EDITED_OUTPUT
+# remove �[K
+sed -i 's/�\[K//g' $STD_EDITED_OUTPUT
 
 if (($make_exit_code != 0)); then
     if [[ "$INPUT_WRITE_JOB_SUMMARY" == "true" ]]; then
@@ -145,7 +148,10 @@ if (($make_exit_code != 0)); then
 Build failed in $build_time seconds
 Total Build Script Runtime: $(($SECONDS - $script_start_time)) seconds
 <details><summary>Click to expand</summary>   
+```
+
 $norm_output 
+```
 </details>" >>$GITHUB_STEP_SUMMARY
     fi
     exit 1
