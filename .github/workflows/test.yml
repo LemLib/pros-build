@@ -32,7 +32,7 @@ on:
         type: boolean
       add_extra_files:
         description: Whether to add LICENSE, README, and VERSION to artifact.
-        default: true
+        default: false
         type: boolean
       lib_folder_name:
         description: |
