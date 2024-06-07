@@ -1,0 +1,111 @@
+name: Test LemLib
+on:
+  workflow_call:
+    inputs:
+      repository:
+        description: The github repository to checkout
+        required: true
+        type: string
+      ref:
+        description: The ref of the github repository to checkout
+        required: true
+        type: string
+      caller_token:
+        description: "The token of the caller"
+        required: true
+        type: string
+      expect_error:
+        description: Whether to expect action to fail, and only to succeed if the action fails
+        default: false
+        type: boolean
+      upload_artifact:
+        description: Whether to create an artifact. Disabled if expect_error is true.
+        default: true
+        type: boolean
+      multithreading:
+        description: Whether to use multithreading when building the project
+        default: true
+        type: boolean
+      append_sha_to_version:
+        description: Whether to append the short commit sha to the version of the artifact
+        default: true
+        type: boolean
+      add_extra_files:
+        description: Whether to add LICENSE, README, and VERSION to artifact.
+        default: true
+        type: boolean
+      lib_folder_name:
+        description: |
+          The name of the folder under the include directory that contains the headers for the project.
+          Required if add_extra_files is true
+        default: ""
+        type: string
+      write_job_summary:
+        description: Whether to write the artifact URL to the job summary
+        default: true
+        type: boolean    
+
+jobs:
+  Test_LemLib:
+    name: "Testing LemLib"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ inputs.repository }}
+          ref: ${{ inputs.ref }}
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          path: ./action/
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: image.tar
+          github-token: ${{ inputs.caller_token }}
+
+      - name: Load Image
+        id: load
+        run: |
+          echo "tag=$(docker load -i ./image.tar | grep -oP 'Loaded image: \K.*')" > $GITHUB_OUTPUT
+
+      - name: Edit Action.yml With Local Image
+        run: |
+          cat action/action.yml
+          sed -i 's|docker://ghcr.io/abucky0/pros-build:main|docker://${{steps.load.outputs.tag}}|g' action/action.yml
+          cat action/action.yml
+
+      - name: Test Action
+        id: test-action
+        uses: ./action/
+        continue-on-error: ${{ inputs.expect_error }}
+        with:
+          multithreading: ${{ inputs.multithreading }}
+          no_commit_hash: ${{ !inputs.append_sha_to_version }}
+          copy_readme_and_license_to_include: ${{ inputs.add_extra_files }}
+          lib_folder_name: ${{ inputs.lib_folder_name }}
+          write_job_summary: ${{ inputs.write_job_summary }}
+      
+      - name: Check for Failure If Expected
+        if: ${{ inputs.expect_error }}        
+        run: |
+          if [ "${{ (steps.test-action.outcome == 'success') }}" == "true" ]
+            echo "Test Action step succeeded when it was expected to fail. Failing job.."
+            exit 1
+          else
+            echo "Test Action step failed as expected."
+          fi
+
+      - name: Upload Artifact
+        id: upload
+        if: ${{ inputs.upload_artifact && !inputs.expect_error }} 
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.test-action.outputs.name }}
+          path: "template/*"
+
+      - name: Add Artifact to Job Summary
+        if: ${{ inputs.upload_artifact && !inputs.expect_error }} 
+        run: 'echo "### 📦 Artifact url: ${{ steps.upload.outputs.artifact-url }}" >> $GITHUB_STEP_SUMMARY'

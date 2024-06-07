@@ -96,48 +96,57 @@ jobs:
       prnum: ${{ github.event.number }}
       url: ${{ steps.upload.outputs.artifact-url }}
       tag:  ${{ env.IMAGE_NAME }}
-  
+
   run-lemlib:
     needs: Build_Container
-    uses: ./.github/workflows/test-lemlib.yml
+    uses: ./.github/workflows/test.yml
     with:
-      GH_PR_NUM: ${{ needs.Build_Container.outputs.prnum }}
-      CALLER_TOKEN: ${{ github.token }}
-    
-  run-lemlib-no-artifact:
+      repository: LemLib/LemLib
+      ref: stable
+      caller_token: ${{ github.token }}
+  run-lemlib-no-upload:
     needs: Build_Container
-    uses: ./.github/workflows/test-lemlib-no-artifact.yml
+    uses: ./.github/workflows/test.yml
     with:
-      GH_PR_NUM: ${{ needs.Build_Container.outputs.prnum }}
-      CALLER_TOKEN: ${{ github.token }}
-
+      repository: LemLib/LemLib
+      ref: stable
+      upload_artifact: false
+      caller_token: ${{ github.token }}
   run-lemlib-no-hash:
     needs: Build_Container
-    uses: ./.github/workflows/test-lemlib-no-hash.yml
+    uses: ./.github/workflows/test.yml   
     with:
-      GH_PR_NUM: ${{ needs.Build_Container.outputs.prnum }}
-      CALLER_TOKEN: ${{ github.token }}
+      repository: LemLib/LemLib
+      ref: stable
+      append_sha_to_version: false
+      caller_token: ${{ github.token }}
   run-ez-template:
     needs: Build_Container
-    uses: ./.github/workflows/test-ez-template.yml
+    uses: ./.github/workflows/test.yml
     with:
-      GH_PR_NUM: ${{ needs.Build_Container.outputs.prnum }}
-      CALLER_TOKEN: ${{ github.token }}
+      repository: EZ-Robotics/EZ-Template
+      ref: v3.0.1
+      caller_token: ${{ github.token }}
   run-lemlib-copy:
     needs: Build_Container
-    uses: ./.github/workflows/test-lemlib-with-copying-info-files.yml
+    uses: ./.github/workflows/test.yml
     with:
-      GH_PR_NUM: ${{ needs.Build_Container.outputs.prnum }}
-      CALLER_TOKEN: ${{ github.token }}
+      repository: LemLib/LemLib
+      ref: stable
+      add_extra_files: true
+      lib_folder_name: lemlib
+      caller_token: ${{ github.token }}
   run-lemlib-errors:
     needs: Build_Container
-    uses: ./.github/workflows/test-lemlib-with-errors.yml
+    uses: ./.github/workflows/test.yml
     with:
-      GH_PR_NUM: ${{ needs.Build_Container.outputs.prnum }}
-      CALLER_TOKEN: ${{ github.token }}
+      repository: LemLib/LemLib
+      ref: 7ae0a601276c4df5eb8957495b9c4fa2093d72e3 # Intentionally selected, because it is an erroring commit
+      expect_error: true
+      caller_token: ${{ github.token }}
   
   publish-build: # Publish the image to the registry
-    needs: [Build_Container, run-lemlib, run-lemlib-no-artifact, run-lemlib-no-hash, run-ez-template, run-lemlib-copy, run-lemlib-errors] 
+    needs: [Build_Container, run-lemlib, run-lemlib-no-upload, run-lemlib-no-hash, run-ez-template, run-lemlib-copy, run-lemlib-errors] 
     runs-on: ubuntu-latest
     if: ${{ github.event_name != 'pull_request' }}
     steps:
