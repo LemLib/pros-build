@@ -57,7 +57,8 @@ echo "::endgroup::"
 # ----------------
 echo "::group::Getting project info"
 
-if [ "$GITHUB_EVENT_NAME" == "pull_request" -o "$GH_EVENT_NAME" == "pull_request" ]; then
+# if [ "$GITHUB_EVENT_NAME" == "pull_request" -o "$GH_EVENT_NAME" == "pull_request" ]; then
+if [ "true" == "false" ]; then # Temporary override to test git rev-parse
     # Fetch the head SHA directly from the PR API
     # if /$GITHUB_PR_NUM is "" check $INPUT_GITHUB_PR_NUM
     if [ -z "$GITHUB_PR_NUM" ]; then
