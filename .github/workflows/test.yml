@@ -62,9 +62,9 @@ jobs:
           | Param | Value      |
           | ------------- | ------------- |
           | :package: repo | ${{ inputs.repository }} |
-          | :lavel: ref | ${{ inputs.ref }} |
+          | :label: ref | ${{ inputs.ref }} |
           | :rotating_light: expect err | ${{ inputs.expect_error }} |
-          | :thread: upload | ${{ inputs.upload_artifact }} |
+          | :arrow_up: upload | ${{ inputs.upload_artifact }} |
           | :thread: multithread | ${{ inputs.multithreading }} |
           | :closed_lock_with_key: append sha | ${{ inputs.append_sha_to_version }} |
           | :heavy_plus_sign: add extras | ${{ inputs.add_extra_files }} |
