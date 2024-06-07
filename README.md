@@ -33,6 +33,11 @@ Instructions on creating a custom build script, adding additional packages, and 
 
 ### Outputs
 
+- `name`
+  - The name of the uploaded artifact.
+
+### Example Workflow
+
 ```yml
 name: PROS Build Example
 
