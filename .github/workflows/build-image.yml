@@ -121,6 +121,7 @@ jobs:
             upload_artifact: false
           - multithreading: false
             add_extra_files: false
+            repository: lemlib/lemlib
           - multithreading: false
             write_job_summary: false
             
@@ -130,10 +131,11 @@ jobs:
             add_extra_files: true
           - upload_artifact: true
             expect_error: true
-
+            
           - append_sha_to_version: false
             add_extra_files: false
             upload_artifact: true
+            repository: lemlib/lemlib
           - append_sha_to_version: false
             write_job_summary: false
           
