@@ -171,7 +171,7 @@ jobs:
       lib_folder_name: ${{ matrix.lib_folder_name }}
       write_job_summary: ${{ matrix.write_job_summary }}
       artifact_additional_postfix: |
-        ${{ format('.{0}.{1}.{2}.{3}.{4}.{5}', matrix.expect_error && 1 || 0, matrix.upload_artifact && 1 || 0, matrix.multithreading && 1 || 0, matrix.append_sha_to_version && 1 || 0, matrix.add_extra_files && 1 || 0, matrix.write_job_summary && 1 || 0 )}}
+        ${{ format('---.err{0}.upl{1}.thread{2}.sha{3}.files{4}.summ{5}', matrix.expect_error && 1 || 0, matrix.upload_artifact && 1 || 0, matrix.multithreading && 1 || 0, matrix.append_sha_to_version && 1 || 0, matrix.add_extra_files && 1 || 0, matrix.write_job_summary && 1 || 0 )}}
   publish-build: # Publish the image to the registry
     needs:
       [
