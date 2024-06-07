@@ -94,6 +94,7 @@ jobs:
         with:
           name: image.tar
           path: image.tar
+          retention-days: 0.0104167 # 15 minutes
     outputs:
       prnum: ${{ github.event.number }}
       url: ${{ steps.upload.outputs.artifact-url }}
@@ -202,22 +203,3 @@ jobs:
       - name: Push the image
         if: ${{ github.event_name != 'pull_request' }}
         run: docker push ${{ steps.load.outputs.tag }}
-  
-  delete-image:
-    needs: [test-action, publish-build, Build_Container]
-    if: ${{ always() && needs.Build_Container.result != null }}
-    runs-on: ubuntu-latest
-    permissions:
-      actions: write
-      contents: write
-    steps:
-      - name: Delete Image
-        uses: actions/github-script@v7
-        with:
-          github-token: ${{ github.token }}
-          script: |
-            github.rest.actions.deleteArtifact({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              artifact_id: ${{ needs.Build_Container.outputs.artifact_id }}
-            })
