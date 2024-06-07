@@ -8,7 +8,7 @@ name: Build Container Image & Test
 on:
   push:
     # Publish semver tags as releases.
-    tags: [ 'v*.*.*' ]
+    tags: ["v*.*.*"]
     paths-ignore:
       - "README.md"
   pull_request:
@@ -18,7 +18,6 @@ env:
   REGISTRY: ghcr.io
   # github.repository as <account>/<repo>
   IMAGE_NAME: ${{ github.repository }}
-
 
 jobs:
   Build_Container:
@@ -71,7 +70,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          
+
       - name: Add Environment Variables
         id: env
         run: |
@@ -85,7 +84,7 @@ jobs:
           tag=${{ steps.meta.outputs.tags }}
           echo $tag
           docker save -o image.tar $tag
-        
+
       - name: Upload Artifact
         id: upload
         uses: actions/upload-artifact@v4
@@ -95,59 +94,58 @@ jobs:
     outputs:
       prnum: ${{ github.event.number }}
       url: ${{ steps.upload.outputs.artifact-url }}
-      tag:  ${{ env.IMAGE_NAME }}
-
-  run-lemlib:
+      tag: ${{ env.IMAGE_NAME }}
+  test-action:
     needs: Build_Container
+    strategy:
+      fail-fast: true
+      matrix:
+        repository: [lemlib/lemlib, EZ-Robotics/EZ-Template]
+        multithreading: [true, false]
+        append_sha_to_version: [true, false]
+        upload_artifact: [true, false]
+        add_extra_files: [true, false]
+        write_job_summary: [true, false]
+        expect_error: [true, false]
+        exclude:
+          - upload_artifact: false
+            append_sha_to_version: true
+          - upload_artifact: false
+            add_extra_files: true
+          - expect_error: true
+            repository: EZ-Robotics/EZ-Template
+        include:
+          - repository: EZ-Robotics/EZ-Template
+            ref: v3.0.1
+            lib_folder_name: EZ-Template
+          - repository: lemlib/lemlib
+            expect_error: false
+            ref: stable
+            lib_folder_name: lemlib
+          - repository: lemlib/lemlib
+            expect_error: true
+            ref: 7ae0a601276c4df5eb8957495b9c4fa2093d72e3
+            lib_folder_name: lemlib
     uses: ./.github/workflows/test.yml
     with:
-      repository: LemLib/LemLib
-      ref: stable
+      repository: ${{ matrix.repository }}
+      ref: ${{ matrix.ref }}
       caller_token: ${{ github.token }}
-  run-lemlib-no-upload:
-    needs: Build_Container
-    uses: ./.github/workflows/test.yml
-    with:
-      repository: LemLib/LemLib
-      ref: stable
-      upload_artifact: false
-      caller_token: ${{ github.token }}
-  run-lemlib-no-hash:
-    needs: Build_Container
-    uses: ./.github/workflows/test.yml   
-    with:
-      repository: LemLib/LemLib
-      ref: stable
-      append_sha_to_version: false
-      caller_token: ${{ github.token }}
-  run-ez-template:
-    needs: Build_Container
-    uses: ./.github/workflows/test.yml
-    with:
-      repository: EZ-Robotics/EZ-Template
-      ref: v3.0.1
-      caller_token: ${{ github.token }}
-  run-lemlib-copy:
-    needs: Build_Container
-    uses: ./.github/workflows/test.yml
-    with:
-      repository: LemLib/LemLib
-      ref: stable
-      add_extra_files: true
-      lib_folder_name: lemlib
-      caller_token: ${{ github.token }}
-      artifact_additional_postfix: "-copyextra"
-  run-lemlib-errors:
-    needs: Build_Container
-    uses: ./.github/workflows/test.yml
-    with:
-      repository: LemLib/LemLib
-      ref: 7ae0a601276c4df5eb8957495b9c4fa2093d72e3 # Intentionally selected, because it is an erroring commit
-      expect_error: true
-      caller_token: ${{ github.token }}
-  
+      expect_error: ${{ matrix.expect_error }}
+      upload_artifact: ${{ matrix.upload_artifact }}
+      multithreading: ${{ matrix.multithreading }}
+      append_sha_to_version: ${{ matrix.append_sha_to_version }}
+      add_extra_files: ${{ matrix.add_extra_files }}
+      lib_folder_name: ${{ matrix.lib_folder_name }}
+      write_job_summary: ${{ matrix.write_job_summary }}
+      artifact_additional_postfix: |
+        ${{ format('.{0}.{1}.{2}.{3}.{4}.{5}', matrix.expect_error && 1 || 0, matrix.upload_artifact && 1 || 0, matrix.multithreading && 1 || 0, matrix.append_sha_to_version && 1 || 0, matrix.add_extra_files && 1 || 0, matrix.write_job_summary && 1 || 0 )}}
   publish-build: # Publish the image to the registry
-    needs: [Build_Container, run-lemlib, run-lemlib-no-upload, run-lemlib-no-hash, run-ez-template, run-lemlib-copy, run-lemlib-errors] 
+    needs:
+      [
+        Build_Container,
+        test-action
+      ]
     runs-on: ubuntu-latest
     if: ${{ github.event_name != 'pull_request' }}
     steps:
@@ -173,4 +171,3 @@ jobs:
       - name: Push the image
         if: ${{ github.event_name != 'pull_request' }}
         run: docker push ${{ steps.load.outputs.tag }}
-    
