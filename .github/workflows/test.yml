@@ -70,8 +70,8 @@ jobs:
           | :heavy_plus_sign: add extras | ${{ inputs.add_extra_files }} |
           | :memo: summary | ${{ inputs.write_job_summary }} |
           | :card_file_box: lib folder | ${{ inputs.lib_folder_name }} |
-          | :bookmark: postfix | ${{ inputs.artifact_additional_postfix }} |
-          " | sed "s/true/true :white_check_mark:/g" | sed "s/false/false ❌/g" >> $GITHUB_STEP_SUMMARY
+          | :bookmark: postfix | ${{ inputs.artifact_additional_postfix }}
+          " | sed "s/true/:white_check_mark: true/g" | sed "s/false/❌ false/g" >> $GITHUB_STEP_SUMMARY
       - name: Checkout
         uses: actions/checkout@v4
         with:
