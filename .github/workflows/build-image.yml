@@ -209,6 +209,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       actions: write
+      contents: write
     steps:
       - name: Delete Image
         uses: actions/github-script@v7
