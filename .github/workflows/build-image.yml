@@ -136,6 +136,7 @@ jobs:
       add_extra_files: true
       lib_folder_name: lemlib
       caller_token: ${{ github.token }}
+      artifact_additional_postfix: "-copyextra"
   run-lemlib-errors:
     needs: Build_Container
     uses: ./.github/workflows/test.yml

@@ -43,7 +43,12 @@ on:
       write_job_summary:
         description: Whether to write the artifact URL to the job summary
         default: true
-        type: boolean    
+        type: boolean   
+      artifact_additional_postfix:
+        description: Additional postfix to add to the artifact name
+        default: ""
+        type: string
+        required: false 
 
 jobs:
   Test_LemLib:
@@ -91,7 +96,7 @@ jobs:
       - name: Check for Failure If Expected
         if: ${{ inputs.expect_error }}        
         run: |
-          if [ "${{ (steps.test-action.outcome == 'success') }}" == "true" ]
+          if [ "${{ (steps.test-action.outcome == 'success') }}" == "true" ]; then
             echo "Test Action step succeeded when it was expected to fail. Failing job.."
             exit 1
           else
@@ -103,7 +108,7 @@ jobs:
         if: ${{ inputs.upload_artifact && !inputs.expect_error }} 
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ steps.test-action.outputs.name }}
+          name: "${{ steps.test-action.outputs.name }}${{ inputs.artifact_additional_postfix }}"
           path: "template/*"
 
       - name: Add Artifact to Job Summary
