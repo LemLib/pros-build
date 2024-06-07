@@ -200,9 +200,10 @@ jobs:
       - name: Push the image
         if: ${{ github.event_name != 'pull_request' }}
         run: docker push ${{ steps.load.outputs.tag }}
+  
   delete-image:
-    needs: [Build_Container, test-action, publish-build]
-    if: ${{ needs.Build_Container.result == 'success'}} && always()
+    needs: [test-action, publish-build, Build_Container]
+    if: ${{ always() && needs.Build_Container.result != null }}
     runs-on: ubuntu-latest
     steps:
       - name: Delete Image
@@ -214,4 +215,3 @@ jobs:
               repo: context.repo.repo,
               artifact_id: ${{ needs.Build_Container.outputs.artifact_id }}
             })
-          
