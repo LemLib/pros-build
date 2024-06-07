@@ -55,6 +55,24 @@ jobs:
     name: "Testing LemLib"
     runs-on: ubuntu-latest
     steps:
+      - name: Summarize Parameters
+        run: |
+          echo "
+          ## Parameters
+          | Param | Value      |
+          | ------------- | ------------- |
+          | :package: repo | ${{ inputs.repository }} |
+          | :lavel: ref | ${{ inputs.ref }} |
+          | :rotating_light: expect err | ${{ inputs.expect_error }} |
+          | :thread: upload | ${{ inputs.upload_artifact }} |
+          | :thread: multithread | ${{ inputs.multithreading }} |
+          | :closed_lock_with_key: append sha | ${{ inputs.append_sha_to_version }} |
+          | :heavy_plus_sign: add extras | ${{ inputs.add_extra_files }} |
+          | :memo: summary | ${{ inputs.write_job_summary }} |
+          | :card_file_box: lib folder | ${{ inputs.lib_folder_name }} |
+          | :bookmark: postfix | ${{ inputs.artifact_additional_postfix }} |
+          
+          " | sed "s/true/true ::white_check_mark::/g" | sed "s/false/false ❌/g" >> $GITHUB_STEP_SUMMARY'
       - name: Checkout
         uses: actions/checkout@v4
         with:
