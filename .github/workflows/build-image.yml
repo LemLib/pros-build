@@ -30,7 +30,6 @@ jobs:
       # This is used to complete the identity challenge
       # with sigstore/fulcio when running outside of PRs.
       id-token: write
-      actions: write
 
     steps:
       - name: Checkout repository
@@ -94,7 +93,7 @@ jobs:
         with:
           name: image.tar
           path: image.tar
-          retention-days: 0.0104167 # 15 minutes
+          retention-days: 1 # One Day (The Minimum)
     outputs:
       prnum: ${{ github.event.number }}
       url: ${{ steps.upload.outputs.artifact-url }}

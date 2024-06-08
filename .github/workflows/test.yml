@@ -1,4 +1,4 @@
-name: Test LemLib
+name: Tests
 on:
   workflow_call:
     inputs:

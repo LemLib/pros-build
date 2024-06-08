@@ -32,9 +32,11 @@ Instructions on creating a custom build script, adding additional packages, and 
   - default: `true`
 
 ### Outputs
+> [!NOTE]  
+> While this action has the `name` output for the artifact name, it does not upload the artifact itself. The `name` output is meant to be passed into `actions/upload-artifact`.
 
 - `name`
-  - The name of the uploaded artifact.
+  - The recommended name for an artifact.
 
 ### Example Workflow
 
@@ -86,7 +88,7 @@ pros-cli (through python)
 
 ### Editing the Dockerfile
 ```Dockerfile
-FROM ghcr.io/LemLib/pros-build:main
+FROM ghcr.io/LemLib/pros-build:stable
 
 # Remove the included build script.
 RUN rm -rf /build.sh

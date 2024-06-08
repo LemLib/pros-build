@@ -57,28 +57,7 @@ echo "::endgroup::"
 # ----------------
 echo "::group::Getting project info"
 
-# if [ "$GITHUB_EVENT_NAME" == "pull_request" -o "$GH_EVENT_NAME" == "pull_request" ]; then
-if [ "true" == "false" ]; then # Temporary override to test git rev-parse
-    # Fetch the head SHA directly from the PR API
-    # if /$GITHUB_PR_NUM is "" check $INPUT_GITHUB_PR_NUM
-    if [ -z "$GITHUB_PR_NUM" ]; then
-        GITHUB_PR_NUM=$GH_PR_NUM
-    fi
-    API_URL="https://api.github.com/repos/$GITHUB_REPOSITORY/pulls/$GITHUB_PR_NUM"
-    echo "API URL: $API_URL"
-    API_RESPONSE=$(wget -O- --quiet "$API_URL")
-    if [ $? -ne 0 ]; then
-        echo "Error fetching data from GitHub API"
-        exit $?
-    fi
-    echo "API Response: $API_RESPONSE"
-    sha=$(echo "$API_RESPONSE" | jq -r '.head.sha' | head -c 6)
-
-else
-    # Use the commit SHA after the event
-    sha=$(git rev-parse HEAD | head -c 6)
-fi
-
+sha=$GITHUB_SHA
 echo "SHA found: $sha"
 
 version=$(awk -F'=' '/^VERSION:=/{print $2}' Makefile)
