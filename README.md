@@ -27,7 +27,7 @@ Instructions on creating a custom build script, adding additional packages, and 
   - The name of the library's folder name under the include directory.
   - required: `if copy_readme_and_license_to_include is set`
 - `write_job_summary`
-  - Whether to output build information to GitHub's Job Summary
+  - Whether to output to GitHub's Job Summary (See the bottom of this README)
   - required: `false`
   - default: `true`
 
@@ -97,3 +97,34 @@ RUN rm -rf /build.sh
 # Override ENTRYPOINT with your own. This isn't strictly necessary if you name your build script build.sh and put it in the root of the container (Such as /build.sh)
 ENTRYPOINT []
 ```
+
+
+# Example Job Summary Output
+# ✅ Build Completed
+Build completed in 25 seconds
+Total Build Script Runtime: 27 seconds
+## 📝 Library Name: LemLib @ 0.5.1
+### 🔐 SHA: 4f12f2
+
+### 📁 Artifact Name: LemLib@0.5.1+4f12f2
+***
+#### 📄 Output from Make
+<details><summary>Click to expand</summary> 
+```
+        Creating bin/LemLib.a  [DONE]
+Creating cold package with libpros,libc,libm,LemLib [OK]
+Stripping cold package  [DONE]
+Section sizes:
+   text	   data	    bss	  total	    hex	filename
+1013.69KB  4.89KB  47.15MB  48.14MB 30234f7 bin/cold.package.elf
+Adding timestamp [OK]
+Linking hot project with ./bin/cold.package.elf and libpros,libc,libm,LemLib [OK]
+Section sizes:
+   text	   data	    bss	  total	    hex	filename
+ 3.97KB  12.00B  46.02MB  46.02MB 2e04a17 bin/hot.package.elf
+Creating cold package binary for VEX EDR V5 [DONE]
+Creating bin/hot.package.bin for VEX EDR V5 [DONE]
+```
+</details>
+
+### 📦 Artifact url: https://github.com/LemLib/pros-build/actions/runs/9426610142/artifacts/1581443703
