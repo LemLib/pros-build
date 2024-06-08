@@ -33,4 +33,4 @@ outputs:
     
 runs:
   using: 'Docker'
-  image: 'docker://ghcr.io/LemLib/pros-build:main'
+  image: 'docker://ghcr.io/lemlib/pros-build:main'
