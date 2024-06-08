@@ -178,6 +178,8 @@ jobs:
         Build_Container,
         test-action
       ]
+    permissions:
+      packages: write
     runs-on: ubuntu-latest
     if: ${{ github.event_name != 'pull_request' }}
     steps:
