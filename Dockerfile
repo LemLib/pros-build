@@ -47,7 +47,6 @@ RUN pros --version
 RUN arm-none-eabi-g++ --version
 RUN arm-none-eabi-gcc --version
 
-RUN jq --version
 RUN git --version
 RUN make --version
 RUN unzip 
