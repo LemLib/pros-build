@@ -57,7 +57,8 @@ echo "::endgroup::"
 # ----------------
 echo "::group::Getting project info"
 
-sha=$(echo $GITHUB_SHA | head -c 6)
+# sha=$(echo $GITHUB_SHA | head -c 6)
+sha=$(git rev-parse HEAD | head -c 6)
 echo "SHA found: $sha"
 
 version=$(awk -F'=' '/^VERSION:=/{print $2}' Makefile)
