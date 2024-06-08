@@ -76,7 +76,6 @@ If you wish to use your own build script using this container as a base, you can
 It by default includes the packages built into the Ubuntu docker image, and contains the additional packages below:
 
 ```
-jq (Used to parse the GitHub API response in build.sh)
 wget (Used to download the toolchain)
 git (Used to get the HEAD SHA hash)
 gawk (Used to get lines from the user project's Makefile)
