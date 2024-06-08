@@ -129,8 +129,7 @@ if (($template == 1)); then
     echo "::endgroup::"
 fi
 
-
-make quick > $STD_OUTPUT
+make quick >$STD_OUTPUT
 
 STD_EDITED_OUTPUT=$(mktemp)
 # # Remove ANSI color codes from the output
@@ -148,10 +147,9 @@ if (($make_exit_code != 0)); then
 Build failed in $build_time seconds
 Total Build Script Runtime: $(($SECONDS - $script_start_time)) seconds
 <details><summary>Click to expand</summary>   
-```
-
-$norm_output 
-```
+\`\`\`
+$norm_output
+\`\`\`
 </details>" >>$GITHUB_STEP_SUMMARY
     fi
     exit 1
@@ -233,8 +231,9 @@ Total Build Script Runtime: $(($SECONDS - $script_start_time)) seconds
     echo "***
 #### 📄 Output from Make
 <details><summary>Click to expand</summary> 
-
-$norm_output
+\`\`\`
+        $norm_output
+\`\`\`
 </details>" >>$GITHUB_STEP_SUMMARY
 fi
 
