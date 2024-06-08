@@ -11,6 +11,7 @@ on:
     tags: ["v*.*.*"]
     paths-ignore:
       - "README.md"
+    branches: [ "**" ]
   pull_request:
 
 env:
