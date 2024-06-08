@@ -1,0 +1,205 @@
+name: Build Container Image & Test
+
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+on:
+  push:
+    # Publish semver tags as releases.
+    tags: ["v*.*.*"]
+    paths-ignore:
+      - "README.md"
+    branches: [ "**" ]
+  pull_request:
+
+env:
+  # Use docker.io for Docker Hub if empty
+  REGISTRY: ghcr.io
+  # github.repository as <account>/<repo>
+  IMAGE_NAME: ${{ github.repository }}
+concurrency: 
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  Build_Container:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      # This is used to complete the identity challenge
+      # with sigstore/fulcio when running outside of PRs.
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Set up BuildKit Docker container builder to be able to build
+      # multi-platform images and export cache
+      # https://github.com/docker/setup-buildx-action
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@f95db51fddba0c2d1ec667646a06c2ce06100226 # v3.0.0
+
+      # Login against a Docker registry except on PR
+      # https://github.com/docker/login-action
+      - name: Log into registry ${{ env.REGISTRY }}s
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d # v3.0.0
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Extract metadata (tags, labels) for Docker
+      # https://github.com/docker/metadata-action
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@96383f45573cb7f253c731d3b3ab81c87ef81934 # v5.0.0
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+
+      # Build and push Docker image with Buildx (don't push on PR)
+      # https://github.com/docker/build-push-action
+      - name: Build and push Docker image
+        id: buildandpush
+        uses: docker/build-push-action@0565240e2d4ab88bba5387d719585280857ece09 # v5.0.0
+        with:
+          context: .
+          push: false
+          load: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Add Environment Variables
+        id: env
+        run: |
+          echo "GH_PULLREQ_NUM=${{ github.event.number }}" >> $GITHUB_ENV
+          echo "GH_EEVENT_NAME=${{ github.event_name }}" >> $GITHUB_ENV
+          echo "GH_RREPOSITORY=${{ github.repository }}" >> $GITHUB_ENV
+      - name: Create Tar Image For Upload
+        id: tar
+        run: |
+          docker images
+          tag=${{ steps.meta.outputs.tags }}
+          echo $tag
+          docker save -o image.tar $tag
+
+      - name: Upload Artifact
+        id: upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: image.tar
+          path: image.tar
+          retention-days: 1 # One Day (The Minimum)
+    outputs:
+      prnum: ${{ github.event.number }}
+      url: ${{ steps.upload.outputs.artifact-url }}
+      tag: ${{ env.IMAGE_NAME }}
+      artifact_id: ${{ steps.upload.outputs.artifact-id }}
+  test-action:
+    needs: Build_Container
+    strategy:
+      fail-fast: true
+      matrix:
+        repository: [lemlib/lemlib, EZ-Robotics/EZ-Template]
+        multithreading: [true, false]
+        upload_artifact: [true, false]
+        append_sha_to_version: [true, false]
+        add_extra_files: [true, false]
+        write_job_summary: [true, false]
+        expect_error: [true, false]
+        exclude:
+          - expect_error: true
+            repository: EZ-Robotics/EZ-Template
+          
+          - multithreading: false
+            append_sha_to_version: false
+          - multithreading: false
+            upload_artifact: false
+          - multithreading: false
+            add_extra_files: false
+            repository: lemlib/lemlib
+          - multithreading: false
+            write_job_summary: false
+            
+          - upload_artifact: false
+            append_sha_to_version: true
+          - upload_artifact: false
+            add_extra_files: true
+          - upload_artifact: true
+            expect_error: true
+            
+          - append_sha_to_version: false
+            add_extra_files: false
+            upload_artifact: true
+            repository: lemlib/lemlib
+          - append_sha_to_version: false
+            write_job_summary: false
+          
+          - add_extra_files: true
+            repository: EZ-Robotics/EZ-Template
+          - add_extra_files: false
+            write_job_summary: false
+
+
+        include:
+          - repository: EZ-Robotics/EZ-Template
+            ref: v3.0.1
+            lib_folder_name: EZ-Template
+          - repository: lemlib/lemlib
+            expect_error: false
+            ref: stable
+            lib_folder_name: lemlib
+          - repository: lemlib/lemlib
+            expect_error: true
+            ref: 7ae0a601276c4df5eb8957495b9c4fa2093d72e3
+            lib_folder_name: lemlib
+    uses: ./.github/workflows/test.yml
+    with:
+      repository: ${{ matrix.repository }}
+      ref: ${{ matrix.ref }}
+      caller_token: ${{ github.token }}
+      expect_error: ${{ matrix.expect_error }}
+      upload_artifact: ${{ matrix.upload_artifact }}
+      multithreading: ${{ matrix.multithreading }}
+      append_sha_to_version: ${{ matrix.append_sha_to_version }}
+      add_extra_files: ${{ matrix.add_extra_files }}
+      lib_folder_name: ${{ matrix.lib_folder_name }}
+      write_job_summary: ${{ matrix.write_job_summary }}
+      artifact_additional_postfix: |
+        ${{ format('---.err{0}.upl{1}.thread{2}.sha{3}.files{4}.summ{5}', matrix.expect_error && 1 || 0, matrix.upload_artifact && 1 || 0, matrix.multithreading && 1 || 0, matrix.append_sha_to_version && 1 || 0, matrix.add_extra_files && 1 || 0, matrix.write_job_summary && 1 || 0 )}}
+  publish-build: # Publish the image to the registry
+    needs:
+      [
+        Build_Container,
+        test-action
+      ]
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name != 'pull_request' }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@f95db51fddba0c2d1ec667646a06c2ce06100226 # v3.0.0
+      - name: Log into registry ${{ env.REGISTRY }}
+        uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d # v3.0.0
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Download Image
+        uses: actions/download-artifact@v4
+        with:
+          name: image.tar
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Load Image
+        id: load
+        run: |
+          echo "tag=$(docker load -i ./image.tar | grep -oP 'Loaded image: \K.*')" > $GITHUB_OUTPUT
+      - name: Push the image
+        if: ${{ github.event_name != 'pull_request' }}
+        run: docker push ${{ steps.load.outputs.tag }}
