@@ -96,7 +96,7 @@ jobs:
       - name: Edit Action.yml With Local Image
         run: |
           cat action/action.yml
-          sed -i 's|docker://ghcr.io/.*/pros-build:.*\'|docker://${{steps.load.outputs.tag}}\'|g' action/action.yml
+          sed -i "s|docker://ghcr.io/.*/pros-build:[^\']*|docker://${{steps.load.outputs.tag}}|g" action/action.yml
           cat action/action.yml
 
       - name: Test Action
