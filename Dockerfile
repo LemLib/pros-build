@@ -1,9 +1,8 @@
 FROM ubuntu:20.04
 
-LABEL version="1.0" \
-      description="PROS-Build Container" \
-      maintainer="LemLib"
-
+LABEL org.opencontainers.image.description="A PROS Build Container"
+LABEL org.opencontainers.image.source=https://github.com/lemlib/pros-build
+LABEL org.opencontainers.image.licenses=MIT
 # ------------
 # Install Required Packages
 # ------------   
