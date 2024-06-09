@@ -129,9 +129,7 @@ Total Build Script Runtime: $(($SECONDS - $script_start_time)) seconds
 <details><summary>Click to expand</summary>   
 
 \`\`\`  
-
 $norm_output
-
 \`\`\`  
 
 </details>" >>$GITHUB_STEP_SUMMARY
