@@ -128,7 +128,9 @@ Build failed in $build_time seconds
 Total Build Script Runtime: $(($SECONDS - $script_start_time)) seconds
 <details><summary>Click to expand</summary>   
 \`\`\`  
+
 $norm_output
+
 \`\`\`  
 </details>" >>$GITHUB_STEP_SUMMARY
     fi
@@ -212,7 +214,9 @@ Total Build Script Runtime: $(($SECONDS - $script_start_time)) seconds
 #### 📄 Output from Make
 <details><summary>Click to expand</summary> 
 \`\`\`  
-        $norm_output
+
+$norm_output
+
 \`\`\`  
 </details>" >>$GITHUB_STEP_SUMMARY
 fi
