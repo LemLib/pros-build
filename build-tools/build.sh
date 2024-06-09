@@ -127,6 +127,7 @@ if (($make_exit_code != 0)); then
 Build failed in $build_time seconds
 Total Build Script Runtime: $(($SECONDS - $script_start_time)) seconds
 <details><summary>Click to expand</summary>   
+
 \`\`\`  
 
 $norm_output
@@ -214,6 +215,7 @@ Total Build Script Runtime: $(($SECONDS - $script_start_time)) seconds
     echo "***
 #### 📄 Output from Make
 <details><summary>Click to expand</summary> 
+
 \`\`\`  
 
 $norm_output
