@@ -132,6 +132,7 @@ Total Build Script Runtime: $(($SECONDS - $script_start_time)) seconds
 $norm_output
 
 \`\`\`  
+
 </details>" >>$GITHUB_STEP_SUMMARY
     fi
     exit 1
@@ -218,6 +219,7 @@ Total Build Script Runtime: $(($SECONDS - $script_start_time)) seconds
 $norm_output
 
 \`\`\`  
+
 </details>" >>$GITHUB_STEP_SUMMARY
 fi
 
