@@ -84,8 +84,8 @@ jobs:
         id: tar
         run: |
           docker images
-          tag=${{ steps.meta.outputs.tags }}
-          echo "$tag"
+          tag=$(echo "${{ steps.meta.outputs.tags }}" | cut -d '\n')
+          echo $tag
           docker save -o image.tar $tag
 
       - name: Upload Artifact
@@ -178,8 +178,6 @@ jobs:
         Build_Container,
         test-action
       ]
-    permissions:
-      packages: write
     runs-on: ubuntu-latest
     if: ${{ github.event_name != 'pull_request' }}
     steps:
