@@ -85,7 +85,7 @@ jobs:
         run: |
           docker images
           tag=${{ steps.meta.outputs.tags }}
-          echo $tag
+          echo "$tag"
           docker save -o image.tar $tag
 
       - name: Upload Artifact
