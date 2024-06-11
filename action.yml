@@ -1,4 +1,4 @@
-name: 'PROS Build'
+name: 'PROS Build Action'
 description: 'Automatically build PROS templates'
 branding:
   color: 'blue'
