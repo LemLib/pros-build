@@ -84,7 +84,7 @@ jobs:
         id: tar
         run: |
           docker images
-          tag=$(echo "${{ steps.meta.outputs.tags }}" | tr -d '\n')
+          tag=$(echo "${{ steps.meta.outputs.tags }}" | tr '\n' ' ')
           echo $tag
           docker save -o image.tar $tag
 
