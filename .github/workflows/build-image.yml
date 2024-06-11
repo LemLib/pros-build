@@ -205,4 +205,7 @@ jobs:
           echo "tag=$(docker load -i ./image.tar | grep -oP 'Loaded image: \K.*')" > $GITHUB_OUTPUT
       - name: Push the image
         if: ${{ github.event_name != 'pull_request' }}
-        run: docker push ${{ steps.load.outputs.tag }}
+        run: |
+          for tag in $(echo "${{ steps.load.outputs.tags }}" | tr ' ' '\n'); do
+            docker push "$tag"
+          done

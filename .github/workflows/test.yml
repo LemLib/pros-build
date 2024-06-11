@@ -91,7 +91,7 @@ jobs:
       - name: Load Image
         id: load
         run: |
-          echo "tag=$(docker load -i ./image.tar | grep -oP 'Loaded image: \K.*')" > $GITHUB_OUTPUT
+          echo "tag=$(docker load -i ./image.tar | grep -oP 'Loaded image: \K.*' | head -n 1)" > $GITHUB_OUTPUT
 
       - name: Edit Action.yml With Local Image
         run: |
