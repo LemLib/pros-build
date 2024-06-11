@@ -62,7 +62,7 @@ jobs:
 
       # Build and push Docker image with Buildx (don't push on PR)
       # https://github.com/docker/build-push-action
-      - name: Build and push Docker image
+      - name: Build Docker image
         id: buildandpush
         uses: docker/build-push-action@0565240e2d4ab88bba5387d719585280857ece09 # v5.0.0
         with:
@@ -173,6 +173,9 @@ jobs:
       artifact_additional_postfix: |
         ${{ format('---.err{0}.upl{1}.thread{2}.sha{3}.files{4}.summ{5}', matrix.expect_error && 1 || 0, matrix.upload_artifact && 1 || 0, matrix.multithreading && 1 || 0, matrix.append_sha_to_version && 1 || 0, matrix.add_extra_files && 1 || 0, matrix.write_job_summary && 1 || 0 )}}
   publish-build: # Publish the image to the registry
+    permissions:
+      contents: read
+      packages: write
     needs:
       [
         Build_Container,
