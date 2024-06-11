@@ -206,6 +206,7 @@ jobs:
       - name: Push the image
         if: ${{ github.event_name != 'pull_request' }}
         run: |
-          for tag in $(echo "${{ steps.load.outputs.tags }}" | tr ' ' '\n'); do
+          for tag in $(echo "${{ steps.load.outputs.tag }}" | tr ' ' '\n'); do
+            echo "$tag"
             docker push "$tag"
           done
