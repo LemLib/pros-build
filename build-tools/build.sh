@@ -109,8 +109,6 @@ if (($template == 1)); then
     echo "::endgroup::"
 fi
 
-make quick >$STD_OUTPUT
-
 STD_EDITED_OUTPUT=$(mktemp)
 # # Remove ANSI color codes from the output
 sed -e 's/\x1b\[[0-9;]*m//g' $STD_OUTPUT >$STD_EDITED_OUTPUT
