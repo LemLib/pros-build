@@ -110,16 +110,9 @@ if (($template == 1)); then
 fi
 
 STD_EDITED_OUTPUT=$(mktemp)
-# # Remove ANSI color codes from the output
-sed -e 's/\x1b\[[0-9;]*m//g' $STD_OUTPUT >$STD_EDITED_OUTPUT
-# Copy EDITED back to  OUTPUT
-rm -rf $STD_OUTPUT
-STD_OUTPUT=$(mktemp)
-cp $STD_EDITED_OUTPUT $STD_OUTPUT
-rm -rf $STD_EDITED_OUTPUT
-STD_EDITED_OUTPUT=$(mktemp)
-# remove �[K
-sed -e 's/�\[K//g' $STD_OUTPUT >$STD_EDITED_OUTPUT
+# Remove ANSI color codes from the output
+# https://stackoverflow.com/a/18000433
+sed -r "s/\x1B\[([0-9]{1,3}(;[0-9]{1,2};?)?)?[mGK]//g" $STD_OUTPUT >$STD_EDITED_OUTPUT
 
 if (($make_exit_code != 0)); then
     if [[ "$INPUT_WRITE_JOB_SUMMARY" == "true" ]]; then
