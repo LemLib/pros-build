@@ -112,8 +112,14 @@ fi
 STD_EDITED_OUTPUT=$(mktemp)
 # # Remove ANSI color codes from the output
 sed -e 's/\x1b\[[0-9;]*m//g' $STD_OUTPUT >$STD_EDITED_OUTPUT
+# Copy EDITED back to  OUTPUT
+rm -rf $STD_OUTPUT
+STD_OUTPUT=$(mktemp)
+cp $STD_EDITED_OUTPUT $STD_OUTPUT
+rm -rf $STD_EDITED_OUTPUT
+STD_EDITED_OUTPUT=$(mktemp)
 # remove �[K
-sed -i 's/�\[K//g' $STD_EDITED_OUTPUT
+sed -e 's/�\[K//g' $STD_OUTPUT >$STD_EDITED_OUTPUT
 
 if (($make_exit_code != 0)); then
     if [[ "$INPUT_WRITE_JOB_SUMMARY" == "true" ]]; then
