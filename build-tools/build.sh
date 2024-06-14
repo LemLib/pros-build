@@ -119,7 +119,7 @@ cp $STD_EDITED_OUTPUT $STD_OUTPUT
 rm -rf $STD_EDITED_OUTPUT
 STD_EDITED_OUTPUT=$(mktemp)
 # remove �[K
-sed -e 's/�\[K//g' $STD_OUTPUT >$STD_EDITED_OUTPUT
+sed -e 's/\�[K//g' $STD_OUTPUT >$STD_EDITED_OUTPUT
 
 if (($make_exit_code != 0)); then
     if [[ "$INPUT_WRITE_JOB_SUMMARY" == "true" ]]; then
