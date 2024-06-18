@@ -33,6 +33,7 @@ Instructions on creating a custom build script, adding additional packages, and 
   - default: `true`
 
 ### Outputs
+
 > [!NOTE]  
 > While this action has the `name` output for the artifact name, it does not upload the artifact itself. The `name` output is meant to be passed into `actions/upload-artifact`.
 
@@ -61,7 +62,7 @@ jobs:
 
       - name: Run LemLib/pros-build
         id: test
-        uses: LemLib/pros-build
+        uses: LemLib/pros-build@v2.0.1
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
@@ -87,6 +88,7 @@ pros-cli (through python)
 ```
 
 ### Editing the Dockerfile
+
 ```Dockerfile
 FROM ghcr.io/LemLib/pros-build:stable
 
@@ -99,17 +101,23 @@ RUN rm -rf /build.sh
 ENTRYPOINT []
 ```
 
-
 # Example Job Summary Output
+
 # ✅ Build Completed
+
 Build completed in 25 seconds
 Total Build Script Runtime: 27 seconds
+
 ## 📝 Library Name: LemLib @ 0.5.1
+
 ### 🔐 SHA: 4f12f2
 
 ### 📁 Artifact Name: LemLib@0.5.1+4f12f2
-***
+
+---
+
 #### 📄 Output from Make
+
 <details><summary>Click to expand</summary> 
 ```
         Creating bin/LemLib.a  [DONE]
