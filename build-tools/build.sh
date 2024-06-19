@@ -142,9 +142,9 @@ set -e # Enable exiting on error
 
 if (($template == 1)); then
     echo "::group::Updating Makefile"
-
+    echo "Writing VERSION:=${postfix} to Makefile"
     sed -i "s/^VERSION:=.*\$/VERSION:=${postfix}/" Makefile
-
+    echo "\n\nEdited Makefile Below\n\n"
     cat Makefile
 
     echo "::endgroup::"
