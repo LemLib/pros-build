@@ -109,13 +109,10 @@ if (($template == 1)); then
     echo "::endgroup::"
 fi
 
-make quick >$STD_OUTPUT
-
 STD_EDITED_OUTPUT=$(mktemp)
-# # Remove ANSI color codes from the output
-sed -e 's/\x1b\[[0-9;]*m//g' $STD_OUTPUT >$STD_EDITED_OUTPUT
-# remove �[K
-sed -i 's/�\[K//g' $STD_EDITED_OUTPUT
+# Remove ANSI color codes from the output
+# https://stackoverflow.com/a/18000433
+sed -r "s/\x1B\[([0-9]{1,3}(;[0-9]{1,2};?)?)?[mGK]//g" $STD_OUTPUT >$STD_EDITED_OUTPUT
 
 if (($make_exit_code != 0)); then
     if [[ "$INPUT_WRITE_JOB_SUMMARY" == "true" ]]; then
@@ -145,9 +142,9 @@ set -e # Enable exiting on error
 
 if (($template == 1)); then
     echo "::group::Updating Makefile"
-
+    echo "Writing VERSION:=${postfix} to Makefile"
     sed -i "s/^VERSION:=.*\$/VERSION:=${postfix}/" Makefile
-
+    echo "\n\nEdited Makefile Below\n\n"
     cat Makefile
 
     echo "::endgroup::"
