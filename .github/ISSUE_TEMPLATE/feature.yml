@@ -1,0 +1,42 @@
+name: Feature Request
+description: Request a New Feature
+title: '[FEATURE]: '
+labels:
+  - enhancement
+body:
+  - type: checkboxes
+    attributes:
+      label: Agreements
+      description: >-
+        LemLib Code of Conduct:
+        https://github.com/LemLib/LemLib/blob/master/.github/CODE_OF_CONDUCT.md
+      options:
+        - label: Are you making this bug report in good faith?
+          required: true
+        - label: >-
+            Do you agree to follow the LemLib Code of Conduct at all times while
+            interacting with this repository?
+          required: true
+        - label: >-
+            Do you understand that not following the Code of Conduct may result
+            in a temporary or permanent ban from interacting with this
+            repository or all LemLib repositories?
+          required: true
+  - type: textarea
+    attributes:
+      label: Description
+      description: A clear and concise description of the problem or missing capability
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Describe the solution you'd like
+      description: If you have a solution in mind, please describe it.
+  - type: textarea
+    attributes:
+      label: Describe alternatives you've considered
+      description: Have you considered any alternative solutions or workarounds?
+  - type: textarea
+    attributes:
+      label: What's the Motivation for this request?
+      description: How would this benefit users/maintainers?
