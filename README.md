@@ -12,11 +12,11 @@ Instructions on creating a custom build script, adding additional packages, and 
 ### Inputs
 
 - `multithreading`
-  - Wether to use multithreading when building the project
+  - Whether to use multithreading when building the project
   - Default: `true`
   - Required: `false`
 - `no_commit_hash`
-  - Wether to include a shortened commit hash at the end of the artifact name
+  - Whether to include a shortened commit hash at the end of the artifact name
   - Example: `LemLib@0.5.1+5881ac`
   - Default: `true`
   - Required: `false`
