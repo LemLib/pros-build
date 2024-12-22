@@ -20,11 +20,11 @@ RUN echo "tzdata tzdata/Areas select America" | debconf-set-selections \
 # ------------
 # Install ARM Toolchain
 # ------------
-RUN wget "https://developer.arm.com/-/media/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2" -O gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
-RUN tar -xjvf gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
-RUN rm gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2 # Cleanup Image
+RUN wget "https://developer.arm.com/-/media/Files/downloads/gnu/13.3.rel1/binrel/arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi.tar.xz" -O arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi.tar.xz
+RUN bzip2 -d arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi.tar.xz
+RUN rm arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi.tar.xz # Cleanup Image
 
-ENV PATH="/gcc-arm-none-eabi-10.3-2021.10/bin:${PATH}"
+ENV PATH="/arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin:${PATH}"
 
 # ------------
 # Install PROS CLI
