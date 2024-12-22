@@ -21,7 +21,7 @@ RUN echo "tzdata tzdata/Areas select America" | debconf-set-selections \
 # Install ARM Toolchain
 # ------------
 RUN wget "https://developer.arm.com/-/media/Files/downloads/gnu/13.3.rel1/binrel/arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi.tar.xz" -O arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi.tar.xz
-RUN bzip2 -d arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi.tar.xz
+RUN tar xf arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi.tar.xz
 RUN rm arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi.tar.xz # Cleanup Image
 
 ENV PATH="/arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin:${PATH}"
