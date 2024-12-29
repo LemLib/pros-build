@@ -33,7 +33,7 @@ ENV PATH="/arm-none-eabi-toolchain/bin:${PATH}"
 # Install PROS CLI
 # ------------
 RUN pipx install pros-cli
-RUN pipx ensurepath
+ENV PATH="/root/.local/bin:$PATH"
 
 # ------------
 # Cleanup 
