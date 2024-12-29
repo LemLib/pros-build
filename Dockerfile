@@ -61,8 +61,8 @@ RUN rm arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi.tar.xz
 RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi /arm-none-eabi-toolchain
 
 RUN rm -rf /arm-none-eabi-toolchain/share
-RUN rm -rf /arm-none-eabi-toolchain/arm-none-eabi/lib
-
+RUN rm -rf /lib/gcc/arm-none-eabi/13.3.1/arm
+RUN rm -rf //lib/gcc/arm-none-eabi/13.3.1/thumb
 # RUN mv "/arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi" "/arm-none-eabi-toolchain"
 ENV PATH="/arm-none-eabi-toolchain/bin:${PATH}"
 
