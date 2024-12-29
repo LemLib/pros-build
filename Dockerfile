@@ -41,6 +41,15 @@ RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-reade
 RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-strip /arm-none-eabi-toolchain/bin/
 
 RUN rm -rf /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi
+RUN find /arm-none-eabi-toolchain/bin -type f -perm /a+x -exec ldd {} \; \
+| grep so \
+| sed -e '/^[^\t]/ d' \
+| sed -e 's/\t//' \
+| sed -e 's/.*=..//' \
+| sed -e 's/ (0.*)//' \
+| sort \
+| uniq -c \
+| sort -n
 # RUN mv "/arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi" "/arm-none-eabi-toolchain"
 ENV PATH="/arm-none-eabi-toolchain/bin:${PATH}"
 
