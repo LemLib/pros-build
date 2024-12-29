@@ -32,26 +32,21 @@ RUN mkdir -p /arm-none-eabi-toolchain/bin
 #include dir
 RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/arm-none-eabi/include/* /arm-none-eabi-toolchain/arm-none-eabi/include/
 #bin files
-RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-ar /arm-none-eabi-toolchain/bin/
+RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-c++filt /arm-none-eabi-toolchain/bin/
 RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-gcc /arm-none-eabi-toolchain/bin/
-RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-g++ /arm-none-eabi-toolchain/bin/
+RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-elfedit /arm-none-eabi-toolchain/bin/
+RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-gcc-ar /arm-none-eabi-toolchain/bin/
+RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-gcov /arm-none-eabi-toolchain/bin/
+RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-gcov-dump /arm-none-eabi-toolchain/bin/
+RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-gcov-tool /arm-none-eabi-toolchain/bin/
+RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-ld /arm-none-eabi-toolchain/bin/
 RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-objcopy /arm-none-eabi-toolchain/bin/
-RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-size /arm-none-eabi-toolchain/bin/
-RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-readelf /arm-none-eabi-toolchain/bin/
 RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-strip /arm-none-eabi-toolchain/bin/
 
-RUN rm -rf /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin
-RUN mkdir /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin
-RUN mv /arm-none-eabi-toolchain/bin/* /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/
-RUN find /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/ -type f -perm /a+x -exec ldd {} \; \
-| grep so \
-| sed -e '/^[^\t]/ d' \
-| sed -e 's/\t//' \
-| sed -e 's/.*=..//' \
-| sed -e 's/ (0.*)//' \
-| sort \
-| uniq -c \
-| sort -n
+RUN rm -rf /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi
+
+RUN ls -a -R /arm-none-eabi-toolchain
+
 # RUN mv "/arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi" "/arm-none-eabi-toolchain"
 ENV PATH="/arm-none-eabi-toolchain/bin:${PATH}"
 
