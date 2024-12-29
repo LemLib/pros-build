@@ -27,39 +27,39 @@ RUN wget "https://developer.arm.com/-/media/Files/downloads/gnu/13.3.rel1/binrel
 RUN tar xf arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi.tar.xz
 RUN rm arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi.tar.xz
 
-RUN mkdir -p /arm-none-eabi-toolchain/arm-none-eabi/include
-RUN mkdir -p /arm-none-eabi-toolchain/bin
-RUN mkdir -p /arm-none-eabi-toolchain/libexec/
-RUN mkdir -p /arm-none-eabi-toolchain/lib
-#include dir
-RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/arm-none-eabi/include/* /arm-none-eabi-toolchain/arm-none-eabi/include/
-#bin files
-RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-c++filt /arm-none-eabi-toolchain/bin/
-RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-gcc /arm-none-eabi-toolchain/bin/
-RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-elfedit /arm-none-eabi-toolchain/bin/
-RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-gcc-ar /arm-none-eabi-toolchain/bin/
-RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-gcov /arm-none-eabi-toolchain/bin/
-RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-gcov-dump /arm-none-eabi-toolchain/bin/
-RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-gcov-tool /arm-none-eabi-toolchain/bin/
-RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-ld /arm-none-eabi-toolchain/bin/
-RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-objcopy /arm-none-eabi-toolchain/bin/
-RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-strip /arm-none-eabi-toolchain/bin/
+# RUN mkdir -p /arm-none-eabi-toolchain/arm-none-eabi/include
+# RUN mkdir -p /arm-none-eabi-toolchain/bin
+# RUN mkdir -p /arm-none-eabi-toolchain/libexec/
+# RUN mkdir -p /arm-none-eabi-toolchain/lib
+# #include dir
+# RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/arm-none-eabi/include/* /arm-none-eabi-toolchain/arm-none-eabi/include/
+# #bin files
+# RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-c++filt /arm-none-eabi-toolchain/bin/
+# RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-gcc /arm-none-eabi-toolchain/bin/
+# RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-elfedit /arm-none-eabi-toolchain/bin/
+# RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-gcc-ar /arm-none-eabi-toolchain/bin/
+# RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-gcov /arm-none-eabi-toolchain/bin/
+# RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-gcov-dump /arm-none-eabi-toolchain/bin/
+# RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-gcov-tool /arm-none-eabi-toolchain/bin/
+# RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-ld /arm-none-eabi-toolchain/bin/
+# RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-objcopy /arm-none-eabi-toolchain/bin/
+# RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-strip /arm-none-eabi-toolchain/bin/
 
-# TODO: These will be converted to aliases, I don't know how they need ot be aliased
-RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-g++ /arm-none-eabi-toolchain/bin/
-RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-nm /arm-none-eabi-toolchain/bin/
-RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-ranlib /arm-none-eabi-toolchain/bin/
+# # TODO: These will be converted to aliases, I don't know how they need ot be aliased
+# RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-g++ /arm-none-eabi-toolchain/bin/
+# RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-nm /arm-none-eabi-toolchain/bin/
+# RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-ranlib /arm-none-eabi-toolchain/bin/
 
-# TODO: Not sure if this is an alias or not
-RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-as /arm-none-eabi-toolchain/bin/
-# libexec
-RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/libexec/* /arm-none-eabi-toolchain/libexec/
-RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/lib/* /arm-none-eabi-toolchain/lib/
+# # TODO: Not sure if this is an alias or not
+# RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-as /arm-none-eabi-toolchain/bin/
+# # libexec
+# RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/libexec/* /arm-none-eabi-toolchain/libexec/
+# RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/lib/* /arm-none-eabi-toolchain/lib/
 
 # Deleting the extracted toolchain
-RUN rm -rf /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi
-
-RUN ls -a -R /arm-none-eabi-toolchain
+#RUN rm -rf /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi
+RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi /arm-none-eabi-toolchain
+RUN rm -rf /arm-none-eabi-toolchain/arm-none-eabi
 
 # RUN mv "/arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi" "/arm-none-eabi-toolchain"
 ENV PATH="/arm-none-eabi-toolchain/bin:${PATH}"
