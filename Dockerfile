@@ -11,7 +11,7 @@ LABEL org.opencontainers.image.licenses=MIT
 # RUN rm /packagelist # Cleanup Image
 
 # See: https://github.com/Jerrylum/pros-build/blob/main/Dockerfile
-RUN apk add --no-cache gcompat libc6-compat libstdc++ wget git gawk python3 pipx make unzip sh bash
+RUN apk add --no-cache gcompat libc6-compat libstdc++ wget git gawk python3 pipx make unzip bash
 
 # ------------
 # Set Timezone and set frontend to noninteractive
