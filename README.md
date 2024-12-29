@@ -62,7 +62,7 @@ jobs:
 
       - name: Run LemLib/pros-build
         id: test
-        uses: LemLib/pros-build@v2.0.2
+        uses: LemLib/pros-build@v2.0.3
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
@@ -90,7 +90,7 @@ pros-cli (through python)
 ### Editing the Dockerfile
 
 ```Dockerfile
-FROM ghcr.io/LemLib/pros-build:stable
+FROM ghcr.io/LemLib/pros-build:latest
 
 # Remove the included build script.
 RUN rm -rf /build.sh
