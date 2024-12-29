@@ -40,8 +40,9 @@ RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-size 
 RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-readelf /arm-none-eabi-toolchain/bin/
 RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-strip /arm-none-eabi-toolchain/bin/
 
-RUN rm -rf /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi
-RUN find /arm-none-eabi-toolchain/bin -type f -perm /a+x -exec ldd {} \; \
+RUN rm -rf /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin
+RUN mv /arm-none-eabi-toolchain/bin/* /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/
+RUN find /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/ -type f -perm /a+x -exec ldd {} \; \
 | grep so \
 | sed -e '/^[^\t]/ d' \
 | sed -e 's/\t//' \
