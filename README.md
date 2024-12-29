@@ -90,7 +90,7 @@ pros-cli (through python)
 ### Editing the Dockerfile
 
 ```Dockerfile
-FROM ghcr.io/LemLib/pros-build:latest
+FROM ghcr.io/LemLib/pros-build:v3.0.0
 
 # Remove the included build script.
 RUN rm -rf /build.sh
