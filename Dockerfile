@@ -29,7 +29,7 @@ RUN rm arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi.tar.xz
 
 RUN mkdir -p /arm-none-eabi-toolchain/arm-none-eabi/include
 RUN mkdir -p /arm-none-eabi-toolchain/bin
-RUN mkdir -p /arm-none-eabi-toolchain/libexec/gcc/arm-none-eabi/13.3.1
+RUN mkdir -p /arm-none-eabi-toolchain/libexec/
 #RUN mkdir -p /arm-none-eabi-toolchain/lib
 #include dir
 RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/arm-none-eabi/include/* /arm-none-eabi-toolchain/arm-none-eabi/include/
