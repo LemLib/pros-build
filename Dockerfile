@@ -59,7 +59,7 @@ RUN rm arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi.tar.xz
 # Deleting the extracted toolchain
 #RUN rm -rf /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi
 RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi /arm-none-eabi-toolchain
-RUN rm -rf /arm-none-eabi-toolchain/arm-none-eabi
+RUN rm -rf /arm-none-eabi-toolchain/share
 
 # RUN mv "/arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi" "/arm-none-eabi-toolchain"
 ENV PATH="/arm-none-eabi-toolchain/bin:${PATH}"
