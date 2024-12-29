@@ -68,10 +68,10 @@ ENV LIBRARY_PATH=${LIBRARY_PATH}
 
 RUN env
 
-COPY build-tools/build.sh /build.sh
-RUN chmod +x /build.sh
-RUN cat /build.sh
+COPY build-tools/build.sh ~/build.sh
+RUN chmod +x ~/build.sh
+RUN cat ~/build.sh
 
 COPY LICENSE ./LICENSE
 
-ENTRYPOINT ["/build.sh"]
+ENTRYPOINT ["~/build.sh"]
