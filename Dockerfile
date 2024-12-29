@@ -42,6 +42,8 @@ ENV PATH="/root/.local/bin:$PATH"
 # Cleanup APT
 #RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+# Cleanup APK
+RUN apk cache clean
 # ------------
 # Verify Installation
 # ------------
@@ -66,7 +68,7 @@ ENV LIBRARY_PATH ${LIBRARY_PATH}
 
 RUN env
 
-COPY build-tools/build.sh / 
+COPY build-tools/build.sh /build.sh
 RUN chmod +x /build.sh
 
 COPY LICENSE .
