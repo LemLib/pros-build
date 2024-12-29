@@ -61,9 +61,9 @@ RUN rm arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi.tar.xz
 RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi /arm-none-eabi-toolchain
 
 RUN rm -rf /arm-none-eabi-toolchain/share
-RUN rm -rf /lib/gcc/arm-none-eabi/13.3.1/arm
-RUN find /lib/gcc/arm-none-eabi/13.3.1/thumb -mindepth 1 -maxdepth 1 ! -name 'v7-a+fp' -exec rm -rf {} +
-RUN ls -a /lib/gcc/arm-none-eabi/13.3.1/thumb
+RUN rm -rf /arm-none-eabi-toolchain/lib/gcc/arm-none-eabi/13.3.1/arm
+RUN find /arm-none-eabi-toolchain/lib/gcc/arm-none-eabi/13.3.1/thumb -mindepth 1 -maxdepth 1 ! -name 'v7-a+fp' -exec rm -rf {} +
+RUN ls -a /arm-none-eabi-toolchain/lib/gcc/arm-none-eabi/13.3.1/thumb
 # RUN mv "/arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi" "/arm-none-eabi-toolchain"
 ENV PATH="/arm-none-eabi-toolchain/bin:${PATH}"
 
