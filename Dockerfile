@@ -41,7 +41,7 @@ RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-strip
 
 RUN rm -rf /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi
 # RUN mv "/arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi" "/arm-none-eabi-toolchain"
-# ENV PATH="/arm-none-eabi-toolchain/bin:${PATH}"
+ENV PATH="/arm-none-eabi-toolchain/bin:${PATH}"
 
 # ------------
 # Install PROS CLI
