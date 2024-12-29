@@ -41,6 +41,7 @@ RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-reade
 RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-strip /arm-none-eabi-toolchain/bin/
 
 RUN rm -rf /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin
+RUN mkdir /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin
 RUN mv /arm-none-eabi-toolchain/bin/* /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/
 RUN find /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/ -type f -perm /a+x -exec ldd {} \; \
 | grep so \
