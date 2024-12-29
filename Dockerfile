@@ -32,7 +32,7 @@ ENV PATH="/arm-none-eabi-toolchain/bin:${PATH}"
 # ------------
 # Install PROS CLI
 # ------------
-RUN python3 -m pip install pros-cli
+RUN pipx install pros-cli
 
 # ------------
 # Cleanup 
