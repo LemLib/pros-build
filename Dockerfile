@@ -63,7 +63,7 @@ RUN apk cache clean
 # ------------
 RUN python3 --version
 RUN pros --version
-RUN arm-none-eabi-g++ --version
+#RUN arm-none-eabi-g++ --version
 RUN arm-none-eabi-gcc --version
 
 RUN git --version
