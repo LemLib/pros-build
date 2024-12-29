@@ -16,9 +16,9 @@ RUN apk add --no-cache gcompat libc6-compat libstdc++ wget git gawk python3 pipx
 # ------------
 # Set Timezone and set frontend to noninteractive
 # ------------
-ENV DEBIAN_FRONTEND=noninteractive
-RUN echo "tzdata tzdata/Areas select America" | debconf-set-selections \
-    && echo "tzdata tzdata/Zones/America select Los_Angeles" | debconf-set-selections
+# ENV DEBIAN_FRONTEND=noninteractive
+# RUN echo "tzdata tzdata/Areas select America" | debconf-set-selections \
+#     && echo "tzdata tzdata/Zones/America select Los_Angeles" | debconf-set-selections
 
 # ------------
 # Install ARM Toolchain
