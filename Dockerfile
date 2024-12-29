@@ -30,6 +30,7 @@ RUN rm arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi.tar.xz
 RUN mkdir -p /arm-none-eabi-toolchain/arm-none-eabi/include
 RUN mkdir -p /arm-none-eabi-toolchain/bin
 RUN mkdir -p /arm-none-eabi-toolchain/libexec/gcc/arm-none-eabi/13.3.1
+#RUN mkdir -p /arm-none-eabi-toolchain/lib
 #include dir
 RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/arm-none-eabi/include/* /arm-none-eabi-toolchain/arm-none-eabi/include/
 #bin files
@@ -52,7 +53,7 @@ RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-ranli
 # TODO: Not sure if this is an alias or not
 RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-as /arm-none-eabi-toolchain/bin/
 # libexec
-RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/libexec/gcc/arm-none-eabi/13.3.1/* /arm-none-eabi-toolchain/libexec/gcc/arm-none-eabi/13.3.1/
+RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/libexec/* /arm-none-eabi-toolchain/libexec/
 
 # Deleting the extracted toolchain
 RUN rm -rf /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi
