@@ -1,4 +1,4 @@
-FROM ubuntu:20.04
+FROM alpine:latest
 
 LABEL org.opencontainers.image.description="A PROS Build Container"
 LABEL org.opencontainers.image.source=https://github.com/lemlib/pros-build
@@ -6,9 +6,12 @@ LABEL org.opencontainers.image.licenses=MIT
 # ------------
 # Install Required Packages
 # ------------   
-COPY packagelist /packagelist
-RUN apt-get update && apt-get install -y $(cat /packagelist) && apt-get clean
-RUN rm /packagelist # Cleanup Image
+# COPY packagelist /packagelist
+# RUN apt-get update && apt-get install -y $(cat /packagelist) && apt-get clean
+# RUN rm /packagelist # Cleanup Image
+
+# See: https://github.com/Jerrylum/pros-build/blob/main/Dockerfile
+RUN apk add --no-cache gcompat libc6-compat libstdc++ wget git gawk python3-minimal python3-pip unzip
 
 # ------------
 # Set Timezone and set frontend to noninteractive
@@ -36,7 +39,7 @@ RUN python3 -m pip install pros-cli
 # ------------
 
 # Cleanup APT
-RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+#RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # ------------
 # Verify Installation
