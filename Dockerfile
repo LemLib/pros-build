@@ -34,6 +34,7 @@ RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/arm-none-eabi/include/*
 #bin files
 RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-ar /arm-none-eabi-toolchain/bin/
 RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-gcc /arm-none-eabi-toolchain/bin/
+RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-g++ /arm-none-eabi-toolchain/bin/
 RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-objcopy /arm-none-eabi-toolchain/bin/
 RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-size /arm-none-eabi-toolchain/bin/
 RUN mv /arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-readelf /arm-none-eabi-toolchain/bin/
@@ -63,7 +64,7 @@ RUN apk cache clean
 # ------------
 RUN python3 --version
 RUN pros --version
-#RUN arm-none-eabi-g++ --version
+RUN arm-none-eabi-g++ --version
 RUN arm-none-eabi-gcc --version
 
 RUN git --version
