@@ -26,19 +26,6 @@ RUN apk add --no-cache gcompat libc6-compat libstdc++ wget git gawk python3 pipx
     pipx install pros-cli && \
     apk cache clean
 
-# ------------
-# Verify Packages Work
-# ------------
-FROM get-dependencies AS verify-installations
-LABEL stage=verify
-RUN python3 --version && \
-    pros --version && \
-    arm-none-eabi-g++ --version && \
-    arm-none-eabi-gcc --version && \
-    git --version && \
-    make --version && \
-    unzip --version && \
-    awk --version
 
 # ------------
 # Runner Stage
@@ -46,13 +33,12 @@ RUN python3 --version && \
 FROM alpine:latest AS runner
 LABEL stage=runner
 # Copy dependencies from get-dependencies stage
-COPY --from=get-dependencies / /
+COPY --from=get-dependencies /arm-none-eabi-toolchain /arm-none-eabi-toolchain
+RUN apk add --no-cache gcompat libc6-compat libstdc++ git gawk python3 pipx make unzip bash && apk cache clean
 
 # Set Environment Variables
 ENV PATH="/arm-none-eabi-toolchain/bin:/root/.local/bin:${PATH}"
 
-# Cleanup APK
-RUN apk cache clean
 
 # Setup Build
 ENV PROS_PROJECT=${PROS_PROJECT}
