@@ -59,7 +59,7 @@ RUN rm /arm-none-eabi-toolchain/lib/gcc/arm-none-eabi/13.3.1/*
 
 
 FROM alpine:latest as runner
-COPY --from=build /arm-none-eabi-toolchain  /arm-none-eabi-toolchain
+COPY --from=get-dependencies /arm-none-eabi-toolchain  /arm-none-eabi-toolchain
 ENV PATH="/arm-none-eabi-toolchain/bin:${PATH}"
 # ------------
 # Install PROS CLI
