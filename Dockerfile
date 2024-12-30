@@ -57,6 +57,23 @@ RUN find /arm-none-eabi-toolchain/lib/gcc/arm-none-eabi/13.3.1/thumb -mindepth 1
 # RUN rm /arm-none-eabi-toolchain/lib/gcc/arm-none-eabi/13.3.1/*
 # RUN mv "/arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi" "/arm-none-eabi-toolchain"
 
+
+# ------------
+# Verify Packages work
+# ------------
+
+FROM get-dependencies as verify-installations
+RUN apk add --no-cache gcompat libc6-compat libstdc++ wget git gawk python3 pipx make unzip bash
+
+RUN python3 --version
+RUN pros --version
+RUN arm-none-eabi-g++ --version
+RUN arm-none-eabi-gcc --version
+
+RUN git --version
+RUN make --version
+RUN unzip 
+RUN awk --version
 # ------------
 # Runner Stage
 # ------------
@@ -86,18 +103,7 @@ ENV PATH="/root/.local/bin:$PATH"
 
 # Cleanup APK
 RUN apk cache clean
-# ------------
-# Verify Installation
-# ------------
-RUN python3 --version
-RUN pros --version
-RUN arm-none-eabi-g++ --version
-RUN arm-none-eabi-gcc --version
 
-RUN git --version
-RUN make --version
-RUN unzip 
-RUN awk --version
 
 
 # ------------
