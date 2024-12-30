@@ -57,10 +57,20 @@ RUN find /arm-none-eabi-toolchain/lib/gcc/arm-none-eabi/13.3.1/thumb -mindepth 1
 # RUN rm /arm-none-eabi-toolchain/lib/gcc/arm-none-eabi/13.3.1/*
 # RUN mv "/arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi" "/arm-none-eabi-toolchain"
 
-
+# ------------
+# Runner Stage
+# ------------
 FROM alpine:latest as runner
 COPY --from=get-dependencies /arm-none-eabi-toolchain  /arm-none-eabi-toolchain
 ENV PATH="/arm-none-eabi-toolchain/bin:${PATH}"
+
+# ------------
+# Install Required Packages
+# ------------   
+
+# See: https://github.com/Jerrylum/pros-build/blob/main/Dockerfile
+RUN apk add --no-cache gcompat libc6-compat libstdc++ wget git gawk python3 pipx make unzip bash
+
 # ------------
 # Install PROS CLI
 # ------------
