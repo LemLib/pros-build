@@ -33,4 +33,4 @@ outputs:
     
 runs:
   using: 'Docker'
-  image: 'docker://ghcr.io/lemlib/pros-build:v3.0.0'
+  image: 'docker://ghcr.io/lemlib/pros-build:feat-test-alpine-linux'
