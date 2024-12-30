@@ -1,17 +1,8 @@
-FROM alpine:latest
+FROM alpine:latest as get-dependencies 
 
 LABEL org.opencontainers.image.description="A PROS Build Container"
 LABEL org.opencontainers.image.source=https://github.com/lemlib/pros-build
 LABEL org.opencontainers.image.licenses=MIT
-# ------------
-# Install Required Packages
-# ------------   
-# COPY packagelist /packagelist
-# RUN apt-get update && apt-get install -y $(cat /packagelist) && apt-get clean
-# RUN rm /packagelist # Cleanup Image
-
-# See: https://github.com/Jerrylum/pros-build/blob/main/Dockerfile
-RUN apk add --no-cache gcompat libc6-compat libstdc++ wget git gawk python3 pipx make unzip bash
 
 # ------------
 # Set Timezone and set frontend to noninteractive
@@ -65,8 +56,11 @@ RUN rm -rf /arm-none-eabi-toolchain/lib/gcc/arm-none-eabi/13.3.1/arm
 RUN find /arm-none-eabi-toolchain/lib/gcc/arm-none-eabi/13.3.1/thumb -mindepth 1 -maxdepth 1 ! -name 'v7-a+fp' -exec rm -rf {} +
 RUN rm /arm-none-eabi-toolchain/lib/gcc/arm-none-eabi/13.3.1/*
 # RUN mv "/arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi" "/arm-none-eabi-toolchain"
-ENV PATH="/arm-none-eabi-toolchain/bin:${PATH}"
 
+
+FROM alpine:latest as runner
+COPY --from=build /arm-none-eabi-toolchain  /arm-none-eabi-toolchain
+ENV PATH="/arm-none-eabi-toolchain/bin:${PATH}"
 # ------------
 # Install PROS CLI
 # ------------
