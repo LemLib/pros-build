@@ -2,6 +2,7 @@
 # Build Stage: Get Dependencies
 # ------------
 FROM alpine:latest AS get-dependencies
+LABEL stage=builder
 
 LABEL org.opencontainers.image.description="A PROS Build Container"
 LABEL org.opencontainers.image.source=https://github.com/lemlib/pros-build
@@ -24,7 +25,7 @@ RUN apk add --no-cache gcompat libc6-compat libstdc++ wget git gawk python3 pipx
 # Verify Packages Work
 # ------------
 FROM get-dependencies AS verify-installations
-
+LABEL stage=verify
 RUN python3 --version && \
     pros --version && \
     arm-none-eabi-g++ --version && \
@@ -38,7 +39,7 @@ RUN python3 --version && \
 # Runner Stage
 # ------------
 FROM alpine:latest AS runner
-
+LABEL stage=runner
 # Copy dependencies from get-dependencies stage
 COPY --from=get-dependencies / /
 
