@@ -125,8 +125,8 @@ jobs:
         if: ${{ inputs.upload_artifact && !inputs.expect_error }} 
         uses: actions/upload-artifact@v4
         with:
-          name: "${{ steps.test-action.outputs.name }}${{ inputs.artifact_additional_postfix }}"
-          path: "template/*"
+          name: "$name"
+          path: "$name"
 
       - name: Add Artifact to Job Summary
         if: ${{ inputs.upload_artifact && !inputs.expect_error }} 
