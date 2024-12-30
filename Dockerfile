@@ -34,7 +34,7 @@ FROM alpine:latest AS runner
 LABEL stage=runner
 # Copy dependencies from get-dependencies stage
 COPY --from=get-dependencies /arm-none-eabi-toolchain /arm-none-eabi-toolchain
-RUN apk add --no-cache gcompat libc6-compat libstdc++ git gawk python3 pipx make unzip bash && apk cache clean
+RUN apk add --no-cache gcompat libc6-compat libstdc++ git gawk python3 pipx make unzip bash && pipx install pros-cli && apk cache clean
 
 # Set Environment Variables
 ENV PATH="/arm-none-eabi-toolchain/bin:/root/.local/bin:${PATH}"
