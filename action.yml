@@ -33,4 +33,4 @@ outputs:
     
 runs:
   using: 'Docker'
-  image: 'docker://ghcr.io/lemlib/pros-build:feat-test-alpine-linux'
+  image: 'docker://ghcr.io/lemlib/pros-build:uhh-dieting-the-whole-image'
