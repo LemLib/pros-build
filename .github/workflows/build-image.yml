@@ -86,8 +86,8 @@ jobs:
           docker images
           tag=$(echo "${{ steps.meta.outputs.tags }}" | tr '\n' ' ')
           echo $tag
-          docker image prune --filter label=stage=builder
-          docker image prune --filter label=stage=verify
+          docker image prune --filter label=stage=builder -f
+          docker image prune --filter label=stage=verify -f
           docker save -o image.tar $tag0
 
       - name: Upload Artifact
