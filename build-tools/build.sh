@@ -155,15 +155,15 @@ if (($template == 1)); then
 
     echo "::endgroup::"
 
-    # # --------------
-    # # UNZIP TEMPLATE
-    # # --------------
+    # --------------
+    # UNZIP TEMPLATE
+    # --------------
 
-    # echo "::group::Unzipping template"
+    echo "::group::Unzipping template"
 
-    # unzip -o $name -d template # Unzip the template
+    unzip -o $name -d template # Unzip the template
 
-    # echo "::endgroup::"
+    echo "::endgroup::"
 
 fi
 
