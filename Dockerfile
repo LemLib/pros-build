@@ -17,9 +17,9 @@ RUN apk add --no-cache gcompat libc6-compat libstdc++ wget git gawk python3 pipx
     rm -rf /arm-none-eabi-toolchain/share && \
     rm -rf /arm-none-eabi-toolchain/lib/gcc/arm-none-eabi/13.3.1/arm && \
     find /arm-none-eabi-toolchain/lib/gcc/arm-none-eabi/13.3.1/thumb -mindepth 1 -maxdepth 1 ! -name 'v7-a+fp' -exec rm -rf {} + && \
-    rm -f /arm-none-eabi-toolchain/lib/gcc/arm-none-eabi/13.3.1/bin/arm-none-eabi-gcc-13.3.1 && \
-    rm -f /arm-none-eabi-toolchain/lib/gcc/arm-none-eabi/13.3.1/bin/arm-none-eabi-gdb && \
-    rm -f /arm-none-eabi-toolchain/lib/gcc/arm-none-eabi/13.3.1/bin/arm-none-eabi-cpp && \
+    rm -f /arm-none-eabi-toolchain/bin/arm-none-eabi-gcc-13.3.1 && \
+    rm -f /arm-none-eabi-toolchain/bin/arm-none-eabi-gdb && \
+    rm -f /arm-none-eabi-toolchain/bin/arm-none-eabi-cpp && \
     pipx install pros-cli && \
     apk cache clean
 
