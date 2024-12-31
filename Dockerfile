@@ -33,6 +33,9 @@ RUN apk add --no-cache gcompat libc6-compat libstdc++ wget git gawk python3 pipx
 # ------------
 FROM alpine:latest AS runner
 LABEL stage=runner
+LABEL org.opencontainers.image.description="A PROS Build Container"
+LABEL org.opencontainers.image.source=https://github.com/lemlib/pros-build
+LABEL org.opencontainers.image.licenses=MIT
 # Copy dependencies from get-dependencies stage
 COPY --from=get-dependencies /arm-none-eabi-toolchain /arm-none-eabi-toolchain
 RUN apk add --no-cache gcompat libc6-compat libstdc++ git gawk python3 pipx make unzip bash && pipx install pros-cli && apk cache clean
