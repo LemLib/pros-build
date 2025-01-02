@@ -33,4 +33,4 @@ outputs:
     
 runs:
   using: 'Docker'
-  image: 'docker://ghcr.io/lemlib/pros-build:uhh-dieting-the-whole-image'
+  image: 'docker://ghcr.io/lemlib/pros-build:v4.0.0'
