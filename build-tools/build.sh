@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 script_start_time=$SECONDS
 
 # ----------------
