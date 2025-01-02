@@ -9,7 +9,7 @@ LABEL org.opencontainers.image.source=https://github.com/lemlib/pros-build
 LABEL org.opencontainers.image.licenses=MIT
 
 # Install Required Packages and ARM Toolchain
-RUN apk add --no-cache gcompat libc6-compat libstdc++ wget git gawk python3 pipx make unzip bash && \
+RUN apk add --no-cache gcompat libc6-compat libstdc++ wget git gawk python3 pipx make unzip && \
     wget "https://developer.arm.com/-/media/Files/downloads/gnu/13.3.rel1/binrel/arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi.tar.xz" -O arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi.tar.xz && \
     tar xf arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi.tar.xz && \
     rm arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi.tar.xz && \
@@ -39,7 +39,7 @@ LABEL org.opencontainers.image.source=https://github.com/lemlib/pros-build
 LABEL org.opencontainers.image.licenses=MIT
 # Copy dependencies from get-dependencies stage
 COPY --from=get-dependencies /arm-none-eabi-toolchain /arm-none-eabi-toolchain
-RUN apk add --no-cache gcompat libc6-compat libstdc++ git gawk python3 pipx make unzip bash && pipx install pros-cli && apk cache clean
+RUN apk add --no-cache gcompat libc6-compat libstdc++ git gawk python3 pipx make unzip && pipx install pros-cli && apk cache clean
 
 # Set Environment Variables
 ENV PATH="/arm-none-eabi-toolchain/bin:/root/.local/bin:${PATH}"
