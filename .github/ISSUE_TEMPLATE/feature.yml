@@ -4,24 +4,6 @@ title: '[FEATURE]: '
 labels:
   - enhancement
 body:
-  - type: checkboxes
-    attributes:
-      label: Agreements
-      description: >-
-        LemLib Code of Conduct:
-        https://github.com/LemLib/LemLib/blob/master/.github/CODE_OF_CONDUCT.md
-      options:
-        - label: Are you making this feature request in good faith?
-          required: true
-        - label: >-
-            Do you agree to follow the LemLib Code of Conduct at all times while
-            interacting with this repository?
-          required: true
-        - label: >-
-            Do you understand that not following the Code of Conduct may result
-            in a temporary or permanent ban from interacting with this
-            repository or all LemLib repositories?
-          required: true
   - type: textarea
     attributes:
       label: Description
