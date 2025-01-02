@@ -1,0 +1,69 @@
+name: Bug Report
+description: Bug Report Template
+title: '[BUG] '
+labels:
+  - bug
+  - needs confirmation
+body:
+  - type: markdown
+    attributes:
+      value: >-
+        Thanks for filing a Bug Report! Please write a concise title above,
+        without removing `[BUG]` from the title. Then fill out the form below.
+  - type: dropdown
+    id: build-action
+    attributes:
+      label: >-
+        Have you tested on at least two seperate PROS Projects, and are you
+        certain this is an issue with the Build Action, and not any
+        configuration issues on your end?
+      description: Please select one of the following answers below.
+      options:
+        - 'Yes'
+        - 'No'
+        - I don't have another repository to test.
+    validations:
+      required: true
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected Behavior
+      description: >-
+        Please input what you expected to happen, as concisely as possible. Try
+        to say more than "It doesn't crash", or "it builds successfully". 
+      placeholder: >-
+        Please input what you expected to happen, as concisely as possible. Try
+        to say more than "It doesn't crash", or "it builds successfully". 
+    validations:
+      required: true
+  - type: textarea
+    id: actual-behavior
+    attributes:
+      label: Actual Behavior
+      description: >-
+        Please input what actually happened, as concisely as possible. Try
+        to say more than "It crashed", or "it failed to build". 
+      placeholder: >-
+        Please input what actually happened, as concisely as possible. Try
+        to say more than "It crashed", or "it failed to build". 
+    validations:
+      required: true
+  - type: input
+    id: logs-link
+    attributes:
+      label: Link to the Log
+      description: >-
+        If your log files are Publicly Available, please provide a link to them
+        below.
+      placeholder: https://github.com/YourName/YourRepository/actions/runs/random-id
+  - type: textarea
+    id: log-output
+    attributes:
+      label: Log Output (Only If your Logs are Private)
+      description: >-
+        If your logs aren't publicly available, provide as much context around
+        the error as possible.
+  - type: textarea
+    id: additional-information
+    attributes:
+      label: If you have any additional information, please provide it below.
