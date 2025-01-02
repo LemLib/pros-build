@@ -10,25 +10,6 @@ body:
       value: >-
         Thanks for filing a Bug Report! Please write a concise title above,
         without removing `[BUG]` from the title. Then fill out the form below.
-  - type: checkboxes
-    id: agreements
-    attributes:
-      label: Agreements
-      description: >-
-        LemLib Code of Conduct:
-        https://github.com/LemLib/LemLib/blob/master/.github/CODE_OF_CONDUCT.md
-      options:
-        - label: Are you making this bug report in good faith?
-          required: true
-        - label: >-
-            Do you agree to follow the LemLib Code of Conduct at all times while
-            interacting with this repository?
-          required: true
-        - label: >-
-            Do you understand that not following the Code of Conduct may result
-            in a temporary or permanent ban from interacting with this
-            repository or all LemLib repositories?
-          required: true
   - type: dropdown
     id: build-action
     attributes:
