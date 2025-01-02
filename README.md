@@ -77,22 +77,16 @@ jobs:
 
 If you wish to use your own build script using this container as a base, you can do so with the following:
 
-It by default includes the packages built into the Ubuntu docker image, and contains the additional packages below:
+> [!WARNING]
+> The container now (v4.* and up) uses Alpine Linux and adds the necessary packages to build a PROS Project. The currently added package is listed below, but your mileage on using anything other than basic make commands in a pros project may vary wildly depending on how you create it.   
+> We also trimmed the toolchain to be much smaller, so if you've modified your Makefile to use other features you may have to fork this repository and change what is removed from the toolchain.
 
-```
-wget (Used to download the toolchain)
-git (Used to get the HEAD SHA hash)
-gawk (Used to get lines from the user project's Makefile)
-python3-minimal (Minimal installation of Python used for pros-cli)
-python3-pip (Used to install pros-cli in the Dockerfile)
-unzip (Unzips the template so that it can be uploaded to Github Actions)
-pros-cli (through python)
-```
+Installed Packages: `gcompat, libc6-compat, libstdc++, git, gawk, python3, pipx, make, unzip, bash`
 
 ### Editing the Dockerfile
 
 ```Dockerfile
-FROM ghcr.io/LemLib/pros-build:v3.0.0
+FROM ghcr.io/LemLib/pros-build:v4.0.0
 
 # Remove the included build script.
 RUN rm -rf /build.sh
@@ -103,39 +97,8 @@ RUN rm -rf /build.sh
 ENTRYPOINT []
 ```
 
+
 # Example Job Summary Output
 
-# ✅ Build Completed
+![image](https://github.com/user-attachments/assets/a63ddfc0-5f14-44c0-8e1b-8902f1d99e55)
 
-Build completed in 25 seconds
-Total Build Script Runtime: 27 seconds
-
-## 📝 Library Name: LemLib @ 0.5.1
-
-### 🔐 SHA: 4f12f2
-
-### 📁 Artifact Name: LemLib@0.5.1+4f12f2
-
----
-
-#### 📄 Output from Make
-
-<details><summary>Click to expand</summary> 
-```
-        Creating bin/LemLib.a  [DONE]
-Creating cold package with libpros,libc,libm,LemLib [OK]
-Stripping cold package  [DONE]
-Section sizes:
-   text	   data	    bss	  total	    hex	filename
-1013.69KB  4.89KB  47.15MB  48.14MB 30234f7 bin/cold.package.elf
-Adding timestamp [OK]
-Linking hot project with ./bin/cold.package.elf and libpros,libc,libm,LemLib [OK]
-Section sizes:
-   text	   data	    bss	  total	    hex	filename
- 3.97KB  12.00B  46.02MB  46.02MB 2e04a17 bin/hot.package.elf
-Creating cold package binary for VEX EDR V5 [DONE]
-Creating bin/hot.package.bin for VEX EDR V5 [DONE]
-```
-</details>
-
-### 📦 Artifact url: https://github.com/LemLib/pros-build/actions/runs/9426610142/artifacts/1581443703
