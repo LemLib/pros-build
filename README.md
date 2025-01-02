@@ -3,10 +3,12 @@
 [![Build-Image action](https://github.com/LemLib/pros-build/actions/workflows/build-image.yml/badge.svg)](https://github.com/LemLib/pros-build/actions/workflows/build-image.yml)
 [![Test action](https://github.com/LemLib/pros-build/actions/workflows/test.yml/badge.svg)](https://github.com/LemLib/pros-build/actions/workflows/test.yml)
 
-This action creates an environment capable of building PROS projects and templates, and builds them using [build.sh](/build-tools/build.sh)
+This action creates an environment capable of building PROS projects and templates and builds them using [build.sh](/build-tools/build.sh)
 
-Instructions on creating a custom build script, adding additional packages, and using this image as a base are located at the end of this readme.
+Instructions on creating a custom build script, adding additional packages, and using this image as a base are located at the end of this readme.  
 
+> [!NOTE]
+> Also major thanks to [@JerryLum](https://github.com/jerrylum) for his gracious help and competition in building v4.0.0 to be as fast as it is now!
 ## Usage:
 
 ### Inputs
@@ -62,7 +64,7 @@ jobs:
 
       - name: Run LemLib/pros-build
         id: test
-        uses: LemLib/pros-build@v3.0.0
+        uses: LemLib/pros-build@v4.0.0
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
