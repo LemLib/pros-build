@@ -60,10 +60,10 @@ body:
     attributes:
       label: Actual Behavior
       description: >-
-        Please input what you actually happened, as concisely as possible. Try
+        Please input what actually happened, as concisely as possible. Try
         to say more than "It crashed", or "it failed to build". 
       placeholder: >-
-        Please input what you actually happened, as concisely as possible. Try
+        Please input what actually happened, as concisely as possible. Try
         to say more than "It crashed", or "it failed to build". 
     validations:
       required: true
