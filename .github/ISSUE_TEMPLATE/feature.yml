@@ -11,7 +11,7 @@ body:
         LemLib Code of Conduct:
         https://github.com/LemLib/LemLib/blob/master/.github/CODE_OF_CONDUCT.md
       options:
-        - label: Are you making this bug report in good faith?
+        - label: Are you making this feature request in good faith?
           required: true
         - label: >-
             Do you agree to follow the LemLib Code of Conduct at all times while
