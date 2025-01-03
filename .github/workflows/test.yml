@@ -127,7 +127,7 @@ jobs:
         with:
           name: "${{ steps.test-action.outputs.name }}${{ inputs.artifact_additional_postfix }}"
           path: "template/*"
-
+          
       - name: Add Artifact to Job Summary
         if: ${{ inputs.upload_artifact && !inputs.expect_error }} 
         run: 'echo "### 📦 Artifact url: ${{ steps.upload.outputs.artifact-url }}" >> $GITHUB_STEP_SUMMARY'

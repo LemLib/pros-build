@@ -1,70 +1,56 @@
-FROM ubuntu:20.04
+# ------------
+# Build Stage: Get Dependencies
+# ------------
+FROM alpine:latest AS get-dependencies
+LABEL stage=builder
 
 LABEL org.opencontainers.image.description="A PROS Build Container"
 LABEL org.opencontainers.image.source=https://github.com/lemlib/pros-build
 LABEL org.opencontainers.image.licenses=MIT
-# ------------
-# Install Required Packages
-# ------------   
-COPY packagelist /packagelist
-RUN apt-get update && apt-get install -y $(cat /packagelist) && apt-get clean
-RUN rm /packagelist # Cleanup Image
 
-# ------------
-# Set Timezone and set frontend to noninteractive
-# ------------
-ENV DEBIAN_FRONTEND=noninteractive
-RUN echo "tzdata tzdata/Areas select America" | debconf-set-selections \
-    && echo "tzdata tzdata/Zones/America select Los_Angeles" | debconf-set-selections
+# Install Required Packages and ARM Toolchain
+RUN apk add --no-cache bash
+RUN mkdir "/arm-none-eabi-toolchain" && wget -O- "https://developer.arm.com/-/media/Files/downloads/gnu/13.3.rel1/binrel/arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi.tar.xz" \
+    | tar Jxf - -C "/arm-none-eabi-toolchain" --strip-components=1 
+RUN <<-"EOF" bash
+    set -e
 
-# ------------
-# Install ARM Toolchain
-# ------------
-RUN wget "https://developer.arm.com/-/media/Files/downloads/gnu/13.3.rel1/binrel/arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi.tar.xz" -O arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi.tar.xz
-RUN tar xf arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi.tar.xz
-RUN rm arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi.tar.xz # Cleanup Image
-RUN mv "/arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi" "/arm-none-eabi-toolchain"
-ENV PATH="/arm-none-eabi-toolchain/bin:${PATH}"
+    toolchain="/arm-none-eabi-toolchain"
+    mkdir -p "$toolchain"
 
-# ------------
-# Install PROS CLI
-# ------------
-RUN python3 -m pip install pros-cli
+    rm -rf "$toolchain"/{share,include}
+    rm -rf "$toolchain"/lib/gcc/arm-none-eabi/13.3.1/arm
+    rm -f "$toolchain"/bin/arm-none-eabi-{gdb,gdb-py,cpp,gcc-13.3.1}
+    
+    find "$toolchain"/arm-none-eabi/lib/thumb                              -mindepth 1 -maxdepth 1 ! -name 'v7-a+fp' -exec rm -rf {} +
+    find "$toolchain"/lib/gcc/arm-none-eabi/13.3.1/thumb                   -mindepth 1 -maxdepth 1 ! -name 'v7-a+fp' -exec rm -rf {} +
+    find "$toolchain"/arm-none-eabi/include/c++/13.3.1/arm-none-eabi/thumb -mindepth 1 -maxdepth 1 ! -name 'v7-a*' -exec rm -rf {} + 
 
+    apk cache clean # Cleanup image
+EOF
 # ------------
-# Cleanup 
+# Runner Stage
 # ------------
+FROM alpine:latest AS runner
+LABEL stage=runner
+LABEL org.opencontainers.image.description="A PROS Build Container"
+LABEL org.opencontainers.image.source=https://github.com/lemlib/pros-build
+LABEL org.opencontainers.image.licenses=MIT
+# Copy dependencies from get-dependencies stage
+COPY --from=get-dependencies /arm-none-eabi-toolchain /arm-none-eabi-toolchain
+RUN apk add --no-cache gcompat libc6-compat libstdc++ git gawk python3 pipx make unzip bash && pipx install pros-cli && apk cache clean
 
-# Cleanup APT
-RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-# ------------
-# Verify Installation
-# ------------
-RUN python3 --version
-RUN pros --version
-RUN arm-none-eabi-g++ --version
-RUN arm-none-eabi-gcc --version
-
-RUN git --version
-RUN make --version
-RUN unzip 
-RUN awk --version
+# Set Environment Variables
+ENV PATH="/arm-none-eabi-toolchain/bin:/root/.local/bin:${PATH}"
 
 
-# ------------
-# SETUP BUILD
-# ------------
+# Setup Build
+ENV PROS_PROJECT=${PROS_PROJECT}
+ENV REPOSITORY=${REPOSITORY}
+ENV LIBRARY_PATH=${LIBRARY_PATH}
 
-ENV PROS_PROJECT ${PROS_PROJECT}
-ENV REPOSITORY ${REPOSITORY}
-ENV LIBRARY_PATH ${LIBRARY_PATH}
-
-RUN env
-
-COPY build-tools/build.sh . 
-RUN chmod +x ./build.sh
-
-COPY LICENSE .
+COPY build-tools/build.sh /build.sh
+RUN chmod +x /build.sh
+COPY LICENSE ./LICENSE
 
 ENTRYPOINT ["/build.sh"]

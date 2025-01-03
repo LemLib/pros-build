@@ -200,7 +200,6 @@ if [[ "$INPUT_WRITE_JOB_SUMMARY" == "true" ]]; then
     echo "
 # ✅ Build Completed
 Build completed in $build_time seconds
-Total Build Script Runtime: $(($SECONDS - $script_start_time)) seconds
 ## 📝 Library Name: ${library_name} @ ${version}
 ### 🔐 SHA: ${sha}
 " >>$GITHUB_STEP_SUMMARY
