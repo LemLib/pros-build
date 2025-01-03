@@ -20,8 +20,6 @@ RUN <<-"EOF" bash
     
     toolchain="/arm-none-eabi-toolchain"
     mkdir -p "$toolchain"
-    
-
 
     rm -rf "$toolchain"/{share,include}
     rm -rf "$toolchain"/lib/gcc/arm-none-eabi/13.3.1/arm
