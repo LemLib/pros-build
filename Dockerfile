@@ -19,7 +19,6 @@ RUN <<-"EOF" bash
     apk add --no-cache gcompat libc6-compat libstdc++ wget git gawk python3 pipx make unzip
     
     toolchain="/arm-none-eabi-toolchain"
-    long_toolchain="arm-gnu-toolchain-13.3.rel1-x86_64-arm-none-eabi"
     mkdir -p "$toolchain"
     
 
