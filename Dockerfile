@@ -14,10 +14,7 @@ RUN mkdir "/arm-none-eabi-toolchain" && wget -O- "https://developer.arm.com/-/me
     | tar Jxf - -C "/arm-none-eabi-toolchain" --strip-components=1 
 RUN <<-"EOF" bash
     set -e
-    
-    # Install apk packages
-    # apk add --no-cache gcompat libc6-compat libstdc++ wget git gawk python3 pipx make unzip
-    
+
     toolchain="/arm-none-eabi-toolchain"
     mkdir -p "$toolchain"
 
@@ -29,8 +26,6 @@ RUN <<-"EOF" bash
     find "$toolchain"/lib/gcc/arm-none-eabi/13.3.1/thumb                   -mindepth 1 -maxdepth 1 ! -name 'v7-a+fp' -exec rm -rf {} +
     find "$toolchain"/arm-none-eabi/include/c++/13.3.1/arm-none-eabi/thumb -mindepth 1 -maxdepth 1 ! -name 'v7-a*' -exec rm -rf {} + 
 
-    # Install pros cli (Used for creating template)
-    # pipx install pros-cli
     apk cache clean # Cleanup image
 EOF
 # ------------
